@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>manage</title>
+
+    <link rel="stylesheet" href="my/bootstrap.min.css">
+    <link rel="stylesheet" href="my/mystyle.css">
+    <script src="my/jquery-3.1.1.min.js"></script>
+    <script src="js/vue.js"></script>
+    <script src="my/bootstrap.min.js"></script>
+    <!---<link rel="shortcut icon" href="pic/officeicon.ico">  -->
+</head>
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="row">
+        <div class="col-md-10">
+            <p class="navbar-text" style="font-family: Microsoft YaHei;font-size: 18px">OFFICE 云管理</p>
+        </div>
+        <div class="col-md-2" style="padding-top: 4.5px">
+            <div class="btn-group">
+                <img src="pic/user_icon.png" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <p class="navbar-text" style="font-family: Microsoft YaHei;font-size: 15px">邓凯乐</p>
+                <ul class="dropdown-menu">
+                    <li><img src="pic/user2_icon.png"></li>
+                    <li style="color: #8a8a8a">邓凯乐</li>
+                    <li style="color: #8a8a8a">s_zhengbin@office.com</li>
+                    <li role="separator" class="divider"></li>
+                    <li><a data-toggle="modal" data-target="#userInfo">个人详情</a></li>
+                    <li><a href="#">注销</a></li>
+                </ul>
+            </div>
+
+        </div>
+    </div>
+</nav>
+
+<body style="padding-top: 55px;">
+<div class="left-nav">
+    <div class="list-group">
+        <a href="#" class="list-group-item list-item-active">物品分类</a>
+        <a href="#" class="list-group-item">管理物品</a>
+        <a href="#" class="list-group-item">用户管理</a>
+        <a href="#" class="list-group-item">申请审核</a>
+        <a href="#" class="list-group-item">申请记录</a>
+        <a href="#" class="list-group-item">借入记录</a>
+        <a href="#" class="list-group-item">归还记录</a>
+        <a href="#" class="list-group-item">使用统计</a>
+
+    </div>
+</div>
+<div class="rigth-nav">
+    <div class="container">
+        <div class="panel panel-default">
+            <div class="panel-heading">用户管理</div>
+            <div class="panel-body">
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th>序号</th>
+                        <th>姓名</th>
+                        <th>部门</th>
+                        <th>邮箱</th>
+                        <th>电话</th>
+                        <th>权限</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <th scope="row">1</th>
+                        <td>Mark</td>
+                        <td>PC企业</td>
+                        <td>mark@office.com</td>
+                        <td>1324566666</td>
+                        <td>员工</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">2</th>
+                        <td>Jacob</td>
+                        <td>PC企业</td>
+                        <td>jacob@office.com</td>
+                        <td>1324566666</td>
+                        <td>员工</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">3</th>
+                        <td>Larry</td>
+                        <td>PC企业</td>
+                        <td>larry@office.com</td>
+                        <td>1324566666</td>
+                        <td>财务</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- 个人信息Modal框 -->
+<div class="modal fade" id="userInfo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+          <div class="row">
+              <div class="col-md-1">
+                  <img src="pic/user2_icon.png">
+              </div>
+              <div class="col-md-2">
+                  <p class="navbar-text" style="font-family: Microsoft YaHei;font-size: 15px">邓凯乐</p>
+              </div>
+          </div>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+</body>
+<script>
+    $('.list-group-item').click(function () {
+        $(this).siblings('.list-group-item').removeClass('list-item-active');
+        $(this).addClass('list-item-active');
+    })
+</script>
+</html>

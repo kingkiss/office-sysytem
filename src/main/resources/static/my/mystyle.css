@@ -1,0 +1,77 @@
+/*模态框布局样式*/
+.dropdown-menu {
+    top: 100%;
+    right: 10px;
+    z-index: 1000;
+    display: none;
+    float: right;
+    width: 240px;
+    height: auto;
+    padding: 0.5rem 0;
+    margin: 0.125rem 0 0;
+    font-size: 15px;
+    color: #212529;
+    text-align: center;
+    list-style: none;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 0.25rem;
+    font-family: Microsoft YaHei
+}
+.left-button-size {
+    width: 250px;
+}
+/*左边栏菜单布局*/
+.left-nav{
+    width:11%;
+    float:left;
+    height:100%;
+    position:fixed;
+    background-color: #333B47
+;
+}
+/*右边展示面板布局*/
+.rigth-nav{
+    width: auto;
+    height:100%;
+    margin-left: 13%;
+    position:fixed;
+
+}
+/*左边栏菜单选项*/
+.list-group-item{
+    border: #333;
+    font-size: 17px;
+    background-color: #333B47;
+}
+
+a.list-group-item:focus,a.list-group-item:hover,button.list-group-item:focus,button.list-group-item:hover {
+    color: #f5f5f5;
+    text-decoration:none;
+    background-color: #009688;
+}
+a.list-group-item,button.list-group-item{
+    color: #cacaca
+}
+
+.list-item-active{
+    color: #f5f5f5 !important;
+    text-decoration: none;
+    background-color: #009688;
+}
+/*面板*/
+.panel{
+    height:100%;
+}
+/*导航栏颜色*/
+.navbar-inverse,navbar-text{
+    background-color: #EC3851;
+    border-color: #EC3851;
+
+
+}
+.navbar-inverse .navbar-text{
+    color: white;
+}
+
