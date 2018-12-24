@@ -2,11 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>办公用品管理系统</title>
+    <title>OFFICE 云管理-登录</title>
 
     <link rel="stylesheet" href="my/bootstrap.min.css">
     <link rel="stylesheet" href="my/mystyle.css">
-    <script src="my/vue.js"></script>
+    <script src="js/vue.js"></script>
 </head>
 <body>
 <body style=" padding-top: 180px">
@@ -20,12 +20,12 @@
 				<form class="form-horizontal" method="post" action="">
 					<div class="form-group" style="margin-left: 115px">
 						<div class="col-sm-8">
-							<input type="text" class="form-control center-block" autofocus="autofocus" required="required" name="admin" placeholder="企业邮箱">
+							<input type="text" class="form-control center-block" autofocus="autofocus" required="required" pattern="[a-z]+@office.com" name="admin" placeholder="企业邮箱">
 						</div>
 					</div>
 					<div class="form-group" style="margin-left: 115px">
 						<div class="col-sm-8">
-							<input type="password" class="form-control center-block" required="required" name="adminPassword" placeholder="密码">
+							<input type="password" class="form-control center-block" required="required" pattern="^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$" name="adminPassword" placeholder="密码">
 						</div>
 					</div>
 					<div class="form-group" style="margin-left: 115px">z
