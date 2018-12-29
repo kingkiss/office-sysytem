@@ -2,7 +2,7 @@ package com.office.manage.domain;
 
 import javax.xml.crypto.Data;
 
-public class Buylist {
+public class BuyList {
 	private int buyinfo_id;
 	private int buyinfo_product_id;
 	private int buyinfo_user_id;
