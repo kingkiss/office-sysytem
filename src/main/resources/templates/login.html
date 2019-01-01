@@ -24,14 +24,13 @@
 					<div class="form-group" style="margin-left: 115px">
 						<div class="col-sm-8">
 							<input type="text" v-model="user.user_name" class="form-control center-block" autofocus="autofocus" required="required" pattern="[a-z]+@office.com" name="admin" placeholder="企业邮箱">
-							<div></div><!-- 输入提示 -->
 						</div>
+						<p style="color: red" v-if="message">* 账号或密码错误</p>
 					</div>
 					<div class="form-group" style="margin-left: 115px">
 						<div class="col-sm-8">
 							<input type="password" v-model="user.user_password" class="form-control center-block" required="required" pattern="^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$" name="adminPassword" placeholder="密码">
 						</div>
-						<div></div><!-- 输入提示 -->
 					</div>
 					<div class="form-group" style="margin-left: 115px">
 						<div class="col-md-4">
@@ -39,7 +38,6 @@
 						</div>
 					</div>
 				</form>
-				<p>{{ message }}</p>
 			</div>
 		</div>
 	</div>
@@ -52,17 +50,18 @@
 		el:"#loginForm",
 		data:{
 		    user:{ user_name:'admin@office.com', user_password:'root123'},
-		    message:'error'
+		    message:false
 		},
 		methods:{
 		    userLogin:function () {
+		    /* s */
 				var url = "http://localhost:8080/user";
 				var self = this
 				axios.post(url,this.user).then(function (response) {
 					var result = response.data;
 					self.message = result.info;
                 }).catch(function(reason) {
-                    self.message = reason.response.status;
+                    self.message = true;
                 })
 			}
 		},
