@@ -27,14 +27,14 @@ public class UserController {
 		User user1 = userMapper.findUser(user.getUser_name());
 		Message msg = new Message();
 		if(user1 == null){
-			msg.setInfo("false");
+			msg.setResult(true);
 			return msg;
 		}
 		if(user.getUser_password().equals(user1.getUser_password())){
-			msg.setInfo("success");
+			msg.setResult(false);;
 			return msg;
 		}else{
-			msg.setInfo("false");
+			msg.setResult(true);;
 			return msg;
 		}
 

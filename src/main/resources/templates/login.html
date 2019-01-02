@@ -59,7 +59,7 @@
 				var self = this
 				axios.post(url,this.user).then(function (response) {
 					var result = response.data;
-					self.message = result.info;
+					self.message = result.result; 
                 }).catch(function(reason) {
                     self.message = true;
                 })
