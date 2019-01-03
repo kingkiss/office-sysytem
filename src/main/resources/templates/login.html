@@ -55,10 +55,13 @@
 		methods:{
 		    userLogin:function () {
 		    /* s */
-				var url = "http://localhost:8080/user";
+				var url = "http://localhost:8080/userLogin";
 				var self = this
 				axios.post(url,this.user).then(function (response) {
-					var result = response.data;
+				    var result = response.data;
+				    if(result.info == "success"){
+				      window.location.href="http://localhost:8080/manage"
+				    }					
 					self.message = result.result; 
                 }).catch(function(reason) {
                     self.message = true;

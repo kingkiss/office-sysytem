@@ -1,26 +1,26 @@
 package com.office.manage.controller;
 
-
-
-import static org.hamcrest.CoreMatchers.nullValue;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.office.manage.domain.Message;
 import com.office.manage.domain.User;
 import com.office.manage.domain.UserMapper;
 
 @RestController
-public class UserController {
+public class Login {
+
 	@Autowired UserMapper userMapper;
 	
-	@RequestMapping(value="/user",method=RequestMethod.POST)
-	public Message getUser(@RequestBody User user){
+	@RequestMapping(value="/userLogin",method=RequestMethod.POST)
+	public Message getUser(@RequestBody User user ,HttpServletRequest request){
 		System.out.println("ln:"+user.getUser_name());
 		System.out.println("lp:"+user.getUser_password());
 //		万一用户名或者密码错误查询不出user会空指针异常,需要进一步判断
@@ -29,16 +29,26 @@ public class UserController {
 		if(user1 == null){
 			msg.setResult(true);
 			return msg;
-		}
-		if(user.getUser_password().equals(user1.getUser_password())){
-			msg.setResult(false);;
+		}else if(user.getUser_password().equals(user1.getUser_password())){
+			//设置session
+			HttpSession session = request.getSession(true);
+			session.setAttribute("user_id", user1.getId());
+			session.setAttribute("user_name", user1.getUser_name());
+			session.setAttribute("user_password", user1.getUser_password());
+			session.setAttribute("user_truename", user1.getUser_truename());
+			session.setAttribute("user_department", user1.getUser_department());
+			session.setAttribute("user_authority", user1.getUser_authority());
+			
+			//页面跳转
+			msg.setInfo("success");;
 			return msg;
 		}else{
-			msg.setResult(true);;
+			msg.setResult(true);
 			return msg;
 		}
 
 	}
 	//TODO页面跳转
+
 	
 }

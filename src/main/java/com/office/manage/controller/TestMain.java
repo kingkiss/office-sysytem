@@ -9,4 +9,9 @@ public class TestMain {
     public String test(){
     	return "login";
     }
+    
+    @RequestMapping("/manage")
+    public String manage(){
+    	return "manage";
+    }
 }
