@@ -39,7 +39,6 @@ public class Login {
 			session.setAttribute("user_department", user1.getUser_department());
 			session.setAttribute("user_authority", user1.getUser_authority());
 			
-			//页面跳转
 			msg.setInfo("success");;
 			return msg;
 		}else{
@@ -48,7 +47,6 @@ public class Login {
 		}
 
 	}
-	//TODO页面跳转
 
 	
 }

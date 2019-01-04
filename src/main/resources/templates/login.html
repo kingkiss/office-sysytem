@@ -34,7 +34,7 @@
 					</div>
 					<div class="form-group" style="margin-left: 115px">
 						<div class="col-md-4">
-							<input class="btn btn-primary btn-block" style="width: 236.66px"  @click="userLogin" value="登录">
+							<input class="btn btn-primary btn-block" style="width: 236.66px" type="button" @click="userLogin" value="登录">
 						</div>
 					</div>
 				</form>
@@ -49,7 +49,7 @@
 	new Vue({
 		el:"#loginForm",
 		data:{
-		    user:{ user_name:'admin@office.com', user_password:'root123'},
+		    user:{ user_name:'', user_password:''},
 		    message:false
 		},
 		methods:{
