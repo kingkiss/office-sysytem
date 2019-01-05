@@ -32,13 +32,12 @@ public class Login {
 		}else if(user.getUser_password().equals(user1.getUser_password())){
 			//设置session
 			HttpSession session = request.getSession(true);
-			session.setAttribute("user_id", user1.getId());
+			session.setAttribute("user_id", user1.getUser_id());
 			session.setAttribute("user_name", user1.getUser_name());
 			session.setAttribute("user_password", user1.getUser_password());
 			session.setAttribute("user_truename", user1.getUser_truename());
 			session.setAttribute("user_department", user1.getUser_department());
 			session.setAttribute("user_authority", user1.getUser_authority());
-			
 			msg.setInfo("success");;
 			return msg;
 		}else{

@@ -2,17 +2,17 @@ package com.office.manage.domain;
 
 
 public class User {
-	private int id;
+	private int user_id;
 	private String user_name;
 	private String user_password;
 	private String user_truename;
 	private String user_department;
 	private int user_authority;
-	public int getId() {
-		return id;
+	public int getUser_id() {
+		return user_id;
 	}
-	public void setId(int id) {
-		this.id = id;
+	public void setUser_id(int id) {
+		this.user_id = id;
 	}
 	public String getUser_name() {
 		return user_name;

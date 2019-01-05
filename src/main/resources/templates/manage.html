@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>manage</title>
+    <title>OFFICE 云物品</title>
 
     <link rel="stylesheet" href="my/bootstrap.min.css">
     <link rel="stylesheet" href="my/mystyle.css">
@@ -16,14 +16,14 @@
         <div class="col-md-10">
             <p class="navbar-text" style="font-family: Microsoft YaHei;font-size: 18px">OFFICE 云管理</p>
         </div>
-        <div class="col-md-2" style="padding-top: 4.5px">
+        <div id="userInfo" class="col-md-2" style="padding-top: 4.5px">
             <div class="btn-group">
                 <img src="pic/user_icon.png" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <p class="navbar-text" style="font-family: Microsoft YaHei;font-size: 15px">邓凯乐</p>
+                <p class="navbar-text" style="font-family: Microsoft YaHei;font-size: 15px">{{ user_truename }}</p>
                 <ul class="dropdown-menu">
                     <li><img src="pic/user2_icon.png"></li>
-                    <li style="color: #8a8a8a">邓凯乐</li>
-                    <li style="color: #8a8a8a">s_zhengbin@office.com</li>
+                    <li style="color: #8a8a8a">{{ user_truename }}</li>
+                    <li style="color: #8a8a8a">{{ user_name }}</li>
                     <li role="separator" class="divider"></li>
                     <li><a data-toggle="modal" data-target="#userInfo">个人详情</a></li>
                     <li><a href="#">注销</a></li>
@@ -128,6 +128,33 @@
     $('.list-group-item').click(function () {
         $(this).siblings('.list-group-item').removeClass('list-item-active');
         $(this).addClass('list-item-active');
+    })
+/* 用户信息数据 */
+    var userdata = {
+        user_name:'111',
+        user_truename:'67575',
+        user_department:'',
+        user_authority:''
+    }
+/* vue获取数据 */
+    var userInfo = new Vue({
+        el:'#userInfo',
+        data:userdata,
+        mounted:function(){
+            this.showUserInfo();
+        },
+        methods:{
+            showUserInfo:function(){
+                var url = "http://localhost:8080/userInfo";
+                var self = this;
+                axios.get(url).then(function(response){
+                    var result = response.data;
+                    self.user_truename = result.user_truename;
+                    self.user_name = result.user_name;
+                })
+            }
+        }
+
     })
 </script>
 </html>
