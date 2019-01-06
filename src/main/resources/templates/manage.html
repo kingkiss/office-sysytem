@@ -9,6 +9,7 @@
     <script src="my/jquery-3.1.1.min.js"></script>
     <script src="my/vue.js"></script>
     <script src="my/bootstrap.min.js"></script>
+    <script src="my/axios.min.js"></script>
     <!---<link rel="shortcut icon" href="pic/officeicon.ico">  -->
 </head>
 <nav class="navbar navbar-inverse navbar-fixed-top">
@@ -16,7 +17,7 @@
         <div class="col-md-10">
             <p class="navbar-text" style="font-family: Microsoft YaHei;font-size: 18px">OFFICE 云管理</p>
         </div>
-        <div id="userInfo" class="col-md-2" style="padding-top: 4.5px">
+        <div id="user" class="col-md-2" style="padding-top: 4.5px">
             <div class="btn-group">
                 <img src="pic/user_icon.png" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <p class="navbar-text" style="font-family: Microsoft YaHei;font-size: 15px">{{ user_truename }}</p>
@@ -26,7 +27,7 @@
                     <li style="color: #8a8a8a">{{ user_name }}</li>
                     <li role="separator" class="divider"></li>
                     <li><a data-toggle="modal" data-target="#userInfo">个人详情</a></li>
-                    <li><a href="#">注销</a></li>
+                    <li><a @click="userLoginout">注销</a></li>
                 </ul>
             </div>
 
@@ -107,7 +108,7 @@
                   <img src="pic/user2_icon.png">
               </div>
               <div class="col-md-2">
-                  <p class="navbar-text" style="font-family: Microsoft YaHei;font-size: 15px">邓凯乐</p>
+                  <p class="navbar-text" style="font-family: Microsoft YaHei;font-size: 15px">{{ user_truename }}</p>
               </div>
           </div>
       </div>
@@ -131,30 +132,31 @@
     })
 /* 用户信息数据 */
     var userdata = {
-        user_name:'111',
-        user_truename:'67575',
+        user_name:'',
+        user_truename:'',
         user_department:'',
         user_authority:''
     }
 /* vue获取数据 */
     var userInfo = new Vue({
-        el:'#userInfo',
+        el:'#user',
         data:userdata,
         mounted:function(){
-            this.showUserInfo();
+            var url = "http://localhost:8080/userInfo";
+            var self = this;
+            axios.get(url).then(function(response){
+                var result = response.data;
+                self.user_truename = result.user_truename;
+                self.user_name = result.user_name;
+                self.user_department = result.user_department;
+                self.user_authority = result.user_authority;
+            })
         },
         methods:{
-            showUserInfo:function(){
-                var url = "http://localhost:8080/userInfo";
-                var self = this;
-                axios.get(url).then(function(response){
-                    var result = response.data;
-                    self.user_truename = result.user_truename;
-                    self.user_name = result.user_name;
-                })
-            }
-        }
-
+            userLoginout:function(){
+                axios.get("http://localhost:8080/loginout").then()
+            },
+        },
     })
 </script>
 </html>

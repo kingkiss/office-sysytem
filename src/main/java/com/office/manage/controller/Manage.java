@@ -1,5 +1,8 @@
 package com.office.manage.controller;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -11,5 +14,13 @@ public class Manage {
     @RequestMapping("/manage")
     public String manage(){
     	return "manage";
+    }
+    
+    //退出登录
+    @RequestMapping("/loginout")
+    public String loginout(HttpServletRequest request){
+    	HttpSession session = request.getSession();
+    	session.invalidate();
+    	return "login";
     }
 }
