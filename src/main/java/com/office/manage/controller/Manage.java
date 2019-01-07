@@ -9,6 +9,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class Manage {
+	//登录入口
+    @RequestMapping("/login")
+    public String login(){
+    	return "login";
+    }
 
 	//页面跳转到管理主页面
     @RequestMapping("/manage")

@@ -5,10 +5,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class TestMain {
-    @RequestMapping("/login")
-    public String test(){
-    	return "login";
-    }
+
     
 
 }
