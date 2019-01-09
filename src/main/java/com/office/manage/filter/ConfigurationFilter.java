@@ -44,10 +44,10 @@ public class ConfigurationFilter {
 			HttpServletResponse resp = (HttpServletResponse) response;
 			HttpSession session = req.getSession();
 			if(session.getAttribute("user_id") == null){
-				RequestDispatcher re = req.getRequestDispatcher("login.html");
+				RequestDispatcher re = req.getRequestDispatcher("src/main/resources/login.html");
 				re.forward(req, resp);
 			}else{
-				RequestDispatcher re = req.getRequestDispatcher("manage.html");
+				RequestDispatcher re = req.getRequestDispatcher("src/main/resources/manage.html");
 				re.forward(req, resp);
 			}
 			
