@@ -6,6 +6,7 @@ public class User {
 	private String user_name;
 	private String user_password;
 	private String user_truename;
+	private String user_phone;
 	private String user_department;
 	private int user_authority;
 	public int getUser_id() {
@@ -43,6 +44,12 @@ public class User {
 	}
 	public void setUser_authority(int user_authority) {
 		this.user_authority = user_authority;
+	}
+	public String getUser_phone() {
+		return user_phone;
+	}
+	public void setUser_phone(String user_phone) {
+		this.user_phone = user_phone;
 	}
 	
 }
