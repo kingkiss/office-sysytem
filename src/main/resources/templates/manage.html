@@ -36,12 +36,12 @@
 </nav>
 
 <body style="padding-top: 55px;">
-<div class="left-nav">
+<div id="fun_show" class="left-nav">
     <div class="list-group">
         <a href="#" class="list-group-item list-item-active">物品分类</a>
-        <a href="#" class="list-group-item">管理物品</a>
-        <a href="#" class="list-group-item">用户管理</a>
-        <a href="#" class="list-group-item">申请审核</a>
+        <a href="#" class="list-group-item" v-if="user_authority >= 3">管理物品</a>
+        <a href="#" class="list-group-item" v-if="user_authority >= 7">用户管理</a>
+        <a href="#" class="list-group-item" v-if="user_authority >= 3">申请审核</a>
         <a href="#" class="list-group-item">申请记录</a>
         <a href="#" class="list-group-item">借入记录</a>
         <a href="#" class="list-group-item">归还记录</a>
@@ -144,10 +144,12 @@
         user_name:'',
         user_truename:'',
         user_department:'',
-        user_authority:''
+        user_authority:'',
+        show_7:false,
+        show_3:false,
     }
 /* vue获取数据 */
-    var userInfo = new Vue({
+    var user_Info = new Vue({
         el:'#user',
         data:userdata,
         created:function(){
@@ -160,12 +162,28 @@
                 self.user_department = result.user_department;
                 self.user_authority = result.user_authority;
             })
+            
+/*             if(self.user_authority >= 3){
+                self.show_3 = true;
+                if(self.user_authority >= 7){
+                  self.show_7 = true;
+                }
+            } */
+            
         },
         methods:{
             userLoginout:function(){
                 axios.get("http://localhost:8080/loginout").then()
-            },
+            }
         },
     })
+    
+ /* 左侧功能栏根据用户权限显示相对应的功能模块 */
+    var modalShow = new Vue({
+        el:'#fun_show',
+        data:userdata,
+        
+    })
+    
 </script>
 </html>
