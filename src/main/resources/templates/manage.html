@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -39,9 +40,9 @@
 <div id="fun_show" class="left-nav">
     <div class="list-group">
         <a href="#" class="list-group-item list-item-active">物品分类</a>
-        <a href="#" class="list-group-item" v-if="user_authority >= 3">管理物品</a>
-        <a href="#" class="list-group-item" v-if="user_authority >= 7">用户管理</a>
-        <a href="#" class="list-group-item" v-if="user_authority >= 3">申请审核</a>
+        <a href="#" class="list-group-item" v-show="user_authority >= 3">管理物品</a>
+        <a href="#" class="list-group-item" v-show="user_authority >= 7">用户管理</a>
+        <a href="#" class="list-group-item" v-show="user_authority >= 3">申请审核</a>
         <a href="#" class="list-group-item">申请记录</a>
         <a href="#" class="list-group-item">借入记录</a>
         <a href="#" class="list-group-item">归还记录</a>
@@ -109,18 +110,33 @@
               </div>
           <div class="row">
               <div class="col-md-12" style="text-align: center">
-                  <p style="font-family: Microsoft YaHei;font-size: 15px">admin</p>
+                  <p style="font-family: Microsoft YaHei;font-size: 15px">{{ user_truename }}</p>
               </div>
           </div>
           </div>
       </div>
       <div class="modal-body">
-        <p>姓名：{{ user_truename }}</p>
-        <p>电话：{{ user_phone }}</p>
-        <p>邮箱：{{ user_name }}}</p> <!-- user_name就是用户登录用的邮箱，这个命名有点不恰当，但是因为历史原因改起来好麻烦就不改了 T_T -->
-        <p>所属部门：{{ user_department }}</p>
-        <p>职能：{{ user_authority }}</p> <!-- 也就是用户的权限 -->
+        <div class="row" style="height:40px">
+          <div class="col-md-8"><span>姓名：</span><span>{{ user_truename }}</span></div>
+          <div class="col-md-4" style="text-align: center"><a>修改</a></div>
+        </div>
+        <div class="row" style="height:40px">
+          <div class="col-md-8"><span>电话：</span><span>{{ user_phone }}</span></div>
+          <div class="col-md-4" style="text-align: center"><a>修改</a></div>
+        </div>
+        <div class="row" style="height:40px"><!-- user_name就是用户登录用的邮箱，这个命名有点不恰当，但是因为历史原因改起来好麻烦就不改了 T_T -->
+          <div class="col-md-8"><span>邮箱：</span><span>{{ user_name }}</span></div>      
+        </div>
+        <div class="row" style="height:40px">
+          <div class="col-md-8"><span>所属部门：</span><span>{{ user_department }}</span></div>
+        </div>
+        <div class="row" style="height:40px"><!-- 也就是用户的权限 --> 
+          <div class="col-md-8"><span>职能：</span><span>{{ user_authority }}</span></div>
+        </div>
+
       </div>
+      
+      
       <div class="modal-body">
       <p>安全设置</p>
       </div>
@@ -144,6 +160,7 @@
         user_name:'',
         user_truename:'',
         user_department:'',
+        user_phone:'',
         user_authority:'',
         show_7:false,
         show_3:false,
@@ -160,15 +177,9 @@
                 self.user_truename = result.user_truename;
                 self.user_name = result.user_name;
                 self.user_department = result.user_department;
+                self.user_phone = result.user_phone;
                 self.user_authority = result.user_authority;
             })
-            
-/*             if(self.user_authority >= 3){
-                self.show_3 = true;
-                if(self.user_authority >= 7){
-                  self.show_7 = true;
-                }
-            } */
             
         },
         methods:{
@@ -185,5 +196,12 @@
         
     })
     
+ /* modal框的数据流，数据展示和数据修改 */
+   var modalData = new Vue({
+        el:'#userInfo',
+        data:userdata,
+   
+   })
+ 
 </script>
 </html>

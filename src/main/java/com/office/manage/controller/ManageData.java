@@ -22,7 +22,7 @@ public class ManageData {
 		user.setUser_truename((String)session.getAttribute("user_truename"));
 		user.setUser_department((String)session.getAttribute("user_department"));
 		user.setUser_authority((int)session.getAttribute("user_authority"));
-		
+		user.setUser_phone((String)session.getAttribute("user_phone"));
 		return user;
 	}
 }
