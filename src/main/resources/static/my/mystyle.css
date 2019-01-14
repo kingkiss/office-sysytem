@@ -75,4 +75,7 @@ a.list-group-item,button.list-group-item{
     color: white;
 }
 
-
+/* modal框内输入框大小调整 */
+.m-input-userN{
+	width:50px;
+}

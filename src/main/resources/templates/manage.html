@@ -110,39 +110,107 @@
               </div>
           <div class="row">
               <div class="col-md-12" style="text-align: center">
-                  <p style="font-family: Microsoft YaHei;font-size: 15px">{{ user_truename }}</p>
+                  <p style="font-family: Microsoft YaHei;font-size: 15px">{{ userdata.user_truename }}</p>
               </div>
           </div>
           </div>
       </div>
       <div class="modal-body">
-        <div class="row" style="height:40px">
-          <div class="col-md-8"><span>姓名：</span><span>{{ user_truename }}</span></div>
-          <div class="col-md-4" style="text-align: center"><a>修改</a></div>
+        <div class="row" style="height:40px" v-if="userN_display">
+          <div class="col-md-8"><label>姓  名：</label><span>{{ userdata.user_truename }}</span></div>
+          <div class="col-md-4" style="text-align: center">
+            <button type="button" class="btn btn-info btn-xs" @click="openChangeN">修改</button>
+          </div>
         </div>
-        <div class="row" style="height:40px">
-          <div class="col-md-8"><span>电话：</span><span>{{ user_phone }}</span></div>
-          <div class="col-md-4" style="text-align: center"><a>修改</a></div>
+        <div class="row" style="height:40px" v-else><!-- 点击修改以后出现的修改页面 -->
+          <div class="col-md-2">
+            <label>姓  名：</label>
+          </div>
+          <div class="col-md-6">
+            <input type="text" class="form-control input-sm" style="width:150px;height:27px">
+          </div>
+          <div class="col-md-4" style="text-align: center">
+            <button type="button" class="btn btn-default btn-xs" @click="cancelChangeN">取消</button>&nbsp&nbsp
+            <button type="button" class="btn btn-primary btn-xs" @click="">确认</button>
+          </div>
         </div>
+        
+        
+        <div class="row" style="height:40px" v-if="userP_display">
+          <div class="col-md-8"><label>电  话：</label><span>{{ userdata.user_phone }}</span></div>
+          <div class="col-md-4" style="text-align: center">
+            <button type="button" class="btn btn-info btn-xs" @click="openChangeP">修改</button>
+          </div>
+        </div>
+        <div class="row" style="height:40px" v-else><!-- 点击修改以后出现的修改页面 -->
+          <div class="col-md-2">
+            <label>电  话：</label>
+          </div>
+          <div class="col-md-6">
+            <input type="text" class="form-control input-sm" style="width:150px;height:27px">
+          </div>
+          <div class="col-md-4" style="text-align: center">
+            <button type="button" class="btn btn-default btn-xs" @click="cancelChangeP">取消</button>&nbsp&nbsp
+            <button type="button" class="btn btn-primary btn-xs" @click="">确认</button>
+          </div>
+        </div>
+        
         <div class="row" style="height:40px"><!-- user_name就是用户登录用的邮箱，这个命名有点不恰当，但是因为历史原因改起来好麻烦就不改了 T_T -->
-          <div class="col-md-8"><span>邮箱：</span><span>{{ user_name }}</span></div>      
+          <div class="col-md-8"><label>邮  箱：</label><span>{{ userdata.user_name }}</span></div>      
         </div>
         <div class="row" style="height:40px">
-          <div class="col-md-8"><span>所属部门：</span><span>{{ user_department }}</span></div>
+          <div class="col-md-8"><label>所 属 部 门：</label><span>{{ userdata.user_department }}</span></div>
         </div>
         <div class="row" style="height:40px"><!-- 也就是用户的权限 --> 
-          <div class="col-md-8"><span>职能：</span><span>{{ user_authority }}</span></div>
+          <div class="col-md-8"><label>职  能：</label><span>{{ userdata.user_position }}</span></div>
         </div>
 
       </div>
       
       
-      <div class="modal-body">
-      <p>安全设置</p>
+    <div class="modal-body">
+      <div class="row" v-if="user_pwd_change">
+        <div class="col-md-12" style="text-align: center">
+          <a @click="openPwdChange">更改密码</a>
+        </div>
       </div>
-      <div class="modal-footer" style="text-align: center">
-        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-        <button type="button" class="btn btn-primary">保存</button>
+      <div v-else><!-- 点击更改密码以后出现的修改页面 -->
+        <div class="row">
+          <form class="form-horizontal">
+            <div class="form-group">
+              <label for="inputEmail3" class="col-sm-2 control-label">原密码</label>
+              <div class="col-sm-10">
+                <input type="password" class="form-control" style="width:255px" placeholder="">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="inputPassword3" class="col-sm-2 control-label">新密码</label>
+              <div class="col-sm-10">
+                <input type="password" class="form-control" style="width:255px" placeholder="">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="inputPassword3" class="col-sm-2 control-label">确认密码</label>
+              <div class="col-sm-10">
+                <input type="password" class="form-control" style="width:255px" placeholder="">
+              </div>
+            </div>
+            
+            
+            <div class="form-group">
+              <div class="col-sm-12" style="text-align: center">
+                <button type="button" class="btn btn-default" @click="cancelChangePwd">取消</button>
+                <button type="button" class="btn btn-primary" @click="">确认</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>     
+    </div>
+      
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal" @click="turnoff">关闭</button>
+<!--         <button type="button" class="btn btn-primary">保存</button> -->
       </div>
     </div>
   </div>
@@ -162,6 +230,7 @@
         user_department:'',
         user_phone:'',
         user_authority:'',
+        user_position:'',
         show_7:false,
         show_3:false,
     }
@@ -179,6 +248,14 @@
                 self.user_department = result.user_department;
                 self.user_phone = result.user_phone;
                 self.user_authority = result.user_authority;
+                if(result.user_authority == 1){
+                    self.user_position = "普通员工";
+                }else if(result.user_authority == 3){
+                    self.user_position = "财务人员";
+                }else{
+                    self.user_position = "管理员";
+                }
+                
             })
             
         },
@@ -199,8 +276,48 @@
  /* modal框的数据流，数据展示和数据修改 */
    var modalData = new Vue({
         el:'#userInfo',
-        data:userdata,
-   
+        data:{
+            userdata,
+            userInfo_change:{},
+            userN_display:true,
+            userP_display:true,
+            user_pwd_change:true,
+        },
+        methods:{
+            changeData:function(){
+            
+            },
+            cancelChangeN:function(){
+              var self = this;
+              self.userN_display = true;
+            },
+            cancelChangeP:function(){
+              var self = this;
+              self.userP_display = true;
+            },
+            cancelChangePwd:function(){
+              var self = this;
+              self.user_pwd_change = true;
+            },
+            openChangeN:function(){
+              var self = this;
+              self.userN_display = false;
+            },
+            openChangeP:function(){
+              var self = this;
+              self.userP_display = false;
+            },
+            openPwdChange:function(){
+              var self = this;
+              self.user_pwd_change = false;
+            },
+            turnoff:function(){
+              var self = this;
+              self.userN_display = true;
+              self.userP_display = true;
+              self.user_pwd_change = true;
+            }
+        }
    })
  
 </script>
