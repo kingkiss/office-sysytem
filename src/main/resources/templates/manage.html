@@ -127,11 +127,11 @@
             <label>姓  名：</label>
           </div>
           <div class="col-md-6">
-            <input type="text" class="form-control input-sm" style="width:150px;height:27px">
+            <input type="text" class="form-control input-sm" style="width:150px;height:27px" v-modal="userInfo_change_name">
           </div>
           <div class="col-md-4" style="text-align: center">
             <button type="button" class="btn btn-default btn-xs" @click="cancelChangeN">取消</button>&nbsp&nbsp
-            <button type="button" class="btn btn-primary btn-xs" @click="">确认</button>
+            <button type="button" class="btn btn-primary btn-xs" @click="changeUserName">确认</button>
           </div>
         </div>
         
@@ -147,11 +147,11 @@
             <label>电  话：</label>
           </div>
           <div class="col-md-6">
-            <input type="text" class="form-control input-sm" style="width:150px;height:27px">
+            <input type="text" class="form-control input-sm" style="width:150px;height:27px" v-modal="userInfo_change_phone">
           </div>
           <div class="col-md-4" style="text-align: center">
             <button type="button" class="btn btn-default btn-xs" @click="cancelChangeP">取消</button>&nbsp&nbsp
-            <button type="button" class="btn btn-primary btn-xs" @click="">确认</button>
+            <button type="button" class="btn btn-primary btn-xs" @click="changeUserPhone">确认</button>
           </div>
         </div>
         
@@ -180,19 +180,19 @@
             <div class="form-group">
               <label for="inputEmail3" class="col-sm-2 control-label">原密码</label>
               <div class="col-sm-10">
-                <input type="password" class="form-control" style="width:255px" placeholder="">
+                <input type="password" class="form-control" style="width:255px" placeholder="" v-modal="userInfo_change_old_pwd">
               </div>
             </div>
             <div class="form-group">
               <label for="inputPassword3" class="col-sm-2 control-label">新密码</label>
               <div class="col-sm-10">
-                <input type="password" class="form-control" style="width:255px" placeholder="">
+                <input type="password" class="form-control" style="width:255px" placeholder="6-16位，大小写字母和数字组合" v-modal="userInfo_change_new_pwd">
               </div>
             </div>
             <div class="form-group">
               <label for="inputPassword3" class="col-sm-2 control-label">确认密码</label>
               <div class="col-sm-10">
-                <input type="password" class="form-control" style="width:255px" placeholder="">
+                <input type="password" class="form-control" style="width:255px" placeholder="" v-modal="userInfo_change_sure_pwd">
               </div>
             </div>
             
@@ -200,7 +200,7 @@
             <div class="form-group">
               <div class="col-sm-12" style="text-align: center">
                 <button type="button" class="btn btn-default" @click="cancelChangePwd">取消</button>
-                <button type="button" class="btn btn-primary" @click="">确认</button>
+                <button type="button" class="btn btn-primary" @click="changeUserPwd">确认</button>
               </div>
             </div>
           </form>
@@ -223,7 +223,7 @@
         $(this).siblings('.list-group-item').removeClass('list-item-active');
         $(this).addClass('list-item-active');
     })
-/* 用户信息数据 */
+/* 用户信息数据  */
     var userdata = {
         user_name:'',
         user_truename:'',
@@ -234,6 +234,8 @@
         show_7:false,
         show_3:false,
     }
+    
+
 /* vue获取数据 */
     var user_Info = new Vue({
         el:'#user',
@@ -278,44 +280,85 @@
         el:'#userInfo',
         data:{
             userdata,
-            userInfo_change:{},
+            userInfo_change_name:'',
+            userInfo_change_phone:'',
+            userInfo_change_old_pwd:'',
+            userInfo_change_new_pwd:'',
+            userInfo_change_sure_pwd:'',
             userN_display:true,
             userP_display:true,
             user_pwd_change:true,
         },
         methods:{
-            changeData:function(){
-            
-            },
+            /* 取消修改姓名 */
             cancelChangeN:function(){
               var self = this;
               self.userN_display = true;
             },
+            /* 取消修改电话 */
             cancelChangeP:function(){
               var self = this;
               self.userP_display = true;
             },
+            /* 取消修改密码 */
             cancelChangePwd:function(){
               var self = this;
               self.user_pwd_change = true;
             },
+            /* 打开修改姓名 */
             openChangeN:function(){
               var self = this;
               self.userN_display = false;
             },
+            /* 打开修改电话 */
             openChangeP:function(){
               var self = this;
               self.userP_display = false;
             },
+            /* 打开修改电话 */
             openPwdChange:function(){
               var self = this;
               self.user_pwd_change = false;
             },
+            /* 取消修改所有（关闭modal框） */
             turnoff:function(){
               var self = this;
               self.userN_display = true;
               self.userP_display = true;
               self.user_pwd_change = true;
+            },
+            /* 用户姓名修改 */
+            changeUserName:function(){
+              var url = 'http://localhost:8080/changeUserName';
+              var self = this;
+              axios.post(url,this.userInfo_change_name).then(function (response) {
+				    var result = response.data;
+				    
+                }).catch(function(reason) {
+                    
+                })
+            },
+            /* 用户电话修改 */
+            changeUserPhone:function(){
+              var url = '';
+              var self = this;
+              axios.post(url,this.userInfo_change_phone).then(function (response) {
+				    var result = response.data;
+				    
+                }).catch(function(reason) {
+                    
+                })
+            },
+            /* 用户密码修改 */
+            changeUserPwd:function(){
+              var url = '';
+              var self = this;
+              axios.post(url,this.userInfo_change_name).then(function (response) {
+				    var result = response.data;
+				    
+                }).catch(function(reason) {
+                    
+                })
             }
         }
    })
