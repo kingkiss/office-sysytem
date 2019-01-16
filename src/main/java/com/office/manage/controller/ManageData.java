@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.office.manage.domain.Message;
@@ -37,14 +38,16 @@ public class ManageData {
 	
 	//用于用户自主修改姓名
 	@RequestMapping(value="/changeUserName",method=RequestMethod.POST)
-	public Message ChangeUserName(@RequestBody Map<String, String> userJsonData ,HttpServletRequest request){
+	public Message ChangeUserName(@RequestParam Map<String, Object> newUserN ,HttpServletRequest request){
 		Message msg = new Message();
 		HttpSession session = request.getSession();
-		String newUserTruename = userJsonData.get("userInfo_change_name").toString();
-		int result = userMapper.updateUserTruenameByName(newUserTruename, (String)session.getAttribute("user_name"));
+		System.out.println(newUserN.get("userNewName").toString());
+//		String newUserTruename = userJsonData.get("userInfo_change_name").toString();
+		int result = userMapper.updateUserTruenameByName(newUserN.get("userNewName").toString(), (String)session.getAttribute("user_name"));
 		System.out.println("修改用户名返回结果："+result);
 		if( result == 1 ){
 			msg.setResult(true);
+			msg.setInfo(newUserN.get("userNewName").toString());
 			return msg;
 		}else{
 			msg.setResult(false);
