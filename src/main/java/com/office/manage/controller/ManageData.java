@@ -41,13 +41,13 @@ public class ManageData {
 	public Message ChangeUserName(@RequestParam Map<String, Object> newUserN ,HttpServletRequest request){
 		Message msg = new Message();
 		HttpSession session = request.getSession();
-		System.out.println(newUserN.get("userNewName").toString());
+//		System.out.println(newUserN.get("userNewName").toString());
 //		String newUserTruename = userJsonData.get("userInfo_change_name").toString();
 		int result = userMapper.updateUserTruenameByName(newUserN.get("userNewName").toString(), (String)session.getAttribute("user_name"));
-		System.out.println("修改用户名返回结果："+result);
+//		System.out.println("修改用户名返回结果："+result);
 		if( result == 1 ){
 			msg.setResult(true);
-			msg.setInfo(newUserN.get("userNewName").toString());
+			session.setAttribute("user_truename", newUserN.get("userNewName").toString());;
 			return msg;
 		}else{
 			msg.setResult(false);
@@ -58,11 +58,40 @@ public class ManageData {
 	
 	//用于用户自主修改电话
 	@RequestMapping(value="/changeUserPhone",method=RequestMethod.POST)
-	public Message ChangeUserPhone(@RequestBody User user ,HttpServletRequest request){
+	public Message ChangeUserPhone(@RequestParam Map<String, Object> newUserP,HttpServletRequest request){
 		Message msg = new Message();
-		
-		
-		return msg;
+		HttpSession session = request.getSession();
+//		System.out.println(newUserP.get("userNewPhone").toString());
+		int result = userMapper.updateUserPhoneByName(newUserP.get("userNewPhone").toString(), (String)session.getAttribute("user_name"));
+//		System.out.println("修改用户电话返回结果："+result);
+		if( result == 1 ){
+			msg.setResult(true);
+			session.setAttribute("user_phone", newUserP.get("userNewPhone").toString());
+			return msg;
+		}else{
+			msg.setResult(false);
+			return msg;
+		}
+	}
+
+	//用于用户修改密码
+	@RequestMapping(value="/changeUserPwd",method=RequestMethod.POST)
+	public Message ChangeUserPwd(@RequestParam Map<String, Object> UserPwd,HttpServletRequest request){
+		Message msg = new Message();
+		HttpSession session = request.getSession();
+		String user_name = userMapper.finUserNameByPwd(UserPwd.get("userOldPwd").toString());
+		//判断旧密码是否正确
+		if(user_name.equals((String)session.getAttribute("user_name"))){
+			int result = userMapper.updateUserPwdByName(UserPwd.get("userNewPwd").toString(),(String)session.getAttribute("user_name"));
+			System.out.println("修改用户密码结果："+ result);
+			msg.setResult(true);
+			msg.setInfo("用户密码修改成功,请重新登录！");
+			return msg;
+		}else{
+			msg.setResult(false);
+			msg.setInfo("旧密码错误，请重试");
+			return msg;
+		}
 	}
 	
 }

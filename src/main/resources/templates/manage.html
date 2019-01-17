@@ -118,11 +118,11 @@
       
       <!-- 操作信息提示框 -->
    <div class="alert alert-danger alert-dismissable fade hide" role="alert">
-       <strong>操作失败！</strong>姓名超过10位数或网络出现未知错误，请重试！
+       <strong>操作失败！</strong>{{ message.info }}，请重试！
    </div>
 
    <div class="alert alert-success alert-dismissable fade hide" role="alert">
-       <strong>操作成功！</strong>注销后重新登录可看到修改！
+       <strong>操作成功！</strong>{{ message.info }},页面将会自动刷新！
    </div>
       
       
@@ -138,7 +138,7 @@
             <label>姓  名：</label>
           </div>
           <div class="col-md-6">
-            <input type="text" class="form-control input-sm" style="width:150px;height:27px" v-model="userInfo_change_name">
+            <input type="text" class="form-control input-sm" style="width:150px;height:27px" placeholder="姓名长度不超过10位" v-model="userInfo_change_name">
           </div>
           <div class="col-md-4" style="text-align: center">
             <button type="button" class="btn btn-default btn-xs" @click="cancelChangeN">取消</button>&nbsp&nbsp
@@ -158,7 +158,7 @@
             <label>电  话：</label>
           </div>
           <div class="col-md-6">
-            <input type="text" class="form-control input-sm" style="width:150px;height:27px" v-model="userInfo_change_phone">
+            <input type="text" class="form-control input-sm" style="width:150px;height:27px" placeholder="电话号码不超过11位" v-model="userInfo_change_phone">
           </div>
           <div class="col-md-4" style="text-align: center">
             <button type="button" class="btn btn-default btn-xs" @click="cancelChangeP">取消</button>&nbsp&nbsp
@@ -191,19 +191,19 @@
             <div class="form-group">
               <label for="inputEmail3" class="col-sm-2 control-label">原密码</label>
               <div class="col-sm-10">
-                <input type="password" class="form-control" style="width:255px" placeholder="" v-model="userInfo_change_old_pwd">
+                <input type="password" class="form-control" style="width:255px" placeholder=""  v-model="userInfo_change_old_pwd" required="required" pattern="^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$">
               </div>
             </div>
             <div class="form-group">
               <label for="inputPassword3" class="col-sm-2 control-label">新密码</label>
               <div class="col-sm-10">
-                <input type="password" class="form-control" style="width:255px" placeholder="6-16位，大小写字母和数字组合" v-model="userInfo_change_new_pwd">
+                <input type="password" class="form-control" style="width:255px" placeholder="6-16位，大小写字母和数字组合" v-model="userInfo_change_new_pwd" required="required" pattern="^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$">
               </div>
             </div>
             <div class="form-group">
               <label for="inputPassword3" class="col-sm-2 control-label">确认密码</label>
               <div class="col-sm-10">
-                <input type="password" class="form-control" style="width:255px" placeholder="" v-model="userInfo_change_sure_pwd">
+                <input type="password" class="form-control" style="width:255px" placeholder="" v-model="userInfo_change_sure_pwd" required="required" pattern="^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$">
               </div>
             </div>
             
@@ -354,40 +354,89 @@
               axios.post(url,params).then(function (response) {
 				    var result = response.data;
 				    if( result.result ){
-				        $('.alert-success').removeClass('hide').addClass('in')
-				        setTimeout(function(){$('.alert-success').removeClass('in').addClass('hide')},3000);
-				        this.$set(modalData.userdata,"user_truename",self.userInfo_change_name);
-				        self.userN_display = true;				       		        
+				        self.message.info = "用户姓名修改成功！";
+				        $('.alert-success').removeClass('hide').addClass('in');
+				        setTimeout(function(){$('.alert-success').removeClass('in').addClass('hide');},2000);
+				        setTimeout(function(){location.reload();},3000);
+				        self.userN_display = true;
+				        				       		        
 				    }else{
+				        self.message.info = "用户姓名超过10位";
 				        $('.alert-danger').removeClass('hide').addClass('in')
 				        setTimeout(function(){$('.alert-danger').removeClass('in').addClass('hide')},3000);
 				    }
                 }).catch(function(reason) {
+                    self.message.info = "网络故障";
                     $('.alert-danger').removeClass('hide').addClass('in')
                     setTimeout(function(){$('.alert-danger').removeClass('in').addClass('hide')},3000);
                 })
             },
             /* 用户电话修改 */
             changeUserPhone:function(){
-              var url = '';
+              var url = 'http://localhost:8080/changeUserPhone';
               var self = this;
-              axios.post(url,this.userInfo_change_phone).then(function (response) {
-				    var result = response.data;
-				    
+              var params = new URLSearchParams();
+              params.append('userNewPhone',self.userInfo_change_phone);
+              params.append('user_name',self.userdata.user_name);
+              axios.post(url,params).then(function (response) {
+                  var result = response.data;
+                  if( result.result ){
+                      self.message.info = "用户姓名修改成功！";
+                      $('.alert-success').removeClass('hide').addClass('in');
+                      setTimeout(function(){$('.alert-success').removeClass('in').addClass('hide');},2000);
+                      setTimeout(function(){location.reload();},3000);
+                      self.userN_display = true;
+
+                  }else{
+                      self.message.info = "用户电话超过11位";
+                      $('.alert-danger').removeClass('hide').addClass('in')
+                      setTimeout(function(){$('.alert-danger').removeClass('in').addClass('hide')},3000);
+                  }
                 }).catch(function(reason) {
-                    
+                  self.message.info = "网络故障";
+                  $('.alert-danger').removeClass('hide').addClass('in')
+                  setTimeout(function(){$('.alert-danger').removeClass('in').addClass('hide')},3000);
                 })
             },
             /* 用户密码修改 */
             changeUserPwd:function(){
-              var url = '';
+              var url = 'http://localhost:8080/changeUserPwd';
               var self = this;
-              axios.post(url,this.userInfo_change_name).then(function (response) {
-				    var result = response.data;
-				    
-                }).catch(function(reason) {
-                    
-                })
+              if( self.userInfo_change_new_pwd == self.userInfo_change_sure_pwd ){
+                  /*self.Sure_pwd = false;*/
+                  var params = new URLSearchParams();
+                  params.append('userOldPwd',self.userInfo_change_old_pwd);
+                  params.append('userNewPwd',self.userInfo_change_new_pwd);
+                  params.append('user_name',self.userdata.user_name);
+                  axios.post(url,params).then(function (response) {
+                      var result = response.data;
+                      if( result.result ){
+                          self.message.info = result.Info;
+                          $('.alert-success').removeClass('hide').addClass('in');
+                          setTimeout(function(){$('.alert-success').removeClass('in').addClass('hide');},2000);
+                          setTimeout(function () {
+                              location.href="http://localhost:8080/loginout";
+                          },3000);
+                          /* 旧密码错误 */
+                      }else{
+                          self.message.info = result.Info;
+                          /*self.Old_pwd = true;*/
+                          $('.alert-danger').removeClass('hide').addClass('in')
+                          setTimeout(function(){$('.alert-danger').removeClass('in').addClass('hide')},3000);
+                      }
+                  }).catch(function(reason) {
+                      self.message.info = "网络故障";
+                      $('.alert-danger').removeClass('hide').addClass('in')
+                      setTimeout(function(){$('.alert-danger').removeClass('in').addClass('hide')},3000);
+                  });
+
+              }else{
+                  /*self.Sure_pwd = true;*/
+                  self.message.info = "确认密码不相同";
+                  $('.alert-danger').removeClass('hide').addClass('in')
+                  setTimeout(function(){$('.alert-danger').removeClass('in').addClass('hide')},3000);
+              }
+
             }
         }
    })
