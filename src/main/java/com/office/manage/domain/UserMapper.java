@@ -17,9 +17,9 @@ public interface UserMapper {
 	//根据用户名查询用户信息
 	@Select("select * from user_info where user_name = #{u_name}")
 	public User findUser(String u_name);
-	//根据密码查询用户名（用于验证密码是否正确）
-	@Select("select user_name from user_info where user_password=#{u_pwd}")
-	public String finUserNameByPwd(String u_pwd);
+	//根据用户名查询用户密码（用于验证密码是否正确）
+	@Select("select user_password from user_info where user_name=#{u_name}")
+	public String finUserPwdByName(String u_name);
 	//根据用户邮箱修改用户姓名
 	@Update("update user_info set user_truename=#{u_tn} where user_name=#{u_name}")
 	public int updateUserTruenameByName(String u_tn, String u_name);

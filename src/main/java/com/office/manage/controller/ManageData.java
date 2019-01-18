@@ -79,19 +79,28 @@ public class ManageData {
 	public Message ChangeUserPwd(@RequestParam Map<String, Object> UserPwd,HttpServletRequest request){
 		Message msg = new Message();
 		HttpSession session = request.getSession();
-		String user_name = userMapper.finUserNameByPwd(UserPwd.get("userOldPwd").toString());
+		String user_password = userMapper.finUserPwdByName(UserPwd.get("user_name").toString());
+		String userPwd = UserPwd.get("userOldPwd").toString();
+		System.out.println("用户名查询的旧密码："+user_password);
 		//判断旧密码是否正确
-		if(user_name.equals((String)session.getAttribute("user_name"))){
-			int result = userMapper.updateUserPwdByName(UserPwd.get("userNewPwd").toString(),(String)session.getAttribute("user_name"));
-			System.out.println("修改用户密码结果："+ result);
-			msg.setResult(true);
-			msg.setInfo("用户密码修改成功,请重新登录！");
-			return msg;
-		}else{
+		try{
+			if(user_password.equals(userPwd)){
+				int result = userMapper.updateUserPwdByName(UserPwd.get("userNewPwd").toString(),(String)session.getAttribute("user_name"));
+				System.out.println("修改用户密码结果："+ result);
+				msg.setResult(true);
+				msg.setInfo("用户密码修改成功,请重新登录！");
+				return msg;
+			}else{
+				msg.setResult(false);
+				msg.setInfo("旧密码错误，请重试");
+				return msg;
+			}
+		}catch (NullPointerException e){
 			msg.setResult(false);
 			msg.setInfo("旧密码错误，请重试");
 			return msg;
 		}
+
 	}
 	
 }
