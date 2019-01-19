@@ -1,6 +1,6 @@
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>OFFICE 云物品</title>
@@ -39,14 +39,14 @@
 <body style="padding-top: 55px;">
 <div id="fun_show" class="left-nav">
     <div class="list-group">
-        <a href="#" class="list-group-item list-item-active">物品分类</a>
-        <a href="#" class="list-group-item" v-show="user_authority >= 3">管理物品</a>
-        <a href="#" class="list-group-item" v-show="user_authority >= 7">用户管理</a>
-        <a href="#" class="list-group-item" v-show="user_authority >= 3">申请审核</a>
-        <a href="#" class="list-group-item">申请记录</a>
-        <a href="#" class="list-group-item">借入记录</a>
-        <a href="#" class="list-group-item">归还记录</a>
-        <a href="#" class="list-group-item">使用统计</a>
+        <a href="#" class="list-group-item " v-bind:class="{ list-item-active:m_office }">物品分类</a>
+        <a href="#" class="list-group-item" v-show="user_authority >= 3" v-bind:class="{ list-item-active:m_officeInfo }">管理物品</a>
+        <a href="#" class="list-group-item" v-show="user_authority >= 7" v-bind:class="{ list-item-active:m_userInfo }">用户管理</a>
+        <a href="#" class="list-group-item" v-show="user_authority >= 3" v-bind:class="{ list-item-active:m_applyCheck }">申请审核</a>
+        <a href="#" class="list-group-item" v-bind:class="{ list-item-active:m_applylist }">申请记录</a>
+        <a href="#" class="list-group-item" v-bind:class="{ list-item-active:m_borrowlist }">借入记录</a>
+        <a href="#" class="list-group-item" v-bind:class="{ list-item-active:m_returnlist }">归还记录</a>
+        <a href="#" class="list-group-item" v-bind:class="{ list-item-active:m_usedata }">使用统计</a>
 
     </div>
 </div>
@@ -64,6 +64,7 @@
                         <th>邮箱</th>
                         <th>电话</th>
                         <th>职能</th>
+                        <th>操作</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -98,136 +99,7 @@
     </div>
 </div>
 
-
-<!-- 个人信息Modal框   用户个人信息查看和修改-->
-<div class="modal fade" id="userInfo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-          <div class="row">
-              <div class="col-md-12" style="text-align: center">
-                  <img src="pic/user2_icon.png">
-              </div>
-          </div>
-          <div class="row">
-              <div class="col-md-12" style="text-align: center">
-                  <p style="font-family: Microsoft YaHei;font-size: 15px">{{ userdata.user_truename }}</p>
-              </div>
-          </div>
-      </div>
-      
-      <!-- 操作信息提示框 -->
-   <div class="alert alert-danger alert-dismissable fade hide" role="alert">
-       <strong>操作失败！</strong>{{ message.info }}，请重试！
-   </div>
-
-   <div class="alert alert-success alert-dismissable fade hide" role="alert">
-       <strong>操作成功！</strong>{{ message.info }},页面将会自动刷新！
-   </div>
-      
-      
-      <div class="modal-body">
-        <div class="row" style="height:40px" v-if="userN_display">
-          <div class="col-md-8"><label>姓  名：</label><span>{{ userdata.user_truename }}</span></div>
-          <div class="col-md-4" style="text-align: center">
-            <button type="button" class="btn btn-info btn-xs" @click="openChangeN">修改</button>
-          </div>
-        </div>
-        <div class="row" style="height:40px" v-else><!-- 点击修改以后出现的修改页面 -->
-          <div class="col-md-2">
-            <label>姓  名：</label>
-          </div>
-          <div class="col-md-6">
-            <input type="text" class="form-control input-sm" style="width:150px;height:27px" placeholder="姓名长度不超过10位" v-model="userInfo_change_name">
-          </div>
-          <div class="col-md-4" style="text-align: center">
-            <button type="button" class="btn btn-default btn-xs" @click="cancelChangeN">取消</button>&nbsp&nbsp
-            <button type="button" class="btn btn-primary btn-xs" @click="changeUserName">确认</button>
-          </div>
-        </div>
-        
-        
-        <div class="row" style="height:40px" v-if="userP_display">
-          <div class="col-md-8"><label>电  话：</label><span>{{ userdata.user_phone }}</span></div>
-          <div class="col-md-4" style="text-align: center">
-            <button type="button" class="btn btn-info btn-xs" @click="openChangeP">修改</button>
-          </div>
-        </div>
-        <div class="row" style="height:40px" v-else><!-- 点击修改以后出现的修改页面 -->
-          <div class="col-md-2">
-            <label>电  话：</label>
-          </div>
-          <div class="col-md-6">
-            <input type="text" class="form-control input-sm" style="width:150px;height:27px" placeholder="电话号码不超过11位" v-model="userInfo_change_phone">
-          </div>
-          <div class="col-md-4" style="text-align: center">
-            <button type="button" class="btn btn-default btn-xs" @click="cancelChangeP">取消</button>&nbsp&nbsp
-            <button type="button" class="btn btn-primary btn-xs" @click="changeUserPhone">确认</button>
-          </div>
-        </div>
-        
-        <div class="row" style="height:40px"><!-- user_name就是用户登录用的邮箱，这个命名有点不恰当，但是因为历史原因改起来好麻烦就不改了 T_T -->
-          <div class="col-md-8"><label>邮  箱：</label><span>{{ userdata.user_name }}</span></div>      
-        </div>
-        <div class="row" style="height:40px">
-          <div class="col-md-8"><label>所 属 部 门：</label><span>{{ userdata.user_department }}</span></div>
-        </div>
-        <div class="row" style="height:40px"><!-- 也就是用户的权限 --> 
-          <div class="col-md-8"><label>职  能：</label><span>{{ userdata.user_position }}</span></div>
-        </div>
-
-      </div>
-      
-      
-    <div class="modal-body">
-      <div class="row" v-if="user_pwd_change">
-        <div class="col-md-12" style="text-align: center">
-          <a @click="openPwdChange">更改密码</a>
-        </div>
-      </div>
-      <div v-else><!-- 点击更改密码以后出现的修改页面 -->
-        <div class="row">
-          <form class="form-horizontal">
-            <div class="form-group">
-              <label for="inputEmail3" class="col-sm-2 control-label">原密码</label>
-              <div class="col-sm-10">
-                <input type="password" class="form-control" style="width:255px" placeholder=""  v-model="userInfo_change_old_pwd" required="required" pattern="^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$">
-              </div>
-            </div>
-            <div class="form-group">
-              <label for="inputPassword3" class="col-sm-2 control-label">新密码</label>
-              <div class="col-sm-10">
-                <input type="password" class="form-control" style="width:255px" placeholder="6-16位，大小写字母和数字组合" v-model="userInfo_change_new_pwd" required="required" pattern="^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$">
-              </div>
-            </div>
-            <div class="form-group">
-              <label for="inputPassword3" class="col-sm-2 control-label">确认密码</label>
-              <div class="col-sm-10">
-                <input type="password" class="form-control" style="width:255px" placeholder="" v-model="userInfo_change_sure_pwd" required="required" pattern="^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$">
-              </div>
-            </div>
-            
-            
-            <div class="form-group">
-              <div class="col-sm-12" style="text-align: center">
-                <button type="button" class="btn btn-default" @click="cancelChangePwd">取消</button>
-                <button type="button" class="btn btn-primary" @click="changeUserPwd">确认</button>
-              </div>
-            </div>
-          </form>
-        </div>
-      </div>     
-    </div>
-      
-      <div class="modal-footer">
-        <button type="button" class="btn btn-danger" data-dismiss="modal" @click="turnoff">关闭</button>
-<!--         <button type="button" class="btn btn-primary">保存</button> -->
-      </div>
-    </div>
-  </div>
-</div>
-
-
+<div th:include="modal :: userModal"></div>
 
 </body>
 <script>
@@ -235,211 +107,7 @@
         $(this).siblings('.list-group-item').removeClass('list-item-active');
         $(this).addClass('list-item-active');
     })
-/* 用户信息数据  */
-    var userdata = {
-        user_name:'',
-        user_truename:'',
-        user_department:'',
-        user_phone:'',
-        user_authority:'',
-        user_position:'',
-        show_7:false,
-        show_3:false,
-    }
-/* 各种信息流，提示信息 */    
-    var message = { 
-        show:false,
-        info:'',
-    }
 
-/* vue获取数据 */
-    var user_Info = new Vue({
-        el:'#user',
-        data:userdata,
-        created:function(){
-            var url = "http://localhost:8080/userInfo";
-            var self = this;
-            axios.get(url).then(function(response){
-                var result = response.data;
-                self.user_truename = result.user_truename;
-                self.user_name = result.user_name;
-                self.user_department = result.user_department;
-                self.user_phone = result.user_phone;
-                self.user_authority = result.user_authority;
-                if(result.user_authority == 1){
-                    self.user_position = "普通员工";
-                }else if(result.user_authority == 3){
-                    self.user_position = "财务人员";
-                }else{
-                    self.user_position = "管理员";
-                }
-                
-            })
-            
-        },
-        methods:{
-            userLoginout:function(){
-                axios.get("http://localhost:8080/loginout").then()
-            }
-        },
-    })
-    
- /* 左侧功能栏根据用户权限显示相对应的功能模块 */
-    var modalShow = new Vue({
-        el:'#fun_show',
-        data:userdata,
-        
-    })
-    
- /* modal框的数据流，数据展示和数据修改 */
-   var modalData = new Vue({
-        el:'#userInfo',
-        data:{
-            userdata,
-            userInfo_change_name:'',
-            userInfo_change_phone:'',
-            userInfo_change_old_pwd:'',
-            userInfo_change_new_pwd:'',
-            userInfo_change_sure_pwd:'',
-            userN_display:true,
-            userP_display:true,
-            user_pwd_change:true,
-            message,
-        },
-        methods:{
-            /* 取消修改姓名 */
-            cancelChangeN:function(){
-              var self = this;
-              self.userN_display = true;
-            },
-            /* 取消修改电话 */
-            cancelChangeP:function(){
-              var self = this;
-              self.userP_display = true;
-            },
-            /* 取消修改密码 */
-            cancelChangePwd:function(){
-              var self = this;
-              self.user_pwd_change = true;
-            },
-            /* 打开修改姓名 */
-            openChangeN:function(){
-              var self = this;
-              self.userN_display = false;
-            },
-            /* 打开修改电话 */
-            openChangeP:function(){
-              var self = this;
-              self.userP_display = false;
-            },
-            /* 打开修改电话 */
-            openPwdChange:function(){
-              var self = this;
-              self.user_pwd_change = false;
-            },
-            /* 取消修改所有（关闭modal框） */
-            turnoff:function(){
-              var self = this;
-              self.userN_display = true;
-              self.userP_display = true;
-              self.user_pwd_change = true;
-            },
-            /* 用户姓名修改 */
-            changeUserName:function(){
-              var url = 'http://localhost:8080/changeUserName';
-              var self = this;
-              var params = new URLSearchParams();
-              params.append('userNewName',self.userInfo_change_name);
-              params.append('user_name',self.userdata.user_name);
-              axios.post(url,params).then(function (response) {
-				    var result = response.data;
-				    if( result.result ){
-				        self.message.info = "用户姓名修改成功！";
-				        $('.alert-success').removeClass('hide').addClass('in');
-				        setTimeout(function(){$('.alert-success').removeClass('in').addClass('hide');},2000);
-				        setTimeout(function(){location.reload();},3000);
-				        self.userN_display = true;
-				        				       		        
-				    }else{
-				        self.message.info = "用户姓名超过10位";
-				        $('.alert-danger').removeClass('hide').addClass('in')
-				        setTimeout(function(){$('.alert-danger').removeClass('in').addClass('hide')},3000);
-				    }
-                }).catch(function(reason) {
-                    self.message.info = "网络故障";
-                    $('.alert-danger').removeClass('hide').addClass('in')
-                    setTimeout(function(){$('.alert-danger').removeClass('in').addClass('hide')},3000);
-                })
-            },
-            /* 用户电话修改 */
-            changeUserPhone:function(){
-              var url = 'http://localhost:8080/changeUserPhone';
-              var self = this;
-              var params = new URLSearchParams();
-              params.append('userNewPhone',self.userInfo_change_phone);
-              params.append('user_name',self.userdata.user_name);
-              axios.post(url,params).then(function (response) {
-                  var result = response.data;
-                  if( result.result ){
-                      self.message.info = "用户姓名修改成功！";
-                      $('.alert-success').removeClass('hide').addClass('in');
-                      setTimeout(function(){$('.alert-success').removeClass('in').addClass('hide');},2000);
-                      setTimeout(function(){location.reload();},3000);
-                      self.userN_display = true;
-
-                  }else{
-                      self.message.info = "用户电话超过11位";
-                      $('.alert-danger').removeClass('hide').addClass('in')
-                      setTimeout(function(){$('.alert-danger').removeClass('in').addClass('hide')},3000);
-                  }
-                }).catch(function(reason) {
-                  self.message.info = "网络故障";
-                  $('.alert-danger').removeClass('hide').addClass('in')
-                  setTimeout(function(){$('.alert-danger').removeClass('in').addClass('hide')},3000);
-                })
-            },
-            /* 用户密码修改 */
-            changeUserPwd:function(){
-              var url = 'http://localhost:8080/changeUserPwd';
-              var self = this;
-              if( self.userInfo_change_new_pwd == self.userInfo_change_sure_pwd ){
-                  /*self.Sure_pwd = false;*/
-                  var params = new URLSearchParams();
-                  params.append('userOldPwd',self.userInfo_change_old_pwd);
-                  params.append('userNewPwd',self.userInfo_change_new_pwd);
-                  params.append('user_name',self.userdata.user_name);
-                  axios.post(url,params).then(function (response) {
-                      var result = response.data;
-                      if( result.result ){
-                          self.message.info = result.info;
-                          $('.alert-success').removeClass('hide').addClass('in');
-                          setTimeout(function(){
-                              $('.alert-success').removeClass('in').addClass('hide');
-                              location.href="http://localhost:8080/loginout";
-                              },3000);
-                          /* 旧密码错误 */
-                      }else{
-                          self.message.info = result.info;
-                          /*self.Old_pwd = true;*/
-                          $('.alert-danger').removeClass('hide').addClass('in')
-                          setTimeout(function(){$('.alert-danger').removeClass('in').addClass('hide')},3000);
-                      }
-                  }).catch(function(reason) {
-                      self.message.info = "网络故障";
-                      $('.alert-danger').removeClass('hide').addClass('in')
-                      setTimeout(function(){$('.alert-danger').removeClass('in').addClass('hide')},3000);
-                  });
-
-              }else{
-                  /*self.Sure_pwd = true;*/
-                  self.message.info = "确认密码不相同";
-                  $('.alert-danger').removeClass('hide').addClass('in')
-                  setTimeout(function(){$('.alert-danger').removeClass('in').addClass('hide')},3000);
-              }
-
-            }
-        }
-   })
- 
 </script>
+<script src="my/manage_userInfo.js"></script>
 </html>

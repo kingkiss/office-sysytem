@@ -15,12 +15,6 @@ public class Manage {
     	return "login";
     }
 
-	//页面跳转到管理主页面
-    @RequestMapping("/manage")
-    public String manage(){
-    	return "manage";
-    }
-    
     //退出登录
     @RequestMapping("/loginout")
     public String loginout(HttpServletRequest request){
@@ -28,4 +22,11 @@ public class Manage {
     	session.invalidate();
     	return "login";
     }
+
+    //页面跳转到管理主页面(物品分类)
+    @RequestMapping("/manage")
+    public String manage(){
+        return "manage";
+    }
+
 }

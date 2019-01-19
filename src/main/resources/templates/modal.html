@@ -1,0 +1,133 @@
+
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<div th:fragment="userModal">
+<!-- 个人信息Modal框   用户个人信息查看和修改-->
+<div class="modal fade" id="userInfo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" >
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="row">
+                    <div class="col-md-12" style="text-align: center">
+                        <img src="pic/user2_icon.png">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12" style="text-align: center">
+                        <p style="font-family: Microsoft YaHei;font-size: 15px">{{ userdata.user_truename }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 操作信息提示框 -->
+            <div class="alert alert-danger alert-dismissable fade hide" role="alert">
+                <strong>操作失败！</strong>{{ message.info }}，请重试！
+            </div>
+
+            <div class="alert alert-success alert-dismissable fade hide" role="alert">
+                <strong>操作成功！</strong>{{ message.info }},页面将会自动刷新！
+            </div>
+
+
+            <div class="modal-body">
+                <div class="row" style="height:40px" v-if="userN_display">
+                    <div class="col-md-8"><label>姓  名：</label><span>{{ userdata.user_truename }}</span></div>
+                    <div class="col-md-4" style="text-align: center">
+                        <button type="button" class="btn btn-info btn-xs" @click="openChangeN">修改</button>
+                    </div>
+                </div>
+                <div class="row" style="height:40px" v-else><!-- 点击修改以后出现的修改页面 -->
+                    <div class="col-md-2">
+                        <label>姓  名：</label>
+                    </div>
+                    <div class="col-md-6">
+                        <input type="text" class="form-control input-sm" style="width:150px;height:27px" placeholder="姓名长度不超过10位" v-model="userInfo_change_name">
+                    </div>
+                    <div class="col-md-4" style="text-align: center">
+                        <button type="button" class="btn btn-default btn-xs" @click="cancelChangeN">取消</button>&nbsp&nbsp
+                        <button type="button" class="btn btn-primary btn-xs" @click="changeUserName">确认</button>
+                    </div>
+                </div>
+
+
+                <div class="row" style="height:40px" v-if="userP_display">
+                    <div class="col-md-8"><label>电  话：</label><span>{{ userdata.user_phone }}</span></div>
+                    <div class="col-md-4" style="text-align: center">
+                        <button type="button" class="btn btn-info btn-xs" @click="openChangeP">修改</button>
+                    </div>
+                </div>
+                <div class="row" style="height:40px" v-else><!-- 点击修改以后出现的修改页面 -->
+                    <div class="col-md-2">
+                        <label>电  话：</label>
+                    </div>
+                    <div class="col-md-6">
+                        <input type="text" class="form-control input-sm" style="width:150px;height:27px" placeholder="电话号码不超过11位" v-model="userInfo_change_phone">
+                    </div>
+                    <div class="col-md-4" style="text-align: center">
+                        <button type="button" class="btn btn-default btn-xs" @click="cancelChangeP">取消</button>&nbsp&nbsp
+                        <button type="button" class="btn btn-primary btn-xs" @click="changeUserPhone">确认</button>
+                    </div>
+                </div>
+
+                <div class="row" style="height:40px"><!-- user_name就是用户登录用的邮箱，这个命名有点不恰当，但是因为历史原因改起来好麻烦就不改了 T_T -->
+                    <div class="col-md-8"><label>邮  箱：</label><span>{{ userdata.user_name }}</span></div>
+                </div>
+                <div class="row" style="height:40px">
+                    <div class="col-md-8"><label>所 属 部 门：</label><span>{{ userdata.user_department }}</span></div>
+                </div>
+                <div class="row" style="height:40px"><!-- 也就是用户的权限 -->
+                    <div class="col-md-8"><label>职  能：</label><span>{{ userdata.user_position }}</span></div>
+                </div>
+
+            </div>
+
+
+            <div class="modal-body">
+                <div class="row" v-if="user_pwd_change">
+                    <div class="col-md-12" style="text-align: center">
+                        <a @click="openPwdChange">更改密码</a>
+                    </div>
+                </div>
+                <div v-else><!-- 点击更改密码以后出现的修改页面 -->
+                    <div class="row">
+                        <form class="form-horizontal">
+                            <div class="form-group">
+                                <label for="inputEmail3" class="col-sm-2 control-label">原密码</label>
+                                <div class="col-sm-10">
+                                    <input type="password" class="form-control" style="width:255px" placeholder=""  v-model="userInfo_change_old_pwd" required="required" pattern="^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputPassword3" class="col-sm-2 control-label">新密码</label>
+                                <div class="col-sm-10">
+                                    <input type="password" class="form-control" style="width:255px" placeholder="6-16位，大小写字母和数字组合" v-model="userInfo_change_new_pwd" required="required" pattern="^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputPassword3" class="col-sm-2 control-label">确认密码</label>
+                                <div class="col-sm-10">
+                                    <input type="password" class="form-control" style="width:255px" placeholder="" v-model="userInfo_change_sure_pwd" required="required" pattern="^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$">
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <div class="col-sm-12" style="text-align: center">
+                                    <button type="button" class="btn btn-default" @click="cancelChangePwd">取消</button>
+                                    <button type="button" class="btn btn-primary" @click="changeUserPwd">确认</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal" @click="turnoff">关闭</button>
+                <!--         <button type="button" class="btn btn-primary">保存</button> -->
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+</html>
