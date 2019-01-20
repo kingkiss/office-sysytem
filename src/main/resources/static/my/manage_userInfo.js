@@ -217,18 +217,3 @@ var modalData = new Vue({
 })
 
 
-/* m_userInfo框中数据流 */
-var m_user = new Vue({
-    el:'',
-    data:{
-        users:[],
-        pagination:{}
-    },
-    mounted:function () {
-        
-    },
-    methods:{
-
-    }
-    
-})

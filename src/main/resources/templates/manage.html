@@ -39,61 +39,76 @@
 <body style="padding-top: 55px;">
 <div id="fun_show" class="left-nav">
     <div class="list-group">
-        <a href="#" class="list-group-item " v-bind:class="{ list-item-active:m_office }">物品分类</a>
-        <a href="#" class="list-group-item" v-show="user_authority >= 3" v-bind:class="{ list-item-active:m_officeInfo }">管理物品</a>
-        <a href="#" class="list-group-item" v-show="user_authority >= 7" v-bind:class="{ list-item-active:m_userInfo }">用户管理</a>
-        <a href="#" class="list-group-item" v-show="user_authority >= 3" v-bind:class="{ list-item-active:m_applyCheck }">申请审核</a>
-        <a href="#" class="list-group-item" v-bind:class="{ list-item-active:m_applylist }">申请记录</a>
-        <a href="#" class="list-group-item" v-bind:class="{ list-item-active:m_borrowlist }">借入记录</a>
-        <a href="#" class="list-group-item" v-bind:class="{ list-item-active:m_returnlist }">归还记录</a>
-        <a href="#" class="list-group-item" v-bind:class="{ list-item-active:m_usedata }">使用统计</a>
+        <a href="#" class="list-group-item " v-bind:class="{ 'list-item-active':m_office }">物品分类</a>
+        <a href="#" class="list-group-item" v-show="userdata.user_authority >= 3" v-bind:class="{ 'list-item-active':m_officeInfo }">管理物品</a>
+        <a href="#" class="list-group-item" v-show="userdata.user_authority >= 7" v-bind:class="{ 'list-item-active':m_userInfo }">用户管理</a>
+        <a href="#" class="list-group-item" v-show="userdata.user_authority >= 3" v-bind:class="{ 'list-item-active':m_applyCheck }">申请审核</a>
+        <a href="#" class="list-group-item" v-bind:class="{ 'list-item-active':m_applylist }">申请记录</a>
+        <a href="#" class="list-group-item" v-bind:class="{ 'list-item-active':m_borrowlist }">借入记录</a>
+        <a href="#" class="list-group-item" v-bind:class="{ 'list-item-active':m_returnlist }">归还记录</a>
+        <a href="#" class="list-group-item" v-bind:class="{ 'list-item-active':m_usedata }">使用统计</a>
 
     </div>
 </div>
-<div class="rigth-nav">
+
+<div class="rigth-nav" style="margin-top: 10px">
     <div class="container">
-        <div class="panel panel-default">
-            <div class="panel-heading">用户管理</div>
+        <div class="panel panel-default" id="allUser">
+            <div class="panel-heading">
+                用户管理
+            </div>
             <div class="panel-body">
-                <table class="table table-hover">
-                    <thead>
-                    <tr>
-                        <th>序号</th>
-                        <th>姓名</th>
-                        <th>部门</th>
-                        <th>邮箱</th>
-                        <th>电话</th>
-                        <th>职能</th>
-                        <th>操作</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <th scope="row">1</th>
-                        <td>Mark</td>
-                        <td>PC企业</td>
-                        <td>mark@office.com</td>
-                        <td>1324566666</td>
-                        <td>员工</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">2</th>
-                        <td>Jacob</td>
-                        <td>PC企业</td>
-                        <td>jacob@office.com</td>
-                        <td>1324566666</td>
-                        <td>员工</td>
-                    </tr>
-                    <tr>
-                        <th scope="row">3</th>
-                        <td>Larry</td>
-                        <td>PC企业</td>
-                        <td>larry@office.com</td>
-                        <td>1324566666</td>
-                        <td>财务</td>
-                    </tr>
-                    </tbody>
-                </table>
+                <button type="button" class="btn btn-primary">添加用户</button>
+            </div>
+
+            <table class="table table-hover table-condensed">
+                <thead>
+                <tr>
+                    <th>序号</th>
+                    <th>姓名</th>
+                    <th>部门</th>
+                    <th>邮箱</th>
+                    <th>电话</th>
+                    <th>职能</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr v-for="user in users">
+                    <th scope="row">{{ user.user_id }}</th>
+                    <td>{{ user.user_truename }}</td>
+                    <td>{{ user.user_department }}</td>
+                    <td>{{ user.user_name }}</td>
+                    <td>{{ user.user_phone }}</td>
+                    <td v-if="user.user_authority == 7">管理员</td>
+                    <td v-else-if="user.user_authority == 3">财务人员</td>
+                    <td v-else>普通员工</td>
+                    <td>
+                        <button type="button" class="btn btn-default btn-sm">修改</button>
+                        <button type="button" class="btn btn-danger btn-sm">删除</button>
+                    </td>
+                </tr>
+
+                </tbody>
+            </table>
+
+            <div class="panel-footer">
+                <!--分页导航栏-->
+                <nav aria-label="Page navigation" style="text-align: center">
+                    <ul class="pagination">
+                        <li :class="{ 'disabled': pagination.pageNum==1 }">
+                            <a href="#" aria-label="Previous" @click="jumpPage('pre')" >
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                        <li v-for="i in pagination.navigatepageNums" :class="{ 'active': pagination.pageNum==i }"><a href="#" @click="jumpByNumber(i)">{{ i }}</a></li>
+                        <li :class="{ 'disabled': pagination.pageNum==pagination.pages }">
+                            <a href="#" aria-label="Next" @click="jumpPage('next')">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
             </div>
         </div>
     </div>
@@ -107,6 +122,48 @@
         $(this).siblings('.list-group-item').removeClass('list-item-active');
         $(this).addClass('list-item-active');
     })
+
+
+    /* m_userInfo框中数据流 */
+    var m_user = new Vue({
+        el:'#allUser',
+        data:{
+            users:[],
+            pagination:{},
+        },
+        mounted:function () {
+            this.userList(1)
+        },
+        methods:{
+            userList:function (start) {
+                var url = "http://localhost:8080/u?start="+start;
+                var self = this;
+                axios.get(url).then(function(response){
+                    var result = response.data;
+                    self.users = result.users;
+                    self.pagination = result.page;
+                    console.log(result.page);
+                })
+            },
+            jumpByNumber:function (start) {
+                var self = this;
+                if( start != self.pagination.pageNum ){
+                    self.userList(start);
+                };
+            },
+            jumpPage:function (page) {
+                var self = this;
+                if( page == 'pre' && self.pagination.hasPreviousPage ){
+                    self.userList( self.pagination.prePage );
+                }else if( page == 'next' && self.pagination.hasNextPage ){
+                    self.userList( self.pagination.nextPage );
+                };
+            }
+        }
+
+    })
+
+
 
 </script>
 <script src="my/manage_userInfo.js"></script>

@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class UserData {
@@ -21,11 +23,21 @@ public class UserData {
 
     //获取用户列表
     //pagehelper分页
-    @RequestMapping(value = "/users",method = RequestMethod.GET)
-    public List<User> getUserList(Model m, @RequestParam(value = "start",defaultValue = "0") int start ,@RequestParam(value = "size" ,defaultValue = "15") int size){
-        PageHelper.startPage(start,size,"id desc");
+    @RequestMapping(value = "/u",method = RequestMethod.GET)
+    public Map<String,Object> getUserList(@RequestParam(value = "start",defaultValue = "0") int start , @RequestParam(value = "size" ,defaultValue = "15") int size){
+        PageHelper.startPage(start,size);
         List<User> users = userMapper.getAllUser();
         PageInfo<User> page = new PageInfo<>(users);
-        return users;
+        Map<String,Object> m = new HashMap<>();
+        m.put("users",users);
+        m.put("page",page);
+        return m;
     }
+
+    @RequestMapping(value = "/allUsers",method = RequestMethod.GET)
+    public List<User> getAllUser(){
+        List<User> u = userMapper.getAllUser();
+        return u;
+    }
+
 }
