@@ -1,8 +1,7 @@
 
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-
-<div th:fragment="userModal">
 <!-- 个人信息Modal框   用户个人信息查看和修改-->
+<div th:fragment="userModal">
 <div class="modal fade" id="userInfo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" >
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -49,6 +48,7 @@
                     </div>
                 </div>
 
+                <hr>
 
                 <div class="row" style="height:40px" v-if="userP_display">
                     <div class="col-md-8"><label>电  话：</label><span>{{ userdata.user_phone }}</span></div>
@@ -69,18 +69,22 @@
                     </div>
                 </div>
 
+                <hr>
+
                 <div class="row" style="height:40px"><!-- user_name就是用户登录用的邮箱，这个命名有点不恰当，但是因为历史原因改起来好麻烦就不改了 T_T -->
                     <div class="col-md-8"><label>邮  箱：</label><span>{{ userdata.user_name }}</span></div>
                 </div>
+                <hr>
                 <div class="row" style="height:40px">
                     <div class="col-md-8"><label>所 属 部 门：</label><span>{{ userdata.user_department }}</span></div>
                 </div>
+                <hr>
                 <div class="row" style="height:40px"><!-- 也就是用户的权限 -->
                     <div class="col-md-8"><label>职  能：</label><span>{{ userdata.user_position }}</span></div>
                 </div>
-
             </div>
 
+            <hr>
 
             <div class="modal-body">
                 <div class="row" v-if="user_pwd_change">
@@ -129,5 +133,92 @@
         </div>
     </div>
 </div>
+</div>
+
+<!-- 用户信息修改用modal框 -->
+<div th:fragment="userChangeModal">
+    <div class="modal fade" tabindex="-1" role="dialog" id="userChangeModal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">用户信息修改</h4>
+                </div>
+                <div class="modal-body">
+                    <p>One fine body&hellip;</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 添加用户用modal框 -->
+<div th:fragment="addUserModal">
+    <div class="modal fade" tabindex="-1" role="dialog" id="addUserModal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">添加新用户</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">用户邮箱*</label>
+                            <div class="col-sm-6">
+                                <div class="input-group">
+                                    <input type="email" class="form-control"  placeholder="Email">
+                                    <span class="input-group-addon" id="basic-addon2">@office.com</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">用户密码*</label>
+                            <div class="col-sm-6">
+                                <input type="password" class="form-control" placeholder="Password">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">用户姓名</label>
+                            <div class="col-sm-6">
+                                <input type="email" class="form-control"  placeholder="name">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">用户电话</label>
+                            <div class="col-sm-6">
+                                <input type="email" class="form-control"  placeholder="phone">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">用户部门</label>
+                            <div class="col-sm-6">
+                                <input type="email" class="form-control"  placeholder="department">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">用户职能</label>
+                            <div class="col-sm-9">
+                                <input name="auth" type="radio" id="1" value=1>
+                                <label for="1">普通人员</label>
+                                <input name="auth" type="radio" id="3" value=3>
+                                <label for="3">财务人员</label>
+                                <input name="auth" type="radio" id="7" value=7>
+                                <label for="7">管理员</label>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary disabled">添加</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 </html>

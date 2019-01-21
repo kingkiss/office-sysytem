@@ -216,4 +216,41 @@ var modalData = new Vue({
     }
 })
 
+/* m_userInfo框中数据流(分页功能) */
+var m_user = new Vue({
+    el:'#allUser',
+    data:{
+        users:[],
+        pagination:{},
+    },
+    mounted:function () {
+        this.userList(1)
+    },
+    methods:{
+        userList:function (start) {
+            var url = "http://localhost:8080/u?start="+start;
+            var self = this;
+            axios.get(url).then(function(response){
+                var result = response.data;
+                self.users = result.users;
+                self.pagination = result.page;
+                console.log(result.page);
+            })
+        },
+        jumpByNumber:function (start) {
+            var self = this;
+            if( start != self.pagination.pageNum ){
+                self.userList(start);
+            };
+        },
+        jumpPage:function (page) {
+            var self = this;
+            if( page == 'pre' && self.pagination.hasPreviousPage ){
+                self.userList( self.pagination.prePage );
+            }else if( page == 'next' && self.pagination.hasNextPage ){
+                self.userList( self.pagination.nextPage );
+            };
+        }
+    }
 
+})

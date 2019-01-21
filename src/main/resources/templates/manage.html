@@ -51,14 +51,26 @@
     </div>
 </div>
 
-<div class="rigth-nav" style="margin-top: 10px">
+<div class="rigth-nav">
     <div class="container">
         <div class="panel panel-default" id="allUser">
             <div class="panel-heading">
                 用户管理
             </div>
             <div class="panel-body">
-                <button type="button" class="btn btn-primary">添加用户</button>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Search for...">
+                            <span class="input-group-btn">
+                                <button class="btn btn-default" type="button">搜索</button>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-sm-1">
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addUserModal">添加用户</button>
+                    </div>
+                </div>
             </div>
 
             <table class="table table-hover table-condensed">
@@ -84,7 +96,7 @@
                     <td v-else-if="user.user_authority == 3">财务人员</td>
                     <td v-else>普通员工</td>
                     <td>
-                        <button type="button" class="btn btn-default btn-sm">修改</button>
+                        <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#userChangeModal">修改</button>
                         <button type="button" class="btn btn-danger btn-sm">删除</button>
                     </td>
                 </tr>
@@ -114,7 +126,13 @@
     </div>
 </div>
 
+<!-- 个人信息Modal框   用户个人信息查看和修改-->
 <div th:include="modal :: userModal"></div>
+<!-- 用户信息修改用modal框 -->
+<div th:include="modal :: userChangeModal"></div>
+<!-- 添加用户用modal框 -->
+<div th:include="modal :: addUserModal"></div>
+
 
 </body>
 <script>
@@ -124,44 +142,6 @@
     })
 
 
-    /* m_userInfo框中数据流 */
-    var m_user = new Vue({
-        el:'#allUser',
-        data:{
-            users:[],
-            pagination:{},
-        },
-        mounted:function () {
-            this.userList(1)
-        },
-        methods:{
-            userList:function (start) {
-                var url = "http://localhost:8080/u?start="+start;
-                var self = this;
-                axios.get(url).then(function(response){
-                    var result = response.data;
-                    self.users = result.users;
-                    self.pagination = result.page;
-                    console.log(result.page);
-                })
-            },
-            jumpByNumber:function (start) {
-                var self = this;
-                if( start != self.pagination.pageNum ){
-                    self.userList(start);
-                };
-            },
-            jumpPage:function (page) {
-                var self = this;
-                if( page == 'pre' && self.pagination.hasPreviousPage ){
-                    self.userList( self.pagination.prePage );
-                }else if( page == 'next' && self.pagination.hasNextPage ){
-                    self.userList( self.pagination.nextPage );
-                };
-            }
-        }
-
-    })
 
 
 
