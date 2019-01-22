@@ -23,6 +23,10 @@ public interface UserMapper {
 	@Select("select user_password from user_info where user_name=#{u_name}")
 	public String finUserPwdByName(String u_name);
 
+	//根据用户邮箱和用户名模糊查询用户
+	@Select("SELECT * FROM user_info where user_truename LIKE #{search} OR user_name LIKE #{search}")
+	public List<User> getUserByNameAndEmail(String search);
+
 	//根据用户邮箱修改用户姓名
 	@Update("update user_info set user_truename=#{u_tn} where user_name=#{u_name}")
 	public int updateUserTruenameByName(String u_tn, String u_name);

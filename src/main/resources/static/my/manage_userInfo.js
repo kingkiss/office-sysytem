@@ -222,19 +222,20 @@ var m_user = new Vue({
     data:{
         users:[],
         pagination:{},
+        tempUserInfo,
+        searchUser:'',
     },
     mounted:function () {
         this.userList(1)
     },
     methods:{
         userList:function (start) {
-            var url = "http://localhost:8080/u?start="+start;
+            var url = "http://localhost:8080/allUsers?start="+start;
             var self = this;
             axios.get(url).then(function(response){
                 var result = response.data;
                 self.users = result.users;
                 self.pagination = result.page;
-                console.log(result.page);
             })
         },
         jumpByNumber:function (start) {
@@ -250,6 +251,24 @@ var m_user = new Vue({
             }else if( page == 'next' && self.pagination.hasNextPage ){
                 self.userList( self.pagination.nextPage );
             };
+        },
+        changeUserInfo:function (user) {
+            var self = this;
+            self.tempUserInfo.u_authority = user.user_authority;
+            self.tempUserInfo.u_department = user.user_department;
+            self.tempUserInfo.u_name = user.user_name;
+            self.tempUserInfo.u_phone = user.user_phone;
+            self.tempUserInfo.u_truename = user.user_truename;
+            console.log(self.tempUserInfo);
+        },
+        searchU:function () {
+            var self = this;
+            var url = "http://localhost:8080/Search?s="+self.searchUser;
+            axios.get(url).then(function(response){
+                var result = response.data;
+                self.users = result.users;
+                self.pagination = result.page;
+            })
         }
     }
 

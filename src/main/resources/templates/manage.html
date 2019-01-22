@@ -61,9 +61,9 @@
                 <div class="row">
                     <div class="col-sm-4">
                         <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Search for...">
+                            <input type="text" class="form-control" placeholder="输入用户邮箱或姓名" v-model="searchUser">
                             <span class="input-group-btn">
-                                <button class="btn btn-default" type="button">搜索</button>
+                                <button class="btn btn-default" type="button" @click="searchU">搜索</button>
                             </span>
                         </div>
                     </div>
@@ -96,7 +96,7 @@
                     <td v-else-if="user.user_authority == 3">财务人员</td>
                     <td v-else>普通员工</td>
                     <td>
-                        <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#userChangeModal">修改</button>
+                        <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#userChangeModal" @click="changeUserInfo(user)">修改</button>
                         <button type="button" class="btn btn-danger btn-sm">删除</button>
                     </td>
                 </tr>
@@ -122,17 +122,20 @@
                     </ul>
                 </nav>
             </div>
+
+
         </div>
     </div>
 </div>
 
 <!-- 个人信息Modal框   用户个人信息查看和修改-->
 <div th:include="modal :: userModal"></div>
-<!-- 用户信息修改用modal框 -->
-<div th:include="modal :: userChangeModal"></div>
+
 <!-- 添加用户用modal框 -->
 <div th:include="modal :: addUserModal"></div>
 
+<!-- 用户信息修改用modal框 -->
+<div th:include="modal :: userChangeModal"></div>
 
 </body>
 <script>
@@ -141,7 +144,22 @@
         $(this).addClass('list-item-active');
     })
 
+    var tempUserInfo = {
+        u_name:'',
+        u_department:'',
+        u_phone:'',
+        u_truename:'',
+        u_authority:'',
+    };
 
+    var m_userModal = new Vue({
+        el:'#userChangeModal',
+        data:{
+            tempUserInfo,
+        },
+
+
+    })
 
 
 

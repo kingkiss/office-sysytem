@@ -145,11 +145,40 @@
                     <h4 class="modal-title">用户信息修改</h4>
                 </div>
                 <div class="modal-body">
-                    <p>One fine body&hellip;</p>
+                    <form>
+                        <div class="form-group">
+                            <label>用户邮箱:{{ tempUserInfo.u_name }}</label>
+                        </div>
+                        <div class="form-group">
+                            <label>用户姓名:{{ tempUserInfo.u_truename }}</label>
+                            <input type="text" class="form-control" placeholder="name" v-model="tempUserInfo.u_truename">
+                        </div>
+                        <div class="form-group">
+                            <label>用户电话:{{ tempUserInfo.u_phone }}</label>
+                            <input type="text" class="form-control" placeholder="phone" v-model="tempUserInfo.u_phone">
+                        </div>
+                        <div class="form-group">
+                            <label>用户部门:{{ tempUserInfo.u_department }}</label>
+                            <input type="text" class="form-control" placeholder="department" v-model="tempUserInfo.u_department">
+                        </div>
+                        <div class="form-group">
+                            <label v-if="">用户职能</label>
+                            <br>
+                            <label class="radio-inline">
+                                <input type="radio" name="C_auth" value=1> 普通人员
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="C_auth" value=3> 财务人员
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio" name="C_auth" value=7> 管理员
+                            </label>
+                        </div>
+                    </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary">保存修改</button>
                 </div>
             </div>
         </div>
@@ -165,6 +194,16 @@
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title">添加新用户</h4>
                 </div>
+
+                <!-- 操作信息提示框 -->
+                <div class="alert alert-danger alert-dismissable fade hide" role="alert">
+                    <strong>操作失败！</strong>{{ message.info }}，请重试！
+                </div>
+
+                <div class="alert alert-success alert-dismissable fade hide" role="alert">
+                    <strong>操作成功！</strong>{{ message.info }},页面将会自动刷新！
+                </div>
+
                 <div class="modal-body">
                     <form class="form-horizontal">
                         <div class="form-group">
@@ -183,7 +222,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">用户姓名</label>
+                            <label class="col-sm-2 control-label">用户姓名*</label>
                             <div class="col-sm-6">
                                 <input type="email" class="form-control"  placeholder="name">
                             </div>
@@ -195,27 +234,30 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">用户部门</label>
+                            <label class="col-sm-2 control-label">用户部门*</label>
                             <div class="col-sm-6">
                                 <input type="email" class="form-control"  placeholder="department">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-2 control-label">用户职能</label>
+                            <label class="col-sm-2 control-label">用户职能*</label>
                             <div class="col-sm-9">
-                                <input name="auth" type="radio" id="1" value=1>
-                                <label for="1">普通人员</label>
-                                <input name="auth" type="radio" id="3" value=3>
-                                <label for="3">财务人员</label>
-                                <input name="auth" type="radio" id="7" value=7>
-                                <label for="7">管理员</label>
+                                <label class="radio-inline">
+                                    <input type="radio" name="A_auth" value=1> 普通人员
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" name="A_auth" value=3> 财务人员
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" name="A_auth" value=7> 管理员
+                                </label>
                             </div>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                    <button type="button" class="btn btn-primary disabled">添加</button>
+                    <button type="button" class="btn btn-primary" :class="{'disabled':isFinish }" title="请填写完带*的项">添加</button>
                 </div>
             </div>
         </div>

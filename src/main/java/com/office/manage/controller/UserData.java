@@ -23,8 +23,8 @@ public class UserData {
 
     //获取用户列表
     //pagehelper分页
-    @RequestMapping(value = "/u",method = RequestMethod.GET)
-    public Map<String,Object> getUserList(@RequestParam(value = "start",defaultValue = "0") int start , @RequestParam(value = "size" ,defaultValue = "15") int size){
+    @RequestMapping(value = "/allUsers",method = RequestMethod.GET)
+    public Map<String,Object> getUserList(@RequestParam(value = "start",defaultValue = "1") int start , @RequestParam(value = "size" ,defaultValue = "15") int size){
         PageHelper.startPage(start,size);
         List<User> users = userMapper.getAllUser();
         PageInfo<User> page = new PageInfo<>(users);
@@ -34,10 +34,17 @@ public class UserData {
         return m;
     }
 
-    @RequestMapping(value = "/allUsers",method = RequestMethod.GET)
-    public List<User> getAllUser(){
-        List<User> u = userMapper.getAllUser();
-        return u;
+    @RequestMapping(value = "/Search",method = RequestMethod.GET)
+    public Map<String,Object> getSearchUserList(@RequestParam(value = "start",defaultValue = "1") int start , @RequestParam(value = "size" ,defaultValue = "15") int size ,
+    @RequestParam String s){
+        String search = s+"%";
+        PageHelper.startPage(start,size);
+        List<User> Searchusers = userMapper.getUserByNameAndEmail(search);
+        PageInfo<User> Searchpage = new PageInfo<>(Searchusers);
+        Map<String,Object> su = new HashMap<>();
+        su.put("users",Searchusers);
+        su.put("page",Searchpage);
+        return su;
     }
 
 }
