@@ -152,7 +152,8 @@
         u_authority:'',
     };
 
-    var m_userModal = new Vue({
+    /* 修改用户信息modal框 */
+    var m_userChangeModal = new Vue({
         el:'#userChangeModal',
         data:{
             tempUserInfo,
@@ -161,7 +162,31 @@
 
     })
 
+    /* 增加用户modal框 */
+    var m_userAddModal = new Vue({
+        el:'#addUserModal',
+        data:{
+            addUser:{
+                user_name:'',
+                user_password:'',
+                user_truename:'',
+                user_phone:'',
+                user_department:'',
+                user_authority:'',
+            }
+        },
+        methods:{
+            addNewUser:function () {
+                var url = "http://localhost:8080/";
+                var self = this;
+                axios.get(url).then(function(response){
+                    var result = response.data;
 
+                })
+            }
+        }
+
+    })
 
 </script>
 <script src="my/manage_userInfo.js"></script>

@@ -3,14 +3,12 @@ package com.office.manage.controller;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.office.manage.domain.Message;
 import com.office.manage.domain.User;
 import com.office.manage.domain.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -34,6 +32,7 @@ public class UserData {
         return m;
     }
 
+    //搜索用户
     @RequestMapping(value = "/Search",method = RequestMethod.GET)
     public Map<String,Object> getSearchUserList(@RequestParam(value = "start",defaultValue = "1") int start , @RequestParam(value = "size" ,defaultValue = "15") int size ,
     @RequestParam String s){
@@ -47,4 +46,26 @@ public class UserData {
         return su;
     }
 
+    //添加新用户
+    @RequestMapping(value = "/adduser",method = RequestMethod.POST)
+    public Message addUser(@RequestBody User user){
+        Message msg = new Message();
+        User user1 = userMapper.findUser(user.getUser_name());
+        if(user1 == null){
+            int result = userMapper.addUser(user.getUser_name(),user.getUser_password(),user.getUser_truename(),user.getUser_phone(),user.getUser_department(),user.getUser_authority());
+            if( result == 1 ){
+                msg.setResult(true);
+                msg.setInfo("添加新用户成功");
+                return msg;
+            }else {
+                msg.setResult(false);
+                msg.setInfo("添加用户失败");
+                return msg;
+            }
+        }else {
+            msg.setResult(false);
+            msg.setInfo("用户已存在");
+            return msg;
+        }
+    }
 }
