@@ -50,9 +50,10 @@ public class UserData {
     @RequestMapping(value = "/adduser",method = RequestMethod.POST)
     public Message addUser(@RequestBody User user){
         Message msg = new Message();
-        User user1 = userMapper.findUser(user.getUser_name());
+        System.out.println(user.getUser_name());
+        User user1 = userMapper.findUser(user.getUser_name()+"@office.com");
         if(user1 == null){
-            int result = userMapper.addUser(user.getUser_name(),user.getUser_password(),user.getUser_truename(),user.getUser_phone(),user.getUser_department(),user.getUser_authority());
+            int result = userMapper.addUser(user.getUser_name()+"@office.com",user.getUser_password(),user.getUser_truename(),user.getUser_phone(),user.getUser_department(),user.getUser_authority());
             if( result == 1 ){
                 msg.setResult(true);
                 msg.setInfo("添加新用户成功");
@@ -67,5 +68,24 @@ public class UserData {
             msg.setInfo("用户已存在");
             return msg;
         }
+    }
+
+    //删除用户
+    @RequestMapping(value = "/delete/{user_name}" ,method = RequestMethod.DELETE)
+    public Message deleteUser(@PathVariable String user_name){
+        Message msg = new Message();
+        System.out.println(user_name);
+        int result = userMapper.deleteUser(user_name);
+        System.out.println(result);
+        if( result>0 ){
+            msg.setResult(true);
+            msg.setInfo("已删除"+result+"个用户");
+            return msg;
+        }else {
+            msg.setResult(false);
+            msg.setInfo("未知错误请重试");
+            return msg;
+        }
+
     }
 }

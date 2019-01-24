@@ -57,7 +57,7 @@
             <div class="panel-heading">
                 用户管理
             </div>
-            <div class="panel-body">
+            <div class="panel-body" >
                 <div class="row">
                     <div class="col-sm-4">
                         <div class="input-group">
@@ -70,10 +70,15 @@
                     <div class="col-sm-1">
                         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addUserModal">添加用户</button>
                     </div>
+                    <!-- 删除用户信息提示框 -->
+                    <div class="col-sm-12" >
+                        <div class="alert alert-success fade hide" style="text-align: center;margin-bottom: -10px;margin-top: 10px" role="alert" id="deleteInfoS"><strong>删除成功,{{ message.info }}</strong></div>
+                        <div class="alert alert-danger fade hide" style="text-align: center;margin-bottom: -10px;margin-top: 10px" role="alert" id="deleteInfoF"><strong>删除失败,{{ message.info }}</strong></div>
+                    </div>
                 </div>
             </div>
 
-            <table class="table table-hover table-condensed">
+            <table class="table table-hover table-condensed " >
                 <thead>
                 <tr>
                     <th>序号</th>
@@ -87,7 +92,7 @@
                 </thead>
                 <tbody>
                 <tr v-for="user in users">
-                    <th scope="row">{{ user.user_id }}</th>
+                    <th scope="row" >{{ user.user_id }}</th>
                     <td>{{ user.user_truename }}</td>
                     <td>{{ user.user_department }}</td>
                     <td>{{ user.user_name }}</td>
@@ -97,14 +102,24 @@
                     <td v-else>普通员工</td>
                     <td>
                         <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#userChangeModal" @click="changeUserInfo(user)">修改</button>
-                        <button type="button" class="btn btn-danger btn-sm">删除</button>
+                        <button type="button" class="btn btn-danger btn-sm"  data-toggle="collapse" :data-target="'#'+user.user_id" aria-expanded="true" :aria-controls="user.user_id">删除</button>
+                        <!--确认删除collapse-->
+                        <div class="collapse" :id="user.user_id" style="width: 270px">
+                            <div class="alert alert-warning">
+                                确定删除该用户？
+                                <button type="button" class="btn btn-default btn-sm" data-toggle="collapse" :data-target="'#'+user.user_id" aria-expanded="true" :aria-controls="user.user_id">取消</button>
+                                <button type="button" class="btn btn-default btn-sm" @click="deleteUser(user)">确认</button>
+                            </div>
+                        </div>
                     </td>
                 </tr>
 
                 </tbody>
             </table>
 
-            <div class="panel-footer">
+
+
+            <div class="panel-footer" style="height: 70px">
                 <!--分页导航栏-->
                 <nav aria-label="Page navigation" style="text-align: center">
                     <ul class="pagination">
@@ -138,19 +153,13 @@
 <div th:include="modal :: userChangeModal"></div>
 
 </body>
+<script src="my/manage_userInfo.js"></script>
 <script>
     $('.list-group-item').click(function () {
         $(this).siblings('.list-group-item').removeClass('list-item-active');
         $(this).addClass('list-item-active');
-    })
+    });
 
-    var tempUserInfo = {
-        u_name:'',
-        u_department:'',
-        u_phone:'',
-        u_truename:'',
-        u_authority:'',
-    };
 
     /* 修改用户信息modal框 */
     var m_userChangeModal = new Vue({
@@ -160,7 +169,7 @@
         },
 
 
-    })
+    });
 
     /* 增加用户modal框 */
     var m_userAddModal = new Vue({
@@ -172,22 +181,57 @@
                 user_truename:'',
                 user_phone:'',
                 user_department:'',
-                user_authority:'',
-            }
+                user_authority:1,
+            },
+            message,
         },
         methods:{
             addNewUser:function () {
-                var url = "http://localhost:8080/";
+                var url = "http://localhost:8080/adduser";
                 var self = this;
-                axios.get(url).then(function(response){
+                axios.post(url,self.addUser).then(function(response){
                     var result = response.data;
-
+                    self.message.info = result.info;
+                    console.log(result);
+                    if(result.result){
+                        self.clearInput();
+                        self.isInputEmpty();
+                        $('.alert-success').removeClass('hide').addClass('in');
+                        setTimeout(function(){$('.alert-success').removeClass('in').addClass('hide');},3000);
+                    }else {
+                        $('.alert-danger').removeClass('hide').addClass('in')
+                        setTimeout(function(){$('.alert-danger').removeClass('in').addClass('hide')},3000);
+                    }
                 })
-            }
+
+            },
+            clearInput:function(){
+                var self = this;
+                self.addUser.user_name = '';
+                self.addUser.user_password = '';
+                self.addUser.user_department = '';
+                self.addUser.user_phone = '';
+                self.addUser.user_truename = '';
+                self.addUser.user_authority = 1;
+                $("#add").attr("disabled","disabled");
+                $("#add").attr("title","请填写完带*的项");
+            },
+            isInputEmpty:function () {
+                var self = this;
+                if( self.addUser.user_name != '' && self.addUser.user_password != '' && self.addUser.user_truename != '' && self.addUser.user_department != '' && self.addUser.user_authority != '' ){
+                    $("#add").removeAttr("title","请填写完带*的项");
+                    $("#add").removeAttr("disabled","disabled");
+                    /*TODO 添加不可用属性*/
+                }else {
+                    $("#add").attr("disabled","disabled");
+                    $("#add").attr("title","请填写完带*的项");
+
+                }
+            },
         }
 
     })
 
 </script>
-<script src="my/manage_userInfo.js"></script>
+
 </html>

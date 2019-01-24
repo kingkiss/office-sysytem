@@ -96,19 +96,19 @@
                     <div class="row">
                         <form class="form-horizontal">
                             <div class="form-group">
-                                <label for="inputEmail3" class="col-sm-2 control-label">原密码</label>
+                                <label class="col-sm-2 control-label">原密码</label>
                                 <div class="col-sm-10">
                                     <input type="password" class="form-control" style="width:255px" placeholder=""  v-model="userInfo_change_old_pwd" required="required" pattern="^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="inputPassword3" class="col-sm-2 control-label">新密码</label>
+                                <label class="col-sm-2 control-label">新密码</label>
                                 <div class="col-sm-10">
                                     <input type="password" class="form-control" style="width:255px" placeholder="6-16位，大小写字母和数字组合" v-model="userInfo_change_new_pwd" required="required" pattern="^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$">
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="inputPassword3" class="col-sm-2 control-label">确认密码</label>
+                                <label class="col-sm-2 control-label">确认密码</label>
                                 <div class="col-sm-10">
                                     <input type="password" class="form-control" style="width:255px" placeholder="" v-model="userInfo_change_sure_pwd" required="required" pattern="^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$">
                                 </div>
@@ -162,16 +162,18 @@
                             <input type="text" class="form-control" placeholder="department" v-model="tempUserInfo.u_department">
                         </div>
                         <div class="form-group">
-                            <label v-if="">用户职能</label>
+                            <label v-if="tempUserInfo.u_authority == 1">用户职能:普通人员</label>
+                            <label v-else-if="tempUserInfo.u_authority == 3">用户职能:财务人员</label>
+                            <label v-else>用户职能:管理员</label>
                             <br>
                             <label class="radio-inline">
-                                <input type="radio" name="C_auth" value=1> 普通人员
+                                <input type="radio" name="C_auth" value=1 v-model="tempUserInfo.u_authority"> 普通人员
                             </label>
                             <label class="radio-inline">
-                                <input type="radio" name="C_auth" value=3> 财务人员
+                                <input type="radio" name="C_auth" value=3 v-model="tempUserInfo.u_authority"> 财务人员
                             </label>
                             <label class="radio-inline">
-                                <input type="radio" name="C_auth" value=7> 管理员
+                                <input type="radio" name="C_auth" value=7 v-model="tempUserInfo.u_authority"> 管理员
                             </label>
                         </div>
                     </form>
@@ -191,7 +193,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="clearInput"><span aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title">添加新用户</h4>
                 </div>
 
@@ -201,7 +203,7 @@
                 </div>
 
                 <div class="alert alert-success alert-dismissable fade hide" role="alert">
-                    <strong>操作成功！</strong>{{ message.info }},页面将会自动刷新！
+                    <strong>操作成功！</strong>{{ message.info }}！
                 </div>
 
                 <div class="modal-body">
@@ -210,7 +212,7 @@
                             <label class="col-sm-2 control-label">用户邮箱*</label>
                             <div class="col-sm-6">
                                 <div class="input-group">
-                                    <input type="email" class="form-control"  placeholder="Email" >
+                                    <input type="email" class="form-control"  placeholder="Email" v-model="addUser.user_name" @blur="isInputEmpty()">
                                     <span class="input-group-addon" id="basic-addon2">@office.com</span>
                                 </div>
                             </div>
@@ -218,46 +220,46 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label">用户密码*</label>
                             <div class="col-sm-6">
-                                <input type="password" class="form-control" placeholder="Password">
+                                <input type="password" class="form-control" placeholder="Password" v-model="addUser.user_password" @blur="isInputEmpty()">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-2 control-label">用户姓名*</label>
                             <div class="col-sm-6">
-                                <input type="email" class="form-control"  placeholder="name">
+                                <input type="email" class="form-control"  placeholder="name" v-model="addUser.user_truename" @blur="isInputEmpty()" >
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-2 control-label">用户电话</label>
                             <div class="col-sm-6">
-                                <input type="email" class="form-control"  placeholder="phone">
+                                <input type="email" class="form-control"  placeholder="phone" v-model="addUser.user_phone">
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-2 control-label">用户部门*</label>
                             <div class="col-sm-6">
-                                <input type="email" class="form-control"  placeholder="department">
+                                <input type="email" class="form-control"  placeholder="department" v-model="addUser.user_department" @blur="isInputEmpty()" >
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-2 control-label">用户职能*</label>
                             <div class="col-sm-9">
                                 <label class="radio-inline">
-                                    <input type="radio" name="A_auth" value=1> 普通人员
+                                    <input type="radio" name="A_auth" value=1 v-model="addUser.user_authority"> 普通人员
                                 </label>
                                 <label class="radio-inline">
-                                    <input type="radio" name="A_auth" value=3> 财务人员
+                                    <input type="radio" name="A_auth" value=3 v-model="addUser.user_authority"> 财务人员
                                 </label>
                                 <label class="radio-inline">
-                                    <input type="radio" name="A_auth" value=7> 管理员
+                                    <input type="radio" name="A_auth" value=7 v-model="addUser.user_authority"> 管理员
                                 </label>
                             </div>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                    <button type="button" class="btn btn-primary" :class="{'disabled':isFinish }" title="请填写完带*的项">添加</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal" @click="clearInput">关闭</button>
+                    <button type="button" class="btn btn-primary" disabled="disabled" id="add" @click="addNewUser">添加</button>
                 </div>
             </div>
         </div>

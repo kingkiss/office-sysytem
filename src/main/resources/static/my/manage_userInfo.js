@@ -8,12 +8,20 @@ var userdata = {
     user_position:'',
     show_7:false,
     show_3:false,
-}
+};
 /* 各种信息流，提示信息 */
 var message = {
     show:false,
     info:'',
-}
+};
+
+var tempUserInfo = {
+    u_name:'',
+    u_department:'',
+    u_phone:'',
+    u_truename:'',
+    u_authority:'',
+};
 
 /* vue获取数据 */
 var user_Info = new Vue({
@@ -45,7 +53,7 @@ var user_Info = new Vue({
             axios.get("http://localhost:8080/loginout").then()
         }
     },
-})
+});
 
 /* 左侧功能栏根据用户权限显示相对应的功能模块 */
 var modalShow = new Vue({
@@ -64,9 +72,9 @@ var modalShow = new Vue({
     methods:{
 
     }
-})
+});
 
-/* modal框的数据流，数据展示和数据修改 */
+/* 登录用户信息modal框的数据流，数据展示和数据修改 */
 var modalData = new Vue({
     el:'#userInfo',
     data:{
@@ -137,7 +145,7 @@ var modalData = new Vue({
 
                 }else{
                     self.message.info = "用户姓名超过10位";
-                    $('.alert-danger').removeClass('hide').addClass('in')
+                    $('.alert-danger').removeClass('hide').addClass('in');
                     setTimeout(function(){$('.alert-danger').removeClass('in').addClass('hide')},3000);
                 }
             }).catch(function(reason) {
@@ -214,7 +222,7 @@ var modalData = new Vue({
 
         }
     }
-})
+});
 
 /* m_userInfo框中数据流(分页功能) */
 var m_user = new Vue({
@@ -224,6 +232,8 @@ var m_user = new Vue({
         pagination:{},
         tempUserInfo,
         searchUser:'',
+        isDelete:false,
+        message,
     },
     mounted:function () {
         this.userList(1)
@@ -269,7 +279,24 @@ var m_user = new Vue({
                 self.users = result.users;
                 self.pagination = result.page;
             })
-        }
+        },
+        deleteUser:function (user) {
+            var self = this;
+            var url = "http://localhost:8080/delete/"+user.user_name;
+            axios.delete(url).then(function(response){
+                var result = response.data;
+                if( result.result ){
+                    self.message.info = result.info;
+                    $('#deleteInfoS').removeClass('hide').addClass('in');
+                    setTimeout(function(){$('#deleteInfoS').removeClass('in').addClass('hide');location.reload();},1000);
+                }else{
+                    self.message.info = result.info;
+                    $('#deleteInfoF').removeClass('hide').addClass('in');
+                    setTimeout(function(){$('#deleteInfoF').removeClass('in').addClass('hide')},3000);
+                }
+            })
+        },
     }
 
-})
+});
+
