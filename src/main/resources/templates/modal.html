@@ -144,43 +144,53 @@
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title">用户信息修改</h4>
                 </div>
+
+                <!-- 操作信息提示框 -->
+                <div class="alert alert-danger alert-dismissable fade hide" role="alert" id="changeUserF">
+                    <strong>操作失败！</strong>,{{ message.info }}，请重试！
+                </div>
+
+                <div class="alert alert-success alert-dismissable fade hide" role="alert" id="changeUserS">
+                    <strong>操作成功！</strong>,{{ message.info }}！
+                </div>
+
                 <div class="modal-body">
                     <form>
                         <div class="form-group">
-                            <label>用户邮箱:{{ tempUserInfo.u_name }}</label>
+                            <label>用户邮箱:{{ tempUserInfo.user_name }}</label>
                         </div>
                         <div class="form-group">
-                            <label>用户姓名:{{ tempUserInfo.u_truename }}</label>
-                            <input type="text" class="form-control" placeholder="name" v-model="tempUserInfo.u_truename">
+                            <label>用户姓名:{{ tempUserInfo.user_truename }}</label>
+                            <input type="text" class="form-control" placeholder="name" v-model="tempUserInfo.user_truename">
                         </div>
                         <div class="form-group">
-                            <label>用户电话:{{ tempUserInfo.u_phone }}</label>
-                            <input type="text" class="form-control" placeholder="phone" v-model="tempUserInfo.u_phone">
+                            <label>用户电话:{{ tempUserInfo.user_phone }}</label>
+                            <input type="text" class="form-control" placeholder="phone" v-model="tempUserInfo.user_phone">
                         </div>
                         <div class="form-group">
-                            <label>用户部门:{{ tempUserInfo.u_department }}</label>
-                            <input type="text" class="form-control" placeholder="department" v-model="tempUserInfo.u_department">
+                            <label>用户部门:{{ tempUserInfo.user_department }}</label>
+                            <input type="text" class="form-control" placeholder="department" v-model="tempUserInfo.user_department">
                         </div>
                         <div class="form-group">
-                            <label v-if="tempUserInfo.u_authority == 1">用户职能:普通人员</label>
-                            <label v-else-if="tempUserInfo.u_authority == 3">用户职能:财务人员</label>
+                            <label v-if="tempUserInfo.user_authority == 1">用户职能:普通人员</label>
+                            <label v-else-if="tempUserInfo.user_authority == 3">用户职能:财务人员</label>
                             <label v-else>用户职能:管理员</label>
                             <br>
                             <label class="radio-inline">
-                                <input type="radio" name="C_auth" value=1 v-model="tempUserInfo.u_authority"> 普通人员
+                                <input type="radio" name="C_auth" value=1 v-model="tempUserInfo.user_authority"> 普通人员
                             </label>
                             <label class="radio-inline">
-                                <input type="radio" name="C_auth" value=3 v-model="tempUserInfo.u_authority"> 财务人员
+                                <input type="radio" name="C_auth" value=3 v-model="tempUserInfo.user_authority"> 财务人员
                             </label>
                             <label class="radio-inline">
-                                <input type="radio" name="C_auth" value=7 v-model="tempUserInfo.u_authority"> 管理员
+                                <input type="radio" name="C_auth" value=7 v-model="tempUserInfo.user_authority"> 管理员
                             </label>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                    <button type="button" class="btn btn-primary">保存修改</button>
+                    <button type="button" class="btn btn-primary" @click="changeUser">保存修改</button>
                 </div>
             </div>
         </div>
@@ -198,11 +208,11 @@
                 </div>
 
                 <!-- 操作信息提示框 -->
-                <div class="alert alert-danger alert-dismissable fade hide" role="alert">
+                <div class="alert alert-danger alert-dismissable fade hide" role="alert" id="addUserF">
                     <strong>操作失败！</strong>{{ message.info }}，请重试！
                 </div>
 
-                <div class="alert alert-success alert-dismissable fade hide" role="alert">
+                <div class="alert alert-success alert-dismissable fade hide" role="alert" id="addUserS">
                     <strong>操作成功！</strong>{{ message.info }}！
                 </div>
 

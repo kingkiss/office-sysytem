@@ -102,12 +102,12 @@
                     <td v-else>普通员工</td>
                     <td>
                         <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#userChangeModal" @click="changeUserInfo(user)">修改</button>
-                        <button type="button" class="btn btn-danger btn-sm"  data-toggle="collapse" :data-target="'#'+user.user_id" aria-expanded="true" :aria-controls="user.user_id">删除</button>
+                        <button type="button" class="btn btn-danger btn-sm"  data-toggle="collapse" :data-target="'#'+user.user_id" aria-expanded="false" :aria-controls="user.user_id">删除</button>
                         <!--确认删除collapse-->
                         <div class="collapse" :id="user.user_id" style="width: 270px">
                             <div class="alert alert-warning">
                                 确定删除该用户？
-                                <button type="button" class="btn btn-default btn-sm" data-toggle="collapse" :data-target="'#'+user.user_id" aria-expanded="true" :aria-controls="user.user_id">取消</button>
+                                <button type="button" class="btn btn-default btn-sm" data-toggle="collapse" :data-target="'#'+user.user_id" aria-expanded="false" :aria-controls="user.user_id">取消</button>
                                 <button type="button" class="btn btn-default btn-sm" @click="deleteUser(user)">确认</button>
                             </div>
                         </div>
@@ -166,8 +166,25 @@
         el:'#userChangeModal',
         data:{
             tempUserInfo,
+            message,
         },
-
+        methods:{
+            changeUser:function () {
+                var self = this;
+                var url = 'http://localhost:8080/update/'+self.tempUserInfo.user_name;
+                axios.put(url,self.tempUserInfo).then(function(response){
+                    var result = response.data;
+                    self.message.info = result.info;
+                    if(result.result){
+                        $('#changeUserS').removeClass('hide').addClass('in');
+                        setTimeout(function(){$('#changeUserS').removeClass('in').addClass('hide');$('#userChangeModal').modal('toggle');location.reload();},1500);
+                    }else {
+                        $('#changeUserF').removeClass('hide').addClass('in')
+                        setTimeout(function(){$('#changeUserF').removeClass('in').addClass('hide')},3000);
+                    }
+                })
+            }
+        }
 
     });
 
@@ -192,15 +209,14 @@
                 axios.post(url,self.addUser).then(function(response){
                     var result = response.data;
                     self.message.info = result.info;
-                    console.log(result);
                     if(result.result){
                         self.clearInput();
                         self.isInputEmpty();
-                        $('.alert-success').removeClass('hide').addClass('in');
-                        setTimeout(function(){$('.alert-success').removeClass('in').addClass('hide');},3000);
+                        $('#addUserS').removeClass('hide').addClass('in');
+                        setTimeout(function(){$('#addUserS').removeClass('in').addClass('hide');$('#addUserModal').modal('toggle');location.reload();},1000);
                     }else {
-                        $('.alert-danger').removeClass('hide').addClass('in')
-                        setTimeout(function(){$('.alert-danger').removeClass('in').addClass('hide')},3000);
+                        $('#addUserS').removeClass('hide').addClass('in')
+                        setTimeout(function(){$('#addUserF').removeClass('in').addClass('hide')},3000);
                     }
                 })
 
@@ -221,7 +237,6 @@
                 if( self.addUser.user_name != '' && self.addUser.user_password != '' && self.addUser.user_truename != '' && self.addUser.user_department != '' && self.addUser.user_authority != '' ){
                     $("#add").removeAttr("title","请填写完带*的项");
                     $("#add").removeAttr("disabled","disabled");
-                    /*TODO 添加不可用属性*/
                 }else {
                     $("#add").attr("disabled","disabled");
                     $("#add").attr("title","请填写完带*的项");
@@ -231,6 +246,8 @@
         }
 
     })
+    
+
 
 </script>
 

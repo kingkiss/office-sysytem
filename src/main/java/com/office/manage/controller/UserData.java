@@ -88,4 +88,25 @@ public class UserData {
         }
 
     }
+
+    //修改用户信息
+    @RequestMapping(value = "/update/{user_name}",method = RequestMethod.PUT)
+    public Message updateUser(@PathVariable String user_name,@RequestBody User user){
+        Message msg = new Message();
+//        System.out.println(user_name);
+//        System.out.println(user.getUser_truename());
+        int result = userMapper.updateUserByName(user.getUser_truename(),user.getUser_phone(),user.getUser_department(),user.getUser_authority(),user_name);
+//        System.out.println(result);
+        if(result>0){
+            msg.setResult(true);
+            msg.setInfo("用户信息已修改！");
+            return msg;
+        }else {
+            msg.setResult(false);
+            msg.setInfo("未知错误，");
+            return msg;
+        }
+    }
+
+
 }

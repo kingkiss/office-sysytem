@@ -37,6 +37,10 @@ public interface UserMapper {
 	@Update("update user_info set user_password=#{u_pwd} where user_name=#{u_name}")
 	public int updateUserPwdByName(String u_pwd, String u_name);
 
+	//根据用户邮箱修改用户信息
+	@Update("UPDATE user_info SET user_truename=#{u_truename},user_phone=#{u_phone},user_department=#{u_department},user_authority=#{u_authority} WHERE user_name=#{u_name}")
+	public int updateUserByName(String u_truename,String u_phone,String u_department,int u_authority,String u_name);
+
 	//添加用户
 	@Insert("INSERT INTO user_info (user_name,user_password,user_truename,user_phone,user_department,user_authority) " +
 			"VALUES (#{u_name},#{u_password},#{u_truename},#{u_phone},#{u_department},#{u_authority})")

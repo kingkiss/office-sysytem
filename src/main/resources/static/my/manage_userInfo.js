@@ -16,11 +16,11 @@ var message = {
 };
 
 var tempUserInfo = {
-    u_name:'',
-    u_department:'',
-    u_phone:'',
-    u_truename:'',
-    u_authority:'',
+    user_name:'',
+    user_department:'',
+    user_phone:'',
+    user_truename:'',
+    user_authority:'',
 };
 
 /* vue获取数据 */
@@ -264,12 +264,11 @@ var m_user = new Vue({
         },
         changeUserInfo:function (user) {
             var self = this;
-            self.tempUserInfo.u_authority = user.user_authority;
-            self.tempUserInfo.u_department = user.user_department;
-            self.tempUserInfo.u_name = user.user_name;
-            self.tempUserInfo.u_phone = user.user_phone;
-            self.tempUserInfo.u_truename = user.user_truename;
-            console.log(self.tempUserInfo);
+            self.tempUserInfo.user_authority = user.user_authority;
+            self.tempUserInfo.user_department = user.user_department;
+            self.tempUserInfo.user_name = user.user_name;
+            self.tempUserInfo.user_phone = user.user_phone;
+            self.tempUserInfo.user_truename = user.user_truename;
         },
         searchU:function () {
             var self = this;
@@ -283,12 +282,14 @@ var m_user = new Vue({
         deleteUser:function (user) {
             var self = this;
             var url = "http://localhost:8080/delete/"+user.user_name;
+            var id = '#'+user.user_id;
             axios.delete(url).then(function(response){
                 var result = response.data;
                 if( result.result ){
                     self.message.info = result.info;
+                    $(id).collapse('toggle');
                     $('#deleteInfoS').removeClass('hide').addClass('in');
-                    setTimeout(function(){$('#deleteInfoS').removeClass('in').addClass('hide');location.reload();},1000);
+                    setTimeout(function(){$('#deleteInfoS').removeClass('in').addClass('hide');location.reload();},2000);
                 }else{
                     self.message.info = result.info;
                     $('#deleteInfoF').removeClass('hide').addClass('in');
