@@ -1,10 +1,105 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
-</body>
+<!--用户管理模块（用户查询、修改、删除、添加）-->
+<div th:fragment="m_userInfo">
+    <div class="panel panel-default" id="allUser" style="height: 870px">
+        <div class="panel-heading">
+            用户管理
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="输入用户邮箱或姓名" v-model="searchUser">
+                        <span class="input-group-btn">
+                                <button class="btn btn-default" type="button" @click="searchU">搜索</button>
+                            </span>
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addUserModal">添加用户</button>
+                </div>
+                <!-- 删除用户信息提示框 -->
+                <div class="col-sm-12" >
+                    <div class="alert alert-success fade hide" style="text-align: center;margin-bottom: -10px;margin-top: 10px" role="alert" id="deleteInfoS"><strong>删除成功,{{ message.info }}</strong></div>
+                    <div class="alert alert-danger fade hide" style="text-align: center;margin-bottom: -10px;margin-top: 10px" role="alert" id="deleteInfoF"><strong>删除失败,{{ message.info }}</strong></div>
+                </div>
+            </div>
+        </div>
+
+        <table class="table table-hover table-condensed " >
+            <thead>
+            <tr>
+                <th>
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <strong>序号</strong> <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a href="#" @click="sortUser('user_id desc')">降序</a></li>
+                            <li><a href="#" @click="sortUser('user_id asc')">升序</a></li>
+                        </ul>
+                    </div>
+                </th>
+                <th>姓名</th>
+                <th>部门</th>
+                <th>邮箱</th>
+                <th>电话</th>
+                <th>职能</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="user in users">
+                <th scope="row" >{{ user.user_id }}</th>
+                <td>{{ user.user_truename }}</td>
+                <td>{{ user.user_department }}</td>
+                <td>{{ user.user_name }}</td>
+                <td>{{ user.user_phone }}</td>
+                <td v-if="user.user_authority == 7">管理员</td>
+                <td v-else-if="user.user_authority == 3">财务人员</td>
+                <td v-else>普通员工</td>
+                <td>
+                    <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#userChangeModal" @click="changeUserInfo(user)">修改</button>
+                    <button type="button" class="btn btn-danger btn-sm"  data-toggle="collapse" :data-target="'#'+user.user_id" aria-expanded="false" :aria-controls="user.user_id">删除</button>
+                    <!--确认删除collapse-->
+                    <div class="collapse" :id="user.user_id" style="width: 270px">
+                        <div class="alert alert-warning">
+                            确定删除该用户？
+                            <button type="button" class="btn btn-default btn-sm" data-toggle="collapse" :data-target="'#'+user.user_id" aria-expanded="false" :aria-controls="user.user_id">取消</button>
+                            <button type="button" class="btn btn-default btn-sm" @click="deleteUser(user)">确认</button>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+
+            </tbody>
+        </table>
+
+
+
+        <div class="panel-footer" style="height: 70px">
+            <!--分页导航栏-->
+            <nav aria-label="Page navigation" style="text-align: center">
+                <ul class="pagination">
+                    <li :class="{ 'disabled': pagination.pageNum==1 }">
+                        <a href="#" aria-label="Previous" @click="jumpPage('pre')" >
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <li v-for="i in pagination.navigatepageNums" :class="{ 'active': pagination.pageNum==i }"><a href="#" @click="jumpByNumber(i)">{{ i }}</a></li>
+                    <li :class="{ 'disabled': pagination.pageNum==pagination.pages }">
+                        <a href="#" aria-label="Next" @click="jumpPage('next')">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+
+
+    </div>
+</div>
+
 </html>

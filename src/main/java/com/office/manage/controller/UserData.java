@@ -22,8 +22,9 @@ public class UserData {
     //获取用户列表
     //pagehelper分页
     @RequestMapping(value = "/allUsers",method = RequestMethod.GET)
-    public Map<String,Object> getUserList(@RequestParam(value = "start",defaultValue = "1") int start , @RequestParam(value = "size" ,defaultValue = "15") int size){
-        PageHelper.startPage(start,size);
+    public Map<String,Object> getUserList(@RequestParam(value = "start",defaultValue = "1") int start , @RequestParam(value = "size" ,defaultValue = "15") int size,
+                                          @RequestParam(value = "orderBy" ,defaultValue = "user_id asc") String orderBy){
+        PageHelper.startPage(start,size,orderBy);
         List<User> users = userMapper.getAllUser();
         PageInfo<User> page = new PageInfo<>(users);
         Map<String,Object> m = new HashMap<>();

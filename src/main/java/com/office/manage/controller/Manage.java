@@ -29,4 +29,8 @@ public class Manage {
         return "manage";
     }
 
+    //用户管理模块的页面
+    @RequestMapping("/manage_userInfo")
+    public String manage_userInfo(){ return "manage_userInfo"; }
+
 }

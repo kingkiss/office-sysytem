@@ -22,7 +22,7 @@ public interface UserMapper {
 	public String finUserPwdByName(String u_name);
 
 	//根据用户邮箱和用户名模糊查询用户
-	@Select("SELECT * FROM user_info where user_truename LIKE #{search} OR user_name LIKE #{search}")
+	@Select("SELECT * FROM user_info where user_truename LIKE #{search} OR user_name LIKE #{search} OR user_authority=#{search}")
 	public List<User> getUserByNameAndEmail(String search);
 
 	//根据用户邮箱修改用户姓名

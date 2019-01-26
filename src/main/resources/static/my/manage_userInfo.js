@@ -15,6 +15,7 @@ var message = {
     info:'',
 };
 
+/*修改用户信息暂存数据*/
 var tempUserInfo = {
     user_name:'',
     user_department:'',
@@ -22,6 +23,19 @@ var tempUserInfo = {
     user_truename:'',
     user_authority:'',
 };
+
+/*模块功能显示通用数据（modalShowLeft&Right）*/
+var modalShowData = {
+    m_officelist:true,
+    m_officeInfo:false,
+    m_userInfo:false,
+    m_applyCheck:false,
+    m_applylist:false,
+    m_borrowlist:false,
+    m_returnlist:false,
+    m_usedata:false,
+};
+
 
 /* vue获取数据 */
 var user_Info = new Vue({
@@ -56,21 +70,35 @@ var user_Info = new Vue({
 });
 
 /* 左侧功能栏根据用户权限显示相对应的功能模块 */
-var modalShow = new Vue({
-    el:'#fun_show',
+var modalShowLeft = new Vue({
+    el:'#fun_show_left',
     data:{
         userdata,
-        m_office:true,
-        m_officeInfo:false,
-        m_userInfo:false,
-        m_applyCheck:false,
-        m_applylist:false,
-        m_borrowlist:false,
-        m_returnlist:false,
-        m_usedata:false,
+        modalShowData,
     },
     methods:{
-
+        officeListOpen:function () {
+            var self = this;
+            self.modalShowData.m_officelist = true;
+            self.modalShowData.m_officeInfo = false;
+            self.modalShowData.m_userInfo = false;
+            self.modalShowData.m_usedata = false;
+            self.modalShowData.m_applyCheck = false;
+            self.modalShowData.m_applylist = false;
+            self.modalShowData.m_borrowlist = false;
+            self.modalShowData.m_returnlist = false;
+        },
+        userInfoOpen:function () {
+            var self = this;
+            self.modalShowData.m_officelist = false;
+            self.modalShowData.m_officeInfo = false;
+            self.modalShowData.m_userInfo = true;
+            self.modalShowData.m_usedata = false;
+            self.modalShowData.m_applyCheck = false;
+            self.modalShowData.m_applylist = false;
+            self.modalShowData.m_borrowlist = false;
+            self.modalShowData.m_returnlist = false;
+        }
     }
 });
 
@@ -234,15 +262,17 @@ var m_user = new Vue({
         searchUser:'',
         isDelete:false,
         message,
+        ob:'',
     },
     mounted:function () {
         this.userList(1)
     },
     methods:{
         userList:function (start) {
-            var url = "http://localhost:8080/allUsers?start="+start;
+            var url = "http://localhost:8080/allUsers";
             var self = this;
-            axios.get(url).then(function(response){
+            var orderBy = self.ob;
+            axios.get(url,{params:{start:start,orderBy:orderBy}}).then(function(response){
                 var result = response.data;
                 self.users = result.users;
                 self.pagination = result.page;
@@ -279,6 +309,11 @@ var m_user = new Vue({
                 self.pagination = result.page;
             })
         },
+        sortUser:function(orderBy){
+            var self = this;
+            self.ob = orderBy;
+            self.userList();
+        },
         deleteUser:function (user) {
             var self = this;
             var url = "http://localhost:8080/delete/"+user.user_name;
@@ -300,4 +335,90 @@ var m_user = new Vue({
     }
 
 });
+
+/* 修改用户信息modal框 */
+var m_userChangeModal = new Vue({
+    el:'#userChangeModal',
+    data:{
+        tempUserInfo,
+        message,
+    },
+    methods:{
+        changeUser:function () {
+            var self = this;
+            var url = 'http://localhost:8080/update/'+self.tempUserInfo.user_name;
+            axios.put(url,self.tempUserInfo).then(function(response){
+                var result = response.data;
+                self.message.info = result.info;
+                if(result.result){
+                    $('#changeUserS').removeClass('hide').addClass('in');
+                    setTimeout(function(){$('#changeUserS').removeClass('in').addClass('hide');$('#userChangeModal').modal('toggle');location.reload();},1500);
+                }else {
+                    $('#changeUserF').removeClass('hide').addClass('in')
+                    setTimeout(function(){$('#changeUserF').removeClass('in').addClass('hide')},3000);
+                }
+            })
+        }
+    }
+
+});
+
+/* 增加用户modal框 */
+var m_userAddModal = new Vue({
+    el:'#addUserModal',
+    data:{
+        addUser:{
+            user_name:'',
+            user_password:'',
+            user_truename:'',
+            user_phone:'',
+            user_department:'',
+            user_authority:1,
+        },
+        message,
+    },
+    methods:{
+        addNewUser:function () {
+            var url = "http://localhost:8080/adduser";
+            var self = this;
+            axios.post(url,self.addUser).then(function(response){
+                var result = response.data;
+                self.message.info = result.info;
+                if(result.result){
+                    self.clearInput();
+                    self.isInputEmpty();
+                    $('#addUserS').removeClass('hide').addClass('in');
+                    setTimeout(function(){$('#addUserS').removeClass('in').addClass('hide');$('#addUserModal').modal('toggle');location.reload();},1000);
+                }else {
+                    $('#addUserS').removeClass('hide').addClass('in')
+                    setTimeout(function(){$('#addUserF').removeClass('in').addClass('hide')},3000);
+                }
+            })
+            /*todo 输入限制*/
+        },
+        clearInput:function(){
+            var self = this;
+            self.addUser.user_name = '';
+            self.addUser.user_password = '';
+            self.addUser.user_department = '';
+            self.addUser.user_phone = '';
+            self.addUser.user_truename = '';
+            self.addUser.user_authority = 1;
+            $("#add").attr("disabled","disabled");
+            $("#add").attr("title","请填写完带*的项");
+        },
+        isInputEmpty:function () {
+            var self = this;
+            if( self.addUser.user_name != '' && self.addUser.user_password != '' && self.addUser.user_truename != '' && self.addUser.user_department != '' && self.addUser.user_authority != '' ){
+                $("#add").removeAttr("title","请填写完带*的项");
+                $("#add").removeAttr("disabled","disabled");
+            }else {
+                $("#add").attr("disabled","disabled");
+                $("#add").attr("title","请填写完带*的项");
+
+            }
+        },
+    }
+
+})
 
