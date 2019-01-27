@@ -14,18 +14,18 @@
     <!---<link rel="shortcut icon" href="pic/officeicon.ico">  -->
 </head>
 <nav class="navbar navbar-inverse navbar-fixed-top">
-    <div class="row">
+    <!--<div class="row">
         <div class="col-md-10">
             <p class="navbar-text" style="font-family: Microsoft YaHei;font-size: 18px">OFFICE 云管理</p>
         </div>
         <div id="user" class="col-md-2" style="padding-top: 4.5px">
             <div class="btn-group">
                 <img src="pic/user_icon.png" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <p class="navbar-text" style="font-family: Microsoft YaHei;font-size: 15px">{{ user_truename }}</p>
+                <button class="navbar-text" style="font-family: Microsoft YaHei;font-size: 15px;background-color: #EC3851">{{ user_truename }}</button>
                 <ul class="dropdown-menu">
                     <li><img src="pic/user2_icon.png"></li>
-                    <li style="color: #8a8a8a">{{ user_truename }}</li>
-                    <li style="color: #8a8a8a">{{ user_name }}</li>
+                    <li class="dropdown-header" style="color: #8a8a8a">{{ user_truename }}</li>
+                    <li class="dropdown-header" style="color: #8a8a8a">{{ user_name }}</li>
                     <li role="separator" class="divider"></li>
                     <li><a data-toggle="modal" data-target="#userInfo">个人详情</a></li>
                     <li><a href="http://localhost:8080/loginout">注销</a></li>
@@ -33,31 +33,56 @@
             </div>
 
         </div>
+    </div>-->
+
+    <div class="container-fluid" id="user">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="manage_officelist" style="font-family: Microsoft YaHei;font-size: 20px;color: #fff">OFFICE 云管理</a>
+        </div>
+        <div class="collapse navbar-collapse">
+            <ul class="nav navbar-nav navbar-right" style="margin-right: 50px;">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"
+                       style="font-family: Microsoft YaHei;font-size: 20px;color: #fff">{{ user_truename }}</span></a>
+                    <ul class="dropdown-menu">
+                        <li><img src="pic/user2_icon.png"></li>
+                        <li class="dropdown-header" style="color: #8a8a8a">{{ user_truename }}</li>
+                        <li class="dropdown-header" style="color: #8a8a8a">{{ user_name }}</li>
+                        <li role="separator" class="divider"></li>
+                        <li><a data-toggle="modal" data-target="#userInfo">个人详情</a></li>
+                        <li><a href="http://localhost:8080/loginout">注销</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
     </div>
+
+
 </nav>
 
-<body style="padding-top: 55px;">
+<body style="padding-top: 51px;">
 
-<div id="fun_show_left" class="left-nav">
-    <div class="list-group">
-        <a href="#" class="list-group-item " :class="{ 'list-item-active':modalShowData.m_officelist }" @click="officeListOpen">物品列表</a>
-        <a href="#" class="list-group-item" v-show="userdata.user_authority >= 3" :class="{ 'list-item-active':modalShowData.m_officeInfo }">管理物品</a>
-        <a href="#" class="list-group-item" v-show="userdata.user_authority >= 7" :class="{ 'list-item-active':modalShowData.m_userInfo }" @click="userInfoOpen">用户管理</a>
-        <a href="#" class="list-group-item" v-show="userdata.user_authority >= 3" :class="{ 'list-item-active':modalShowData.m_applyCheck }">申请审核</a>
-        <a href="#" class="list-group-item" :class="{ 'list-item-active':modalShowData.m_applylist }">申请记录</a>
-        <a href="#" class="list-group-item" :class="{ 'list-item-active':modalShowData.m_borrowlist }">借入记录</a>
-        <a href="#" class="list-group-item" :class="{ 'list-item-active':modalShowData.m_returnlist }">归还记录</a>
-        <a href="#" class="list-group-item" :class="{ 'list-item-active':modalShowData.m_usedata }">使用统计</a>
-
+<div class="left-nav">
+    <div class="list-group" id="fun_show_left">
+        <a href="manage_officelist" th:class="${isOfficeList}?'list-group-item list-item-active':'list-group-item'">物品申请</a>
+        <a href="#" class="list-group-item" v-show="userdata.user_authority >= 3">物品管理</a>
+        <a href="#" class="list-group-item" v-show="userdata.user_authority >= 3">物品类型</a>
+        <a href="manage_userInfo" th:class="${isUserInfo}?'list-group-item list-item-active':'list-group-item'" v-show="userdata.user_authority >= 7">用户管理</a>
+        <a href="#" class="list-group-item" v-show="userdata.user_authority >= 3">申请审核</a>
+        <a href="#" class="list-group-item">申请记录</a>
+        <a href="#" class="list-group-item">借入记录</a>
+        <a href="#" class="list-group-item">归还记录</a>
+        <a href="#" class="list-group-item" v-show="userdata.user_authority >= 3">使用统计</a>
+        <a href="#" class="list-group-item" v-show="userdata.user_authority >= 7">系统管理</a>
     </div>
 </div>
 
-<div id="fun_show_right" class="rigth-nav">
-    <div class="container">
+<div class="rigth-nav">
+    <div class="container" style="margin-left: 0;width: 85%;">
         <!--用户管理模块（用户查询、修改、删除、添加）-->
-        <div th:include="manage_userInfo :: m_userInfo" v-if="modalShowData.m_userInfo"></div>
-
-        <div th:include="manage_officelist :: officelist" v-if="modalShowData.m_officelist"></div>
+        <div th:include="manage_userInfo :: m_userInfo" th:if="${isUserInfo}"></div>
+        <!--物品申请模块（物品查询、借入）-->
+        <div th:include="manage_officelist :: officelist" th:if="${isOfficeList}"></div>
     </div>
 </div>
 
@@ -78,12 +103,12 @@
         $(this).addClass('list-item-active');
     });*/
 
-  var modalShowRight = new Vue ({
+/*  var modalShowRight = new Vue ({
       el:'#fun_show_right',
       data:{
           modalShowData,
       }
-  })
+  })*/
 
 
 </script>

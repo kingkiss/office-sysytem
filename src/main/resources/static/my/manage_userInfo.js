@@ -77,28 +77,7 @@ var modalShowLeft = new Vue({
         modalShowData,
     },
     methods:{
-        officeListOpen:function () {
-            var self = this;
-            self.modalShowData.m_officelist = true;
-            self.modalShowData.m_officeInfo = false;
-            self.modalShowData.m_userInfo = false;
-            self.modalShowData.m_usedata = false;
-            self.modalShowData.m_applyCheck = false;
-            self.modalShowData.m_applylist = false;
-            self.modalShowData.m_borrowlist = false;
-            self.modalShowData.m_returnlist = false;
-        },
-        userInfoOpen:function () {
-            var self = this;
-            self.modalShowData.m_officelist = false;
-            self.modalShowData.m_officeInfo = false;
-            self.modalShowData.m_userInfo = true;
-            self.modalShowData.m_usedata = false;
-            self.modalShowData.m_applyCheck = false;
-            self.modalShowData.m_applylist = false;
-            self.modalShowData.m_borrowlist = false;
-            self.modalShowData.m_returnlist = false;
-        }
+
     }
 });
 

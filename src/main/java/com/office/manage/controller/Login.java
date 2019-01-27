@@ -21,8 +21,8 @@ public class Login {
 	
 	@RequestMapping(value="/userLogin",method=RequestMethod.POST)
 	public Message getUser(@RequestBody User user ,HttpServletRequest request){
-		System.out.println("ln:"+user.getUser_name());
-		System.out.println("lp:"+user.getUser_password());
+//		System.out.println("ln:"+user.getUser_name());
+//		System.out.println("lp:"+user.getUser_password());
 //		万一用户名或者密码错误查询不出user会空指针异常,需要进一步判断
 		User user1 = userMapper.findUser(user.getUser_name());
 		Message msg = new Message();

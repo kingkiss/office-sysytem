@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 
@@ -25,12 +26,36 @@ public class Manage {
 
     //页面跳转到管理主页面(物品分类)
     @RequestMapping("/manage")
-    public String manage(){
+    public String manage(Model m){
+        boolean isUserInfo = false;
+        boolean isOfficeList = true;
+
+        m.addAttribute("isUserInfo",isUserInfo);
+        m.addAttribute("isOfficeList",isOfficeList);
         return "manage";
     }
 
     //用户管理模块的页面
     @RequestMapping("/manage_userInfo")
-    public String manage_userInfo(){ return "manage_userInfo"; }
+    public String manage_userInfo(Model m){
+        boolean isUserInfo = true;
+        boolean isOfficeList = false;
+
+        m.addAttribute("isUserInfo",isUserInfo);
+        m.addAttribute("isOfficeList",isOfficeList);
+
+        return "manage";
+    }
+
+    @RequestMapping("/manage_officelist")
+    public String manage_officelist(Model m){
+        boolean isUserInfo = false;
+        boolean isOfficeList = true;
+
+        m.addAttribute("isUserInfo",isUserInfo);
+        m.addAttribute("isOfficeList",isOfficeList);
+
+        return "manage";
+    }
 
 }

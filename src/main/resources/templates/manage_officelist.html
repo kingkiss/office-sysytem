@@ -1,12 +1,89 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<!-- 物品分类模块（物品查询，借入） -->
-<div th:fragment="officelist">
-    <div class="panel panel-default">
+<!-- 物品申请模块（物品查询，借入） -->
+<div th:fragment="officelist" >
+    <div class="panel panel-default" >
         <div class="panel-heading">物品列表</div>
         <div class="panel-body">
-            Panel content
+
+            <div>
+                <!-- Nav tabs -->
+                <ul class="nav nav-tabs" role="tablist">
+                    <li role="presentation" class="active"><a href="#stationery_category" aria-controls="home" role="tab" data-toggle="tab">文具事务用品</a></li>
+                    <li role="presentation"><a href="#consumable_category" aria-controls="profile" role="tab" data-toggle="tab">办公耗材</a></li>
+                    <li role="presentation"><a href="#equipment_category" aria-controls="messages" role="tab" data-toggle="tab">办公设备</a></li>
+                </ul>
+
+                <!-- Tab panes -->
+                <div class="tab-content">
+                    <!--文具事务用品tab页-->
+                    <div role="tabpanel" class="tab-pane active" id="stationery_category">
+                        <!--顶部搜索框-->
+                        <div class="row" style="margin-top: 15px">
+                            <div class="col-sm-4">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="输入文具名称" v-model="">
+                                    <span class="input-group-btn">
+                                <button class="btn btn-default" type="button" @click="searchU">搜索</button>
+                            </span>
+                                </div>
+                            </div>
+
+                            <!-- 申请物品信息提示框 -->
+                            <div class="col-sm-12" >
+                                <div class="alert alert-success fade hide" style="text-align: center;margin-bottom: -10px;margin-top: 10px" role="alert" id=""><strong>申请成功,{{ message.info }}</strong></div>
+                                <div class="alert alert-danger fade hide" style="text-align: center;margin-bottom: -10px;margin-top: 10px" role="alert" id=""><strong>申请失败,{{ message.info }}</strong></div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <!--办公耗材tab页-->
+                    <div role="tabpanel" class="tab-pane" id="consumable_category">
+                        <!--顶部搜索框-->
+                        <div class="row" style="margin-top: 15px">
+                            <div class="col-sm-4">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="输入耗材名称" v-model="">
+                                    <span class="input-group-btn">
+                                <button class="btn btn-default" type="button" @click="searchU">搜索</button>
+                            </span>
+                                </div>
+                            </div>
+
+                            <!-- 申请物品信息提示框 -->
+                            <div class="col-sm-12" >
+                                <div class="alert alert-success fade hide" style="text-align: center;margin-bottom: -10px;margin-top: 10px" role="alert" id="#"><strong>申请成功,{{ message.info }}</strong></div>
+                                <div class="alert alert-danger fade hide" style="text-align: center;margin-bottom: -10px;margin-top: 10px" role="alert" id="#"><strong>申请失败,{{ message.info }}</strong></div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <!--办公设备tab页-->
+                    <div role="tabpanel" class="tab-pane" id="equipment_category">
+                        <!--顶部搜索框-->
+                        <div class="row" style="margin-top: 15px">
+                            <div class="col-sm-4">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="输入设备名称" v-model="">
+                                    <span class="input-group-btn">
+                                <button class="btn btn-default" type="button" @click="searchU">搜索</button>
+                            </span>
+                                </div>
+                            </div>
+
+                            <!-- 申请物品信息提示框 -->
+                            <div class="col-sm-12" >
+                                <div class="alert alert-success fade hide" style="text-align: center;margin-bottom: -10px;margin-top: 10px" role="alert" id="#"><strong>申请成功,{{ message.info }}</strong></div>
+                                <div class="alert alert-danger fade hide" style="text-align: center;margin-bottom: -10px;margin-top: 10px" role="alert" id="#"><strong>申请失败,{{ message.info }}</strong></div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
         </div>
+        <div class="panel-footer">Panel footer</div>
     </div>
 </div>
 
