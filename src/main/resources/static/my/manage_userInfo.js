@@ -46,17 +46,21 @@ var user_Info = new Vue({
         var self = this;
         axios.get(url).then(function(response){
             var result = response.data;
-            self.user_truename = result.user_truename;
-            self.user_name = result.user_name;
-            self.user_department = result.user_department;
-            self.user_phone = result.user_phone;
-            self.user_authority = result.user_authority;
-            if(result.user_authority == 1){
-                self.user_position = "普通员工";
-            }else if(result.user_authority == 3){
-                self.user_position = "财务人员";
-            }else{
-                self.user_position = "管理员";
+            if(result.user_authority != 4396){
+                self.user_truename = result.user_truename;
+                self.user_name = result.user_name;
+                self.user_department = result.user_department;
+                self.user_phone = result.user_phone;
+                self.user_authority = result.user_authority;
+                if(result.user_authority == 1){
+                    self.user_position = "普通员工";
+                }else if(result.user_authority == 3){
+                    self.user_position = "财务人员";
+                }else{
+                    self.user_position = "管理员";
+                }
+            }else {
+                location.href="http://localhost:8080/loginout"
             }
 
         })

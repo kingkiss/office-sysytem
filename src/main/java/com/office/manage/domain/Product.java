@@ -1,16 +1,16 @@
 package com.office.manage.domain;
 
 public class Product {
-	private int id;
+	private int product_id;
 	private String product_name;
 	private int product_num;
 	private float product_price;
 	private String product_type;
 	public int getId() {
-		return id;
+		return product_id;
 	}
-	public void setId(int id) {
-		this.id = id;
+	public void setId(int product_id) {
+		this.product_id = product_id;
 	}
 	public String getProduct_name() {
 		return product_name;

@@ -3,6 +3,7 @@ package com.office.manage.controller;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,18 +22,24 @@ public class ManageData {
 	@Autowired UserMapper userMapper;
 
 	@RequestMapping("/userInfo")
-	public User userInfo(HttpServletRequest request){
+	public User userInfo(HttpServletRequest request, HttpServletResponse response){
 		HttpSession session = request.getSession();
 		User user = new User();
 		//把session中的用户信息传入实体
-		user.setUser_id((int)session.getAttribute("user_id"));
-		user.setUser_name((String)session.getAttribute("user_name"));
-		user.setUser_password((String)session.getAttribute("user_password"));
-		user.setUser_truename((String)session.getAttribute("user_truename"));
-		user.setUser_department((String)session.getAttribute("user_department"));
-		user.setUser_authority((int)session.getAttribute("user_authority"));
-		user.setUser_phone((String)session.getAttribute("user_phone"));
-		return user;
+		try{
+			user.setUser_id((int)session.getAttribute("user_id"));
+			user.setUser_name((String)session.getAttribute("user_name"));
+			user.setUser_password((String)session.getAttribute("user_password"));
+			user.setUser_truename((String)session.getAttribute("user_truename"));
+			user.setUser_department((String)session.getAttribute("user_department"));
+			user.setUser_authority((int)session.getAttribute("user_authority"));
+			user.setUser_phone((String)session.getAttribute("user_phone"));
+			return user;
+		}catch (NullPointerException n){
+			user.setUser_authority(4396);
+			return user;
+		}
+
 	}
 	
 	//用于用户自主修改姓名

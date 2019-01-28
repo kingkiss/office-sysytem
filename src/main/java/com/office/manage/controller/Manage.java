@@ -37,10 +37,10 @@ public class Manage {
 
     //用户管理模块的页面
     @RequestMapping("/manage_userInfo")
-    public String manage_userInfo(Model m){
+    public String manage_userInfo(Model m,HttpServletRequest request){
         boolean isUserInfo = true;
         boolean isOfficeList = false;
-
+        HttpSession session = request.getSession();
         m.addAttribute("isUserInfo",isUserInfo);
         m.addAttribute("isOfficeList",isOfficeList);
 
@@ -48,10 +48,10 @@ public class Manage {
     }
 
     @RequestMapping("/manage_officelist")
-    public String manage_officelist(Model m){
+    public String manage_officelist(Model m,HttpServletRequest request){
         boolean isUserInfo = false;
         boolean isOfficeList = true;
-
+        HttpSession session = request.getSession();
         m.addAttribute("isUserInfo",isUserInfo);
         m.addAttribute("isOfficeList",isOfficeList);
 
