@@ -16,104 +16,187 @@
 
                 <!-- Tab panes -->
                 <div class="tab-content">
-                    <!--文具事务用品tab页-->
+                    <!--文具事务用品tab页 stationery==文具-->
                     <div role="tabpanel" class="tab-pane active" id="stationery_category">
                         <!--顶部搜索框-->
                         <div class="row" style="margin-top: 15px">
                             <div class="col-sm-4">
                                 <div class="input-group">
-                                    <input type="text" class="form-control" placeholder="输入文具名称" v-model="">
+                                    <input type="text" class="form-control" placeholder="输入文具名称" >
                                     <span class="input-group-btn">
-                                <button class="btn btn-default" type="button" @click="searchU">搜索</button>
-                            </span>
+                                        <button class="btn btn-default" type="button" @click="">搜索</button>
+                                    </span>
                                 </div>
                             </div>
 
                             <!-- 申请物品信息提示框 -->
                             <div class="col-sm-12" >
-                                <div class="alert alert-success fade hide" style="text-align: center;margin-bottom: -10px;margin-top: 10px" role="alert" id=""><strong>申请成功,{{ message.info }}</strong></div>
-                                <div class="alert alert-danger fade hide" style="text-align: center;margin-bottom: -10px;margin-top: 10px" role="alert" id=""><strong>申请失败,{{ message.info }}</strong></div>
+                                <div class="alert alert-success fade hide" style="text-align: center;margin-bottom: -10px;margin-top: 10px" role="alert" ><strong>申请成功,</strong></div>
+                                <div class="alert alert-danger fade hide" style="text-align: center;margin-bottom: -10px;margin-top: 10px" role="alert" ><strong>申请失败,</strong></div>
                             </div>
                         </div>
                         <!--物品列表-->
-                        <table class="table table-hover">
+                        <table class="table table-hover table-condensed">
                             <thead>
                             <tr>
                                 <th>名称</th>
-                                <th>数量</th>
-                                <th>价格</th>
                                 <th>类型</th>
+                                <th>价格</th>
+                                <th>数量</th>
+                                <th>操作</th>
                             </tr>
                             </thead>
+                            <tbody>
+                            <tr v-for="stationery in stationeries">
+                                <td>{{ stationery.product_name }}</td>
+                                <td>{{ stationery.product_type }}</td>
+                                <td>￥{{ stationery.product_price }}</td>
+                                <td>{{ stationery.product_num }}</td>
+                                <td>
+                                    <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#" @click="">申请</button>
+                                </td>
+                            </tbody>
                         </table>
+                        <!--分页导航栏-->
+                        <nav aria-label="Page navigation" style="text-align: center">
+                            <ul class="pagination">
+                                <li :class="{ 'disabled': pagination.pageNum==1 }">
+                                    <a href="#" aria-label="Previous" @click="jumpPage('pre')" >
+                                        <span aria-hidden="true">&laquo;</span>
+                                    </a>
+                                </li>
+                                <li v-for="i in pagination.navigatepageNums" :class="{ 'active': pagination.pageNum==i }"><a href="#" @click="jumpByNumber(i)">{{ i }}</a></li>
+                                <li :class="{ 'disabled': pagination.pageNum==pagination.pages }">
+                                    <a href="#" aria-label="Next" @click="jumpPage('next')">
+                                        <span aria-hidden="true">&raquo;</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
                     </div>
-                    <!--办公耗材tab页-->
+
+
+
+                    <!--办公耗材tab页 consumable==消耗-->
                     <div role="tabpanel" class="tab-pane" id="consumable_category">
                         <!--顶部搜索框-->
                         <div class="row" style="margin-top: 15px">
                             <div class="col-sm-4">
                                 <div class="input-group">
-                                    <input type="text" class="form-control" placeholder="输入耗材名称" v-model="">
+                                    <input type="text" class="form-control" placeholder="输入耗材名称" >
                                     <span class="input-group-btn">
-                                <button class="btn btn-default" type="button" @click="searchU">搜索</button>
+                                <button class="btn btn-default" type="button" @click="">搜索</button>
                             </span>
                                 </div>
                             </div>
 
                             <!-- 申请物品信息提示框 -->
                             <div class="col-sm-12" >
-                                <div class="alert alert-success fade hide" style="text-align: center;margin-bottom: -10px;margin-top: 10px" role="alert" id="#"><strong>申请成功,{{ message.info }}</strong></div>
-                                <div class="alert alert-danger fade hide" style="text-align: center;margin-bottom: -10px;margin-top: 10px" role="alert" id="#"><strong>申请失败,{{ message.info }}</strong></div>
+                                <div class="alert alert-success fade hide" style="text-align: center;margin-bottom: -10px;margin-top: 10px" role="alert" ><strong>申请成功,</strong></div>
+                                <div class="alert alert-danger fade hide" style="text-align: center;margin-bottom: -10px;margin-top: 10px" role="alert" ><strong>申请失败,</strong></div>
                             </div>
                         </div>
                         <!--物品列表-->
-                        <table class="table table-hover">
+                        <table class="table table-hover table-condensed">
                             <thead>
                             <tr>
                                 <th>名称</th>
-                                <th>数量</th>
-                                <th>价格</th>
                                 <th>类型</th>
+                                <th>价格</th>
+                                <th>数量</th>
+                                <th>操作</th>
                             </tr>
                             </thead>
+                            <tbody>
+                            <tr v-for="consumable in consumables">
+                                <td>{{ consumable.product_name }}</td>
+                                <td>{{ consumable.product_type }}</td>
+                                <td>￥{{ consumable.product_price }}</td>
+                                <td>{{ consumable.product_num }}</td>
+                                <td>
+                                    <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#" @click="">申请</button>
+                                </td>
+                            </tbody>
                         </table>
+                        <!--分页导航栏-->
+                        <nav aria-label="Page navigation" style="text-align: center">
+                            <ul class="pagination">
+                                <li :class="{ 'disabled': pagination.pageNum==1 }">
+                                    <a href="#" aria-label="Previous" @click="jumpPage('pre')" >
+                                        <span aria-hidden="true">&laquo;</span>
+                                    </a>
+                                </li>
+                                <li v-for="i in pagination.navigatepageNums" :class="{ 'active': pagination.pageNum==i }"><a href="#" @click="jumpByNumber(i)">{{ i }}</a></li>
+                                <li :class="{ 'disabled': pagination.pageNum==pagination.pages }">
+                                    <a href="#" aria-label="Next" @click="jumpPage('next')">
+                                        <span aria-hidden="true">&raquo;</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
                     </div>
-                    <!--办公设备tab页-->
+
+                    <!--办公设备tab页 equipment==设备-->
                     <div role="tabpanel" class="tab-pane" id="equipment_category">
                         <!--顶部搜索框-->
                         <div class="row" style="margin-top: 15px">
                             <div class="col-sm-4">
                                 <div class="input-group">
-                                    <input type="text" class="form-control" placeholder="输入设备名称" v-model="">
+                                    <input type="text" class="form-control" placeholder="输入设备名称" >
                                     <span class="input-group-btn">
-                                <button class="btn btn-default" type="button" @click="searchU">搜索</button>
+                                <button class="btn btn-default" type="button" @click="">搜索</button>
                             </span>
                                 </div>
                             </div>
 
                             <!-- 申请物品信息提示框 -->
                             <div class="col-sm-12" >
-                                <div class="alert alert-success fade hide" style="text-align: center;margin-bottom: -10px;margin-top: 10px" role="alert" id="#"><strong>申请成功,{{ message.info }}</strong></div>
-                                <div class="alert alert-danger fade hide" style="text-align: center;margin-bottom: -10px;margin-top: 10px" role="alert" id="#"><strong>申请失败,{{ message.info }}</strong></div>
+                                <div class="alert alert-success fade hide" style="text-align: center;margin-bottom: -10px;margin-top: 10px" role="alert" ><strong>申请成功,</strong></div>
+                                <div class="alert alert-danger fade hide" style="text-align: center;margin-bottom: -10px;margin-top: 10px" role="alert" ><strong>申请失败,</strong></div>
                             </div>
                         </div>
                         <!--物品列表-->
-                        <table class="table table-hover">
+                        <table class="table table-hover table-condensed">
                             <thead>
                             <tr>
                                 <th>名称</th>
-                                <th>数量</th>
-                                <th>价格</th>
                                 <th>类型</th>
+                                <th>价格</th>
+                                <th>数量</th>
+                                <th>操作</th>
                             </tr>
                             </thead>
+                            <tbody>
+                            <tr v-for="equipment in equipments">
+                                <td>{{ equipment.product_name }}</td>
+                                <td>{{ equipment.product_type }}</td>
+                                <td>￥{{ equipment.product_price }}</td>
+                                <td>{{ equipment.product_num }}</td>
+                                <td>
+                                    <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#" @click="">申请</button>
+                                </td>
+                            </tbody>
                         </table>
+                        <!--分页导航栏-->
+                        <nav aria-label="Page navigation" style="text-align: center">
+                            <ul class="pagination">
+                                <li :class="{ 'disabled': pagination.pageNum==1 }">
+                                    <a href="#" aria-label="Previous" @click="jumpPage('pre')" >
+                                        <span aria-hidden="true">&laquo;</span>
+                                    </a>
+                                </li>
+                                <li v-for="i in pagination.navigatepageNums" :class="{ 'active': pagination.pageNum==i }"><a href="#" @click="jumpByNumber(i)">{{ i }}</a></li>
+                                <li :class="{ 'disabled': pagination.pageNum==pagination.pages }">
+                                    <a href="#" aria-label="Next" @click="jumpPage('next')">
+                                        <span aria-hidden="true">&raquo;</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
                     </div>
                 </div>
             </div>
-
         </div>
-        <div class="panel-footer">Panel footer</div>
     </div>
 </div>
 
