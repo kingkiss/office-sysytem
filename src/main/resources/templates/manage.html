@@ -82,7 +82,7 @@
         <!--用户管理模块（用户查询、修改、删除、添加）-->
         <div th:include="manage_userInfo :: m_userInfo" th:if="${isUserInfo}"></div>
         <!--物品申请模块（物品查询、借入）-->
-        <div th:include="manage_officelist :: officelist" th:if="${isOfficeList}"></div>
+        <div th:include="manage_officelist :: m_officelist" th:if="${isOfficeList}"></div>
     </div>
 </div>
 
@@ -95,6 +95,9 @@
 <!-- 用户信息修改用modal框 -->
 <div th:include="modal :: userChangeModal"></div>
 
+<!--申请物品modal框-->
+<div th:include="modal :: applyModal"></div>
+
 </body>
 <script src="my/manage_userInfo.js"></script>
 <script>
@@ -103,16 +106,19 @@
         $(this).addClass('list-item-active');
     });*/
 
-/*文具事务用品数据表格stationery_category*/
+    /*文具事务用品数据表格stationery_category(m_officelist框中数据)*/
     var stationery = new Vue({
         el:'#stationery_category',
         data:{
             message,
+            tempProductInfo,
+            searchStationeryProduct:'',
             stationeries:[],
             pagination:{},
         },
         mounted:function () {
             this.stationeryList(1);
+
         },
         methods:{
             stationeryList:function (start) {
@@ -138,15 +144,33 @@
                     self.stationeryList( self.pagination.nextPage );
                 };
             },
+            searchStationery:function () {
+                var self = this;
+                var url = "http://localhost:8080/SearchOffice";
+                axios.get(url,{params:{type:'文具事务用品',product:self.searchStationeryProduct}}).then(function(response){
+                    var result = response.data;
+                    self.stationeries = result.SearchProduct;
+                    self.pagination = result.page;
+                })
+            },
+            applyStationeryProduct:function (product) {
+                var self = this;
+                self.tempProductInfo.product_name = product.product_name;
+                self.tempProductInfo.product_num = product.product_num;
+                self.tempProductInfo.product_price = product.product_price;
+                self.tempProductInfo.product_type = product.product_type;
+            }
         }
 
     });
 
-    /*办公耗材数据表格consumable_category*/
+    /*办公耗材数据表格consumable_category(m_officelist框中数据)*/
     var consumable = new Vue({
         el:'#consumable_category',
         data:{
             message,
+            tempProductInfo,
+            searchConsumableProduct:'',
             consumables:[],
             pagination:{},
         },
@@ -177,14 +201,32 @@
                     self.consumableList( self.pagination.nextPage );
                 };
             },
+            searchConsumable:function () {
+                var self = this;
+                var url = "http://localhost:8080/SearchOffice";
+                axios.get(url,{params:{type:'办公耗材',product:self.searchConsumableProduct}}).then(function(response){
+                    var result = response.data;
+                    self.consumables = result.SearchProduct;
+                    self.pagination = result.page;
+                })
+            },
+            applyConsumableProduct:function (product) {
+                var self = this;
+                self.tempProductInfo.product_name = product.product_name;
+                self.tempProductInfo.product_num = product.product_num;
+                self.tempProductInfo.product_price = product.product_price;
+                self.tempProductInfo.product_type = product.product_type;
+            }
         }
     });
 
-    /*办公设备数据表格equipment_category*/
+    /*办公设备数据表格equipment_category(m_officelist框中数据)*/
     var equipment = new Vue({
         el:'#equipment_category',
         data:{
             message,
+            tempProductInfo,
+            searchEquipmentProduct:'',
             equipments:[],
             pagination:{},
         },
@@ -215,9 +257,48 @@
                     self.equipmentList( self.pagination.nextPage );
                 };
             },
+            searchEquipment:function () {
+                var self = this;
+                var url = "http://localhost:8080/SearchOffice";
+                axios.get(url,{params:{type:'办公设备',product:self.searchEquipmentProduct}}).then(function(response){
+                    var result = response.data;
+                    self.equipments = result.SearchProduct;
+                    self.pagination = result.page;
+                })
+            },
+            applyEquipmentProduct:function (product) {
+                var self = this;
+                self.tempProductInfo.product_name = product.product_name;
+                self.tempProductInfo.product_num = product.product_num;
+                self.tempProductInfo.product_price = product.product_price;
+                self.tempProductInfo.product_type = product.product_type;
+            }
         }
     });
 
+    /*物品申请modal框数据处理*/
+    var m_officeApplyModal = new Vue({
+        el:'#applyModal',
+        data:{
+            tempProductInfo,
+        },
+        methods:{
+            addApplyNum:function () {
+                var self = this;
+                if(self.tempProductInfo.apply_num >= self.tempProductInfo.product_num){
+
+                }else{
+                    self.tempProductInfo.apply_num++;
+                }
+            },
+            reduceApplyNum:function () {
+                var self = this;
+                if(self.tempProductInfo.apply_num >1){
+                    self.tempProductInfo.apply_num--;
+                }
+            }
+        }
+    })
 </script>
 
 </html>

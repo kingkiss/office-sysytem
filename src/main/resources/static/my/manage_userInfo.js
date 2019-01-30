@@ -36,6 +36,13 @@ var modalShowData = {
     m_usedata:false,
 };
 
+var tempProductInfo = {
+    product_name:'',
+    product_num:'',
+    product_price:'',
+    product_type:'',
+    apply_num:1,
+};
 
 /* vue获取数据 */
 var user_Info = new Vue({
@@ -403,5 +410,5 @@ var m_userAddModal = new Vue({
         },
     }
 
-})
+});
 

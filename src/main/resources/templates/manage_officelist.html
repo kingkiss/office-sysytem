@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <!-- 物品申请模块（物品查询，借入） -->
-<div th:fragment="officelist" >
+<div th:fragment="m_officelist" >
     <div class="panel panel-default" >
         <div class="panel-heading">物品列表</div>
         <div class="panel-body">
@@ -22,9 +22,9 @@
                         <div class="row" style="margin-top: 15px">
                             <div class="col-sm-4">
                                 <div class="input-group">
-                                    <input type="text" class="form-control" placeholder="输入文具名称" >
+                                    <input type="text" class="form-control" placeholder="输入文具名称" v-model="searchStationeryProduct">
                                     <span class="input-group-btn">
-                                        <button class="btn btn-default" type="button" @click="">搜索</button>
+                                        <button class="btn btn-default" type="button" @click="searchStationery">搜索</button>
                                     </span>
                                 </div>
                             </div>
@@ -53,7 +53,8 @@
                                 <td>￥{{ stationery.product_price }}</td>
                                 <td>{{ stationery.product_num }}</td>
                                 <td>
-                                    <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#" @click="">申请</button>
+                                    <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#applyModal" @click="applyStationeryProduct(stationery)" v-if="stationery.product_num>0">申请</button>
+                                    <button type="button" class="btn btn-danger btn-sm" disabled="disabled" v-else>库存不足</button>
                                 </td>
                             </tbody>
                         </table>
@@ -75,17 +76,15 @@
                         </nav>
                     </div>
 
-
-
                     <!--办公耗材tab页 consumable==消耗-->
                     <div role="tabpanel" class="tab-pane" id="consumable_category">
                         <!--顶部搜索框-->
                         <div class="row" style="margin-top: 15px">
                             <div class="col-sm-4">
                                 <div class="input-group">
-                                    <input type="text" class="form-control" placeholder="输入耗材名称" >
+                                    <input type="text" class="form-control" placeholder="输入耗材名称" v-model="searchConsumableProduct">
                                     <span class="input-group-btn">
-                                <button class="btn btn-default" type="button" @click="">搜索</button>
+                                <button class="btn btn-default" type="button" @click="searchConsumable">搜索</button>
                             </span>
                                 </div>
                             </div>
@@ -114,7 +113,7 @@
                                 <td>￥{{ consumable.product_price }}</td>
                                 <td>{{ consumable.product_num }}</td>
                                 <td>
-                                    <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#" @click="">申请</button>
+                                    <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#applyModal" @click="applyConsumableProduct(consumable)">申请</button>
                                 </td>
                             </tbody>
                         </table>
@@ -142,9 +141,9 @@
                         <div class="row" style="margin-top: 15px">
                             <div class="col-sm-4">
                                 <div class="input-group">
-                                    <input type="text" class="form-control" placeholder="输入设备名称" >
+                                    <input type="text" class="form-control" placeholder="输入设备名称" v-model="searchEquipmentProduct">
                                     <span class="input-group-btn">
-                                <button class="btn btn-default" type="button" @click="">搜索</button>
+                                <button class="btn btn-default" type="button" @click="searchEquipment">搜索</button>
                             </span>
                                 </div>
                             </div>
@@ -173,7 +172,7 @@
                                 <td>￥{{ equipment.product_price }}</td>
                                 <td>{{ equipment.product_num }}</td>
                                 <td>
-                                    <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#" @click="">申请</button>
+                                    <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#applyModal" @click="applyEquipmentProduct(equipment)">申请</button>
                                 </td>
                             </tbody>
                         </table>
