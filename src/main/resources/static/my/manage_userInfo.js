@@ -6,6 +6,7 @@ var userdata = {
     user_phone:'',
     user_authority:'',
     user_position:'',
+    user_id:'',
     show_7:false,
     show_3:false,
 };
@@ -37,6 +38,7 @@ var modalShowData = {
 };
 
 var tempProductInfo = {
+    product_id:'',
     product_name:'',
     product_num:'',
     product_price:'',
@@ -54,6 +56,7 @@ var user_Info = new Vue({
         axios.get(url).then(function(response){
             var result = response.data;
             if(result.user_authority != 4396){
+                self.user_id = result.user_id;
                 self.user_truename = result.user_truename;
                 self.user_name = result.user_name;
                 self.user_department = result.user_department;

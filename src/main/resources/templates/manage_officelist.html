@@ -53,7 +53,7 @@
                                 <td>￥{{ stationery.product_price }}</td>
                                 <td>{{ stationery.product_num }}</td>
                                 <td>
-                                    <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#applyModal" @click="applyStationeryProduct(stationery)" v-if="stationery.product_num>0">申请</button>
+                                    <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#applyModal" @click="applyStationeryProduct(stationery)" v-if="stationery.product_num>0" >申请</button>
                                     <button type="button" class="btn btn-danger btn-sm" disabled="disabled" v-else>库存不足</button>
                                 </td>
                             </tbody>

@@ -159,6 +159,7 @@
                 self.tempProductInfo.product_num = product.product_num;
                 self.tempProductInfo.product_price = product.product_price;
                 self.tempProductInfo.product_type = product.product_type;
+                self.tempProductInfo.product_id = product.product_id;
             }
         }
 
@@ -216,6 +217,7 @@
                 self.tempProductInfo.product_num = product.product_num;
                 self.tempProductInfo.product_price = product.product_price;
                 self.tempProductInfo.product_type = product.product_type;
+                self.tempProductInfo.product_id = product.product_id;
             }
         }
     });
@@ -272,6 +274,7 @@
                 self.tempProductInfo.product_num = product.product_num;
                 self.tempProductInfo.product_price = product.product_price;
                 self.tempProductInfo.product_type = product.product_type;
+                self.tempProductInfo.product_id = product.product_id;
             }
         }
     });
@@ -281,21 +284,30 @@
         el:'#applyModal',
         data:{
             tempProductInfo,
+            userdata,
+            message,
         },
         methods:{
-            addApplyNum:function () {
+            submitApply:function () {
                 var self = this;
-                if(self.tempProductInfo.apply_num >= self.tempProductInfo.product_num){
-
-                }else{
-                    self.tempProductInfo.apply_num++;
-                }
-            },
-            reduceApplyNum:function () {
-                var self = this;
-                if(self.tempProductInfo.apply_num >1){
-                    self.tempProductInfo.apply_num--;
-                }
+                var url = 'http://localhost:8080/addApply';
+                var nowDate = new Date();
+                var param = {
+                    apply_user_id:userdata.user_id,
+                    apply_product_id:tempProductInfo.product_id,
+                    apply_num:tempProductInfo.apply_num,
+                    apply_time:nowDate.toLocaleDateString(),
+                };
+                axios.post(url,param).then(function (response) {
+                    var result = response.data;
+                    if(result.result){
+                        $('#addApplyS').removeClass('hide').addClass('in');
+                        setTimeout(function(){$('#addApplyS').removeClass('in').addClass('hide');$('#applyModal').modal('toggle');location.reload();},1500);
+                    }else{
+                        $('#addApplyS').removeClass('hide').addClass('in');
+                        setTimeout(function(){$('#addApplyS').removeClass('in').addClass('hide')},3000);
+                    }
+                })
             }
         }
     })
