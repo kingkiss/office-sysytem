@@ -56,8 +56,6 @@
             </ul>
         </div>
     </div>
-
-
 </nav>
 
 <body style="padding-top: 51px;">
@@ -65,7 +63,7 @@
 <div class="left-nav">
     <div class="list-group" id="fun_show_left">
         <a href="manage_officelist" th:class="${isOfficeList}?'list-group-item list-item-active':'list-group-item'">物品申请</a>
-        <a href="#" class="list-group-item" v-show="userdata.user_authority >= 3">物品管理</a>
+        <a href="manage_officeInfo" th:class="${isOfficeInfo}?'list-group-item list-item-active':'list-group-item'" v-show="userdata.user_authority >= 3">物品管理</a>
         <a href="#" class="list-group-item" v-show="userdata.user_authority >= 3">物品类型</a>
         <a href="manage_userInfo" th:class="${isUserInfo}?'list-group-item list-item-active':'list-group-item'" v-show="userdata.user_authority >= 7">用户管理</a>
         <a href="#" class="list-group-item" v-show="userdata.user_authority >= 3">申请审核</a>
@@ -83,6 +81,8 @@
         <div th:include="manage_userInfo :: m_userInfo" th:if="${isUserInfo}"></div>
         <!--物品申请模块（物品查询、借入）-->
         <div th:include="manage_officelist :: m_officelist" th:if="${isOfficeList}"></div>
+        <!--物品管理模块（物品增删改查） -->
+        <div th:include="manage_officeInfo :: m_officeInfo" th:if="${isOfficeInfo}"></div>
     </div>
 </div>
 
@@ -99,216 +99,62 @@
 <div th:include="modal :: applyModal"></div>
 
 </body>
+<script src="my/public_data.js"></script>
 <script src="my/manage_userInfo.js"></script>
+<script src="my/manage_officelist.js"></script>
 <script>
 /*    $('.list-group-item').click(function () {
         $(this).siblings('.list-group-item').removeClass('list-item-active');
         $(this).addClass('list-item-active');
     });*/
 
-    /*文具事务用品数据表格stationery_category(m_officelist框中数据)*/
-    var stationery = new Vue({
-        el:'#stationery_category',
+/*m_officeInfo物品管理模块数据处理*/
+    var m_officeInfo = new Vue({
+        el:'#allProduct',
         data:{
             message,
-            tempProductInfo,
-            searchStationeryProduct:'',
-            stationeries:[],
-            pagination:{},
-        },
-        mounted:function () {
-            this.stationeryList(1);
-
-        },
-        methods:{
-            stationeryList:function (start) {
-                var url = "http://localhost:8080/allStationery";
-                var self = this;
-                axios.get(url,{params:{start:start}}).then(function(response){
-                    var result = response.data;
-                    self.stationeries = result.products;
-                    self.pagination = result.page;
-                })
-            },
-            jumpByNumber:function (start) {
-                var self = this;
-                if( start != self.pagination.pageNum ){
-                    self.stationeryList(start);
-                };
-            },
-            jumpPage:function (page) {
-                var self = this;
-                if( page == 'pre' && self.pagination.hasPreviousPage ){
-                    self.stationeryList( self.pagination.prePage );
-                }else if( page == 'next' && self.pagination.hasNextPage ){
-                    self.stationeryList( self.pagination.nextPage );
-                };
-            },
-            searchStationery:function () {
-                var self = this;
-                var url = "http://localhost:8080/SearchOffice";
-                axios.get(url,{params:{type:'文具事务用品',product:self.searchStationeryProduct}}).then(function(response){
-                    var result = response.data;
-                    self.stationeries = result.SearchProduct;
-                    self.pagination = result.page;
-                })
-            },
-            applyStationeryProduct:function (product) {
-                var self = this;
-                self.tempProductInfo.product_name = product.product_name;
-                self.tempProductInfo.product_num = product.product_num;
-                self.tempProductInfo.product_price = product.product_price;
-                self.tempProductInfo.product_type = product.product_type;
-                self.tempProductInfo.product_id = product.id;
-            }
-        }
-
-    });
-
-    /*办公耗材数据表格consumable_category(m_officelist框中数据)*/
-    var consumable = new Vue({
-        el:'#consumable_category',
-        data:{
-            message,
-            tempProductInfo,
-            searchConsumableProduct:'',
-            consumables:[],
-            pagination:{},
-        },
-        mounted:function () {
-            this.consumableList(1)
-        },
-        methods:{
-            consumableList:function (start) {
-                var url = "http://localhost:8080/allConsumable";
-                var self = this;
-                axios.get(url,{params:{start:start}}).then(function(response){
-                    var result = response.data;
-                    self.consumables = result.products;
-                    self.pagination = result.page;
-                })
-            },
-            jumpByNumber:function (start) {
-                var self = this;
-                if( start != self.pagination.pageNum ){
-                    self.consumableList(start);
-                };
-            },
-            jumpPage:function (page) {
-                var self = this;
-                if( page == 'pre' && self.pagination.hasPreviousPage ){
-                    self.consumableList( self.pagination.prePage );
-                }else if( page == 'next' && self.pagination.hasNextPage ){
-                    self.consumableList( self.pagination.nextPage );
-                };
-            },
-            searchConsumable:function () {
-                var self = this;
-                var url = "http://localhost:8080/SearchOffice";
-                axios.get(url,{params:{type:'办公耗材',product:self.searchConsumableProduct}}).then(function(response){
-                    var result = response.data;
-                    self.consumables = result.SearchProduct;
-                    self.pagination = result.page;
-                })
-            },
-            applyConsumableProduct:function (product) {
-                var self = this;
-                self.tempProductInfo.product_name = product.product_name;
-                self.tempProductInfo.product_num = product.product_num;
-                self.tempProductInfo.product_price = product.product_price;
-                self.tempProductInfo.product_type = product.product_type;
-                self.tempProductInfo.product_id = product.id;
-            }
-        }
-    });
-
-    /*办公设备数据表格equipment_category(m_officelist框中数据)*/
-    var equipment = new Vue({
-        el:'#equipment_category',
-        data:{
-            message,
-            tempProductInfo,
-            searchEquipmentProduct:'',
-            equipments:[],
-            pagination:{},
-        },
-        mounted:function () {
-            this.equipmentList(1);
-        },
-        methods:{
-            equipmentList:function (start) {
-                var url = "http://localhost:8080/allEquipment";
-                var self = this;
-                axios.get(url,{params:{start:start}}).then(function(response){
-                    var result = response.data;
-                    self.equipments = result.products;
-                    self.pagination = result.page;
-                    
-                })
-            },
-            jumpByNumber:function (start) {
-                var self = this;
-                if( start != self.pagination.pageNum ){
-                    self.equipmentList(start);
-                };
-            },
-            jumpPage:function (page) {
-                var self = this;
-                if( page == 'pre' && self.pagination.hasPreviousPage ){
-                    self.equipmentList( self.pagination.prePage );
-                }else if( page == 'next' && self.pagination.hasNextPage ){
-                    self.equipmentList( self.pagination.nextPage );
-                };
-            },
-            searchEquipment:function () {
-                var self = this;
-                var url = "http://localhost:8080/SearchOffice";
-                axios.get(url,{params:{type:'办公设备',product:self.searchEquipmentProduct}}).then(function(response){
-                    var result = response.data;
-                    self.equipments = result.SearchProduct;
-                    self.pagination = result.page;
-                })
-            },
-            applyEquipmentProduct:function (product) {
-                var self = this;
-                self.tempProductInfo.product_name = product.product_name;
-                self.tempProductInfo.product_num = product.product_num;
-                self.tempProductInfo.product_price = product.product_price;
-                self.tempProductInfo.product_type = product.product_type;
-                self.tempProductInfo.product_id = product.id;
-            }
-        }
-    });
-
-    /*物品申请modal框数据处理*/
-    var m_officeApplyModal = new Vue({
-        el:'#applyModal',
-        data:{
-            tempProductInfo,
             userdata,
-            message,
+            tempProductInfo,
+            searchProduct:'',
+            products:[],
+            pagination:{},
+        },
+        mounted:function(){
+            this.productList(1);
         },
         methods:{
-            submitApply:function () {
+            productList:function (start) {
+                var url = "http://localhost:8080/allProduct";
                 var self = this;
-                var url = 'http://localhost:8080/addApply';
-                var nowDate = new Date();
-                var param = {
-                    apply_user_id:userdata.user_id,
-                    apply_product_id:tempProductInfo.product_id,
-                    apply_num:tempProductInfo.apply_num,
-                };
-                axios.post(url,param).then(function (response) {
+                axios.get(url,{params:{start:start}}).then(function(response){
                     var result = response.data;
-                    if(result.result){
-                        $('#addApplyS').removeClass('hide').addClass('in');
-                        setTimeout(function(){$('#addApplyS').removeClass('in').addClass('hide');$('#applyModal').modal('toggle');location.reload();},1500);
-                    }else{
-                        $('#addApplyS').removeClass('hide').addClass('in');
-                        setTimeout(function(){$('#addApplyS').removeClass('in').addClass('hide')},3000);
-                    }
+                    self.products = result.AllProducts;
+                    self.pagination = result.page;
                 })
-            }
+            },
+            jumpByNumber:function (start) {
+                var self = this;
+                if( start != self.pagination.pageNum ){
+                    self.productList(start);
+                };
+            },
+            jumpPage:function (page) {
+                var self = this;
+                if( page == 'pre' && self.pagination.hasPreviousPage ){
+                    self.productList( self.pagination.prePage );
+                }else if( page == 'next' && self.pagination.hasNextPage ){
+                    self.productList( self.pagination.nextPage );
+                };
+            },
+            searchProductList:function () {
+                var self = this;
+                var url = "http://localhost:8080/SearchProduct";
+                axios.get(url,{params:{product:self.searchProduct}}).then(function(response){
+                    var result = response.data;
+                    self.products = result.SearchProduct;
+                    self.pagination = result.page;
+                })
+            },
         }
     })
 </script>

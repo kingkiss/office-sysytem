@@ -1,10 +1,72 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
-</body>
+
+<!-- 物品管理模块（物品增删改查） -->
+<div th:fragment="m_officeInfo" >
+    <div class="panel panel-default" id="allProduct">
+        <div class="panel-heading">物品管理</div>
+        <div class="panel-body">
+            <!--顶部搜索框-->
+            <div class="row" style="margin-top: 15px">
+                <div class="col-sm-4">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="输入物品名称或类型" v-model="searchProduct">
+                        <span class="input-group-btn">
+                                <button class="btn btn-default" type="button" @click="searchProductList">搜索</button>
+                            </span>
+                    </div>
+                </div>
+
+                <!-- 修改物品信息提示框 -->
+                <div class="col-sm-12" >
+                    <div class="alert alert-success fade hide" style="text-align: center;margin-bottom: -10px;margin-top: 10px" role="alert" ><strong>申请成功,</strong></div>
+                    <div class="alert alert-danger fade hide" style="text-align: center;margin-bottom: -10px;margin-top: 10px" role="alert" ><strong>申请失败,</strong></div>
+                </div>
+            </div>
+
+        </div>
+        <!--物品列表-->
+        <table class="table table-hover table-condensed">
+            <thead>
+            <tr>
+                <th>名称</th>
+                <th>类型</th>
+                <th>价格</th>
+                <th>数量</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="product in products">
+                <td>{{ product.product_name }}</td>
+                <td>{{ product.product_type }}</td>
+                <td>￥{{ product.product_price }}</td>
+                <td>{{ product.product_num }}</td>
+                <td>
+                    <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#" @click="applyEquipmentProduct(equipment)">修改</button>
+                    <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#" @click="applyEquipmentProduct(equipment)">删除</button>
+                </td>
+            </tbody>
+        </table>
+        <!--分页导航栏-->
+        <nav aria-label="Page navigation" style="text-align: center">
+            <ul class="pagination">
+                <li :class="{ 'disabled': pagination.pageNum==1 }">
+                    <a href="#" aria-label="Previous" @click="jumpPage('pre')" >
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                <li v-for="i in pagination.navigatepageNums" :class="{ 'active': pagination.pageNum==i }"><a href="#" @click="jumpByNumber(i)">{{ i }}</a></li>
+                <li :class="{ 'disabled': pagination.pageNum==pagination.pages }">
+                    <a href="#" aria-label="Next" @click="jumpPage('next')">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+
+
 </html>

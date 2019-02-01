@@ -11,6 +11,14 @@ import java.util.List;
 @Mapper
 public interface ProductMapper {
 
+    //查询所有物品
+    @Select("SELECT * FROM product_info")
+    public List<Product> getAllProduct();
+
+    //从所有物品中搜索
+    @Select("SELECT * FROM product_info WHERE product_name LIKE #{search} OR product_type LIKE #{search}")
+    public List<Product> getProductFromAllProduct(String search);
+
     //根据type_info表中type_category的值来查询product_type子分类
     @Select("SELECT product_info.* FROM product_info LEFT JOIN type_info on product_info.product_type=type_info.product_type WHERE type_category=#{typeCategory}")
     public List<Product> getProductByTypeCategory(String typeCategory);

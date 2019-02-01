@@ -22,6 +22,35 @@ public class ProductData {
     @Autowired
     ProductMapper productMapper;
 
+    //获取所有物品
+    @RequestMapping(value = "/allProduct",method = RequestMethod.GET)
+    public Map<String,Object> getAllProductList(@RequestParam(value = "start",defaultValue = "1") int start , @RequestParam(value = "size" ,defaultValue = "15") int size,
+                                                       @RequestParam(value = "orderBy" ,defaultValue = "product_id asc") String orderBy){
+        PageHelper.startPage(start,size,orderBy);
+        List<Product> products = productMapper.getAllProduct();
+        PageInfo<Product> page = new PageInfo<>(products);
+        Map<String,Object> m = new HashMap<>();
+        m.put("AllProducts",products);
+        m.put("page",page);
+        return m;
+
+    }
+
+    //搜索物品（用名称和类型，type是大的分类）
+    @RequestMapping(value = "/SearchProduct",method = RequestMethod.GET)
+    public Map<String,Object> getSearchProduct(@RequestParam(value = "start",defaultValue = "1") int start , @RequestParam(value = "size" ,defaultValue = "15") int size ,
+                                                      @RequestParam(value = "product",defaultValue = "") String product){
+        String search = "%"+product+"%";
+        PageHelper.startPage(start,size);
+        List<Product> SearchProducts = productMapper.getProductFromAllProduct(search);
+        PageInfo<Product> Searchpage = new PageInfo<>(SearchProducts);
+        Map<String,Object> su = new HashMap<>();
+        su.put("SearchProduct",SearchProducts);
+        su.put("page",Searchpage);
+        return su;
+    }
+
+
     //获取文具类物品数据
     @RequestMapping(value = "/allStationery",method = RequestMethod.GET)
     public Map<String,Object> getStationeryProductList(@RequestParam(value = "start",defaultValue = "1") int start , @RequestParam(value = "size" ,defaultValue = "15") int size,
@@ -77,6 +106,7 @@ public class ProductData {
         su.put("page",Searchpage);
         return su;
     }
+
 
 
 }

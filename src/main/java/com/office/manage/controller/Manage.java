@@ -24,14 +24,16 @@ public class Manage {
     	return "login";
     }
 
-    //页面跳转到管理主页面(物品分类)
+    //页面跳转到管理主页面(物品申请)
     @RequestMapping("/manage")
     public String manage(Model m){
         boolean isUserInfo = false;
         boolean isOfficeList = true;
+        boolean isOfficeInfo = false;
 
         m.addAttribute("isUserInfo",isUserInfo);
         m.addAttribute("isOfficeList",isOfficeList);
+        m.addAttribute("isOfficeInfo",isOfficeInfo);
         return "manage";
     }
 
@@ -40,20 +42,39 @@ public class Manage {
     public String manage_userInfo(Model m,HttpServletRequest request){
         boolean isUserInfo = true;
         boolean isOfficeList = false;
+        boolean isOfficeInfo = false;
+
         HttpSession session = request.getSession();
         m.addAttribute("isUserInfo",isUserInfo);
         m.addAttribute("isOfficeList",isOfficeList);
+        m.addAttribute("isOfficeInfo",isOfficeInfo);
 
         return "manage";
     }
 
+    //页面跳转到物品申请管理页面(物品申请)-_-!
     @RequestMapping("/manage_officelist")
     public String manage_officelist(Model m,HttpServletRequest request){
         boolean isUserInfo = false;
         boolean isOfficeList = true;
-        HttpSession session = request.getSession();
+        boolean isOfficeInfo = false;
+
         m.addAttribute("isUserInfo",isUserInfo);
         m.addAttribute("isOfficeList",isOfficeList);
+        m.addAttribute("isOfficeInfo",isOfficeInfo);
+        return "manage";
+    }
+
+    //页面跳转到物品管理页面(物品管理)
+    @RequestMapping("/manage_officeInfo")
+    public String manage_officeInfo(Model m,HttpServletRequest request){
+        boolean isUserInfo = false;
+        boolean isOfficeList = false;
+        boolean isOfficeInfo = true;
+
+        m.addAttribute("isUserInfo",isUserInfo);
+        m.addAttribute("isOfficeList",isOfficeList);
+        m.addAttribute("isOfficeInfo",isOfficeInfo);
 
         return "manage";
     }
