@@ -16,6 +16,6 @@ public interface ApplyListMapper {
 
 	//提交申请，插入物品申请记录
 	@Insert("INSERT INTO apply_info(apply_user_id,apply_product_id,apply_num,apply_time) VALUES (#{user_id},#{product_id},#{num},#{time})")
-	public int addProductApply(int user_id, int product_id, int num, Date time);
+	public int addProductApply(int user_id, int product_id, int num, String time);
 
 }

@@ -159,7 +159,7 @@
                 self.tempProductInfo.product_num = product.product_num;
                 self.tempProductInfo.product_price = product.product_price;
                 self.tempProductInfo.product_type = product.product_type;
-                self.tempProductInfo.product_id = product.product_id;
+                self.tempProductInfo.product_id = product.id;
             }
         }
 
@@ -217,7 +217,7 @@
                 self.tempProductInfo.product_num = product.product_num;
                 self.tempProductInfo.product_price = product.product_price;
                 self.tempProductInfo.product_type = product.product_type;
-                self.tempProductInfo.product_id = product.product_id;
+                self.tempProductInfo.product_id = product.id;
             }
         }
     });
@@ -243,6 +243,7 @@
                     var result = response.data;
                     self.equipments = result.products;
                     self.pagination = result.page;
+                    
                 })
             },
             jumpByNumber:function (start) {
@@ -274,7 +275,7 @@
                 self.tempProductInfo.product_num = product.product_num;
                 self.tempProductInfo.product_price = product.product_price;
                 self.tempProductInfo.product_type = product.product_type;
-                self.tempProductInfo.product_id = product.product_id;
+                self.tempProductInfo.product_id = product.id;
             }
         }
     });
@@ -296,7 +297,6 @@
                     apply_user_id:userdata.user_id,
                     apply_product_id:tempProductInfo.product_id,
                     apply_num:tempProductInfo.apply_num,
-                    apply_time:nowDate.toLocaleDateString(),
                 };
                 axios.post(url,param).then(function (response) {
                     var result = response.data;
