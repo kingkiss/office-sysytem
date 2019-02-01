@@ -332,7 +332,93 @@
     </div>
 </div>
 
+<!--修改物品modal框-->
+<div th:fragment="changeProductModal">
+    <div class="modal fade" tabindex="-1" role="dialog" id="changeProduct">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">修改物品信息</h4>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label>物品名称:{{ tempProductInfo.product_name }}</label>
+                            <input type="text" class="form-control" placeholder="name" v-model="tempProductInfo.product_name">
+                        </div>
+                        <hr>
+                        <div class="form-group">
+                            <label>物品类型:{{ tempProductInfo.product_type }}</label>
+                            <select class="selectpicker show-tick form-control" data-live-search="true" v-model="tempProductInfo.product_type">
+                                <option>文件档案管理</option>
+                                <option>桌面用品</option>
+                                <option>办公本簿</option>
+                                <option>书写修正</option>
+                                <option>辅助用品</option>
+                                <option>电脑周边用品</option>
+                                <option>财务用品</option>
+                                <option>打印耗材</option>
+                                <option>装订耗材</option>
+                            </select>
+                        </div>
+                        <hr>
+                        <div class="form-group">
+                            <label>物品价格:￥{{ tempProductInfo.product_price }}</label>
+                            <input type="text" class="form-control" placeholder="price" v-model="tempProductInfo.product_price">
+                        </div>
+                        <hr>
+                        <div class="form-group">
+                            <label>物品数量:{{ tempProductInfo.product_num }}</label>
+                            <div class="row">
+                                <div class="col-lg-7 center-block">
+                                    <div class="input-group">
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-default" type="button" @click="tempProductInfo.product_num--" v-if="tempProductInfo.product_num>1">-</button>
+                                            <button class="btn btn-default" type="button" @click="tempProductInfo.product_num--" disabled="disabled" v-else>-</button>
+                                        </span>
+                                        <input type="text" class="form-control" placeholder="" v-model="tempProductInfo.product_num">
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-default"  type="button" @click="tempProductInfo.product_num++" v-if="tempProductInfo.product_num<999">+</button>
+                                            <button class="btn btn-default"  type="button" @click="tempProductInfo.product_num++" disabled="disabled" v-else>+</button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary">保存</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
 
+</div>
+
+<!--增加物品modal框-->
+<div th:fragment="addProductModal">
+    <div class="modal fade" tabindex="-1" role="dialog" id="addProduct">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">添加新物品</h4>
+                </div>
+                <div class="modal-body">
+                    <p>One fine body&hellip;</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary">保存</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+</div>
 
 
 </html>

@@ -98,6 +98,12 @@
 <!--申请物品modal框-->
 <div th:include="modal :: applyModal"></div>
 
+<!--修改物品modal框-->
+<div th:include="modal :: changeProductModal"></div>
+
+<!--增加物品modal框-->
+<div th:include="modal :: addProductModal"></div>
+
 </body>
 <script src="my/public_data.js"></script>
 <script src="my/manage_userInfo.js"></script>
@@ -155,6 +161,28 @@
                     self.pagination = result.page;
                 })
             },
+            /*添加数据到申请物品暂存*/
+            addTempProduct: function (product) {
+                var self = this;
+                self.tempProductInfo.product_name = product.product_name;
+                self.tempProductInfo.product_num = product.product_num;
+                self.tempProductInfo.product_price = product.product_price;
+                self.tempProductInfo.product_type = product.product_type;
+                self.tempProductInfo.product_id = product.id;
+            }
+        }
+    })
+
+    /*修改物品modal框数据处理*/
+    var m_changeProduct = new Vue({
+        el:'#changeProduct',
+        data:{
+            message,
+            userdata,
+            tempProductInfo,
+        },
+        methods: {
+
         }
     })
 </script>

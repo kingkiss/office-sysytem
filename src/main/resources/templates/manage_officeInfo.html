@@ -17,7 +17,9 @@
                             </span>
                     </div>
                 </div>
-
+                <div class="col-sm-1">
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addProduct">添加物品</button>
+                </div>
                 <!-- 修改物品信息提示框 -->
                 <div class="col-sm-12" >
                     <div class="alert alert-success fade hide" style="text-align: center;margin-bottom: -10px;margin-top: 10px" role="alert" ><strong>申请成功,</strong></div>
@@ -44,8 +46,8 @@
                 <td>￥{{ product.product_price }}</td>
                 <td>{{ product.product_num }}</td>
                 <td>
-                    <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#" @click="applyEquipmentProduct(equipment)">修改</button>
-                    <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#" @click="applyEquipmentProduct(equipment)">删除</button>
+                    <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#changeProduct" @click="addTempProduct(product)">修改</button>
+                    <button type="button" class="btn btn-danger btn-sm" @click="applyEquipmentProduct(equipment)" v-if="userdata.user_authority>=7">删除</button>
                 </td>
             </tbody>
         </table>
