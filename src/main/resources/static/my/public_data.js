@@ -41,7 +41,7 @@ var modalShowData = {
 var tempProductInfo = {
     product_id:'',
     product_name:'',
-    product_num:'',
+    product_num:0,
     product_price:'',
     product_type:'',
     apply_num:1,

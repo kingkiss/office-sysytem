@@ -1,5 +1,6 @@
 package com.office.manage.domain;
 
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
@@ -36,6 +37,8 @@ public interface ProductMapper {
     @Update("UPDATE product_info SET product_num=product_num-#{apply_num} WHERE product_id=#{product_id}")
     public int updataProductNum(int apply_num,int product_id);
 
-
+    //添加新物品
+    @Insert("INSERT INTO product_info (product_name,product_num,product_price,product_type) VALUES (#{product_name},#{product_num},#{product_price},#{product_type})")
+    public int addNewProduct(String product_name,int product_num ,float product_price,String product_type);
 
 }

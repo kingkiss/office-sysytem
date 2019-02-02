@@ -3,14 +3,9 @@ package com.office.manage.controller;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.office.manage.domain.Product;
-import com.office.manage.domain.ProductMapper;
-import com.office.manage.domain.User;
+import com.office.manage.domain.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -21,6 +16,8 @@ public class ProductData {
 
     @Autowired
     ProductMapper productMapper;
+    @Autowired
+    TypeMapper typeMapper;
 
     //获取所有物品
     @RequestMapping(value = "/allProduct",method = RequestMethod.GET)
@@ -35,6 +32,16 @@ public class ProductData {
         return m;
 
     }
+
+    //获取所有物品类型
+    @RequestMapping(value = "/allType",method = RequestMethod.GET)
+    public Map<String,Object> getAllType(){
+        List<String> Types = typeMapper.getAllType();
+        Map<String,Object> m = new HashMap<>();
+        m.put("AllType",Types);
+        return m;
+    }
+
 
     //搜索物品（用名称和类型，type是大的分类）
     @RequestMapping(value = "/SearchProduct",method = RequestMethod.GET)
@@ -107,6 +114,21 @@ public class ProductData {
         return su;
     }
 
+    //添加新物品
+    @RequestMapping(value = "/addProduct",method = RequestMethod.POST)
+    public Message addNewProduct(@RequestBody Product product){
+        Message msg = new Message();
+        int result = productMapper.addNewProduct(product.getProduct_name(),product.getProduct_num(),product.getProduct_price(),product.getProduct_type());
+        if(result == 1){
+            msg.setResult(true);
+            msg.setInfo("成功添加物品");
+            return msg;
+        }else {
+            msg.setResult(false);
+            msg.setInfo("未知错误！请重试");
+            return msg;
+        }
+    }
 
 
 }

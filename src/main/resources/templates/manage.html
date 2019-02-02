@@ -180,11 +180,73 @@
             message,
             userdata,
             tempProductInfo,
+            Types:[],
+        },
+        mounted:function(){
+            this.getType();
         },
         methods: {
-
+            getType:function () {
+                var self = this;
+                var url = 'http://localhost:8080/allType';
+                axios.get(url).then(function (response) {
+                    var result = response.data;
+                    self.Types = result.AllType;
+                })
+            },
+            clearTemp:function () {
+                self.tempProductInfo.product_name = '';
+                self.tempProductInfo.product_num = 0;
+                self.tempProductInfo.product_price = '';
+                self.tempProductInfo.product_type = '';
+                self.tempProductInfo.product_id = '';
+            }
         }
-    })
+    });
+
+    /*添加物品modal框数据处理*/
+    var m_addProduct = new Vue({
+       el:'#addProduct',
+       data:{
+           message,
+           tempProductInfo,
+           Types:[],
+       },
+        mounted:function(){
+          this.getType();
+        },
+        methods:{
+            clearTemp:function () {
+                self.tempProductInfo.product_name = '';
+                self.tempProductInfo.product_num = 0;
+                self.tempProductInfo.product_price = '';
+                self.tempProductInfo.product_type = '';
+                self.tempProductInfo.product_id = '';
+            },
+            getType:function () {
+                var self = this;
+                var url = 'http://localhost:8080/allType';
+                axios.get(url).then(function (response) {
+                    var result = response.data;
+                    self.Types = result.AllType;
+                })
+            },
+            addNewProduct:function () {
+                var self = this;
+                var url = 'http://localhost:8080/addProduct';
+                var param = {
+                    product_name:self.tempProductInfo.product_name,
+                    product_num:self.tempProductInfo.product_num,
+                    product_price:self.tempProductInfo.product_price,
+                    product_type:self.tempProductInfo.product_type,
+                }
+                axios.post(url,param).then(function (response) {
+                    var result = response.data;
+                    console.log(result);
+                })
+            }
+        }
+    });
 </script>
 
 </html>
