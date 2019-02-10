@@ -400,10 +400,10 @@
                 </div>
 
                 <!-- 操作信息提示框 -->
-                <div class="alert alert-danger alert-dismissable fade hide" role="alert" id="addProdutF">
+                <div class="alert alert-danger alert-dismissable fade hide" role="alert" id="addProductF">
                     <strong>操作失败！</strong>{{ message.info }}，请重试！
                 </div>
-                <div class="alert alert-success alert-dismissable fade hide" role="alert">
+                <div class="alert alert-success alert-dismissable fade hide" role="alert" id="addProductS">
                     <strong>操作成功！</strong>{{ message.info }},页面将会自动刷新！
                 </div>
 
@@ -457,5 +457,45 @@
 
 </div>
 
+<!--删除物品确认modal框-->
+<div th:fragment="deleteProductModal">
+
+    <div class="modal fade bs-example-modal-sm" id="deleteProductModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="clearTemp"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">确认删除该物品？</h4>
+                </div>
+
+                <!-- 操作信息提示框 -->
+                <div class="alert alert-danger alert-dismissable fade hide" role="alert" id="deleteProductF">
+                    <strong>操作失败！</strong>{{ message.info }}
+                </div>
+
+                <div class="alert alert-success alert-dismissable fade hide" role="alert" id="deleteProductS">
+                    <strong>操作成功！</strong>{{ message.info }}！
+                </div>
+
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label>物品名称：{{ tempProductInfo.product_name }}</label><br>
+                            <label>物品库存：{{ tempProductInfo.product_num }}</label><br>
+                            <label>物品价格：￥{{ tempProductInfo.product_price }}</label><br>
+                            <label>物品类型：{{ tempProductInfo.product_type }}</label><br>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" @click="clearTemp">取消</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal" @click="deleteProductS">确认删除</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
 
 </html>

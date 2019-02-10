@@ -130,5 +130,23 @@ public class ProductData {
         }
     }
 
+    //删除物品
+    @RequestMapping(value = "/deleteProduct/{product_id}",method = RequestMethod.DELETE)
+    public Message deleteProduct(@PathVariable String product_id){
+        Message msg = new Message();
+        int result = productMapper.deleteProductByid(product_id);
+        //System.out.println(result);
+        if( result>0 ){
+            msg.setResult(true);
+            msg.setInfo("已删除"+result+"个物品");
+            return msg;
+        }else {
+            msg.setResult(false);
+            msg.setInfo("未知错误请重试");
+            return msg;
+        }
+    }
+
+
 
 }

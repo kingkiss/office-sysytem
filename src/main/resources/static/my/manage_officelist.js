@@ -15,7 +15,7 @@ var stationery = new Vue({
     },
     methods:{
         stationeryList:function (start) {
-            var url = "http://localhost:8080/allStationery";
+            var url = "/allStationery";
             var self = this;
             axios.get(url,{params:{start:start}}).then(function(response){
                 var result = response.data;
@@ -39,7 +39,7 @@ var stationery = new Vue({
         },
         searchStationery:function () {
             var self = this;
-            var url = "http://localhost:8080/SearchOffice";
+            var url = "/SearchOffice";
             axios.get(url,{params:{type:'文具事务用品',product:self.searchStationeryProduct}}).then(function(response){
                 var result = response.data;
                 self.stationeries = result.SearchProduct;
@@ -74,7 +74,7 @@ var consumable = new Vue({
     },
     methods:{
         consumableList:function (start) {
-            var url = "http://localhost:8080/allConsumable";
+            var url = "/allConsumable";
             var self = this;
             axios.get(url,{params:{start:start}}).then(function(response){
                 var result = response.data;
@@ -98,7 +98,7 @@ var consumable = new Vue({
         },
         searchConsumable:function () {
             var self = this;
-            var url = "http://localhost:8080/SearchOffice";
+            var url = "/SearchOffice";
             axios.get(url,{params:{type:'办公耗材',product:self.searchConsumableProduct}}).then(function(response){
                 var result = response.data;
                 self.consumables = result.SearchProduct;
@@ -131,7 +131,7 @@ var equipment = new Vue({
     },
     methods:{
         equipmentList:function (start) {
-            var url = "http://localhost:8080/allEquipment";
+            var url = "/allEquipment";
             var self = this;
             axios.get(url,{params:{start:start}}).then(function(response){
                 var result = response.data;
@@ -156,7 +156,7 @@ var equipment = new Vue({
         },
         searchEquipment:function () {
             var self = this;
-            var url = "http://localhost:8080/SearchOffice";
+            var url = "/SearchOffice";
             axios.get(url,{params:{type:'办公设备',product:self.searchEquipmentProduct}}).then(function(response){
                 var result = response.data;
                 self.equipments = result.SearchProduct;
@@ -185,7 +185,7 @@ var m_officeApplyModal = new Vue({
     methods:{
         submitApply:function () {
             var self = this;
-            var url = 'http://localhost:8080/addApply';
+            var url = '/addApply';
             var nowDate = new Date();
             var param = {
                 apply_user_id:userdata.user_id,

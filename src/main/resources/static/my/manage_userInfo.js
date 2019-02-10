@@ -4,7 +4,7 @@ var user_Info = new Vue({
     el:'#user',
     data:userdata,
     created:function(){
-        var url = "http://localhost:8080/userInfo";
+        var url = "/userInfo";
         var self = this;
         axios.get(url).then(function(response){
             var result = response.data;
@@ -23,7 +23,7 @@ var user_Info = new Vue({
                     self.user_position = "管理员";
                 }
             }else {
-                location.href="http://localhost:8080/loginout"
+                location.href="/loginout"
             }
 
         })
@@ -31,7 +31,7 @@ var user_Info = new Vue({
     },
     methods:{
         userLoginout:function(){
-            axios.get("http://localhost:8080/loginout").then()
+            axios.get("/loginout").then()
         }
     },
 });
@@ -103,7 +103,7 @@ var modalData = new Vue({
         },
         /* 用户姓名修改 */
         changeUserName:function(){
-            var url = 'http://localhost:8080/changeUserName';
+            var url = '/changeUserName';
             var self = this;
             var params = new URLSearchParams();
             params.append('userNewName',self.userInfo_change_name);
@@ -130,7 +130,7 @@ var modalData = new Vue({
         },
         /* 用户电话修改 */
         changeUserPhone:function(){
-            var url = 'http://localhost:8080/changeUserPhone';
+            var url = '/changeUserPhone';
             var self = this;
             var params = new URLSearchParams();
             params.append('userNewPhone',self.userInfo_change_phone);
@@ -157,7 +157,7 @@ var modalData = new Vue({
         },
         /* 用户密码修改 */
         changeUserPwd:function(){
-            var url = 'http://localhost:8080/changeUserPwd';
+            var url = '/changeUserPwd';
             var self = this;
             if( self.userInfo_change_new_pwd == self.userInfo_change_sure_pwd ){
                 /*self.Sure_pwd = false;*/
@@ -172,8 +172,8 @@ var modalData = new Vue({
                         $('.alert-success').removeClass('hide').addClass('in');
                         setTimeout(function(){
                             $('.alert-success').removeClass('in').addClass('hide');
-                            location.href="http://localhost:8080/loginout";
-                        },3000);
+                            location.href="/loginout";
+                        },1500);
                         /* 旧密码错误 */
                     }else{
                         self.message.info = result.info;
@@ -215,7 +215,7 @@ var m_user = new Vue({
     },
     methods:{
         userList:function (start) {
-            var url = "http://localhost:8080/allUsers";
+            var url = "/allUsers";
             var self = this;
             var orderBy = self.ob;
             axios.get(url,{params:{start:start,orderBy:orderBy}}).then(function(response){
@@ -248,7 +248,7 @@ var m_user = new Vue({
         },
         searchU:function () {
             var self = this;
-            var url = "http://localhost:8080/Search?s="+self.searchUser;
+            var url = "/Search?s="+self.searchUser;
             axios.get(url).then(function(response){
                 var result = response.data;
                 self.users = result.users;
@@ -262,7 +262,7 @@ var m_user = new Vue({
         },
         deleteUser:function (user) {
             var self = this;
-            var url = "http://localhost:8080/delete/"+user.user_name;
+            var url = "/delete/"+user.user_name;
             var id = '#'+user.user_id;
             axios.delete(url).then(function(response){
                 var result = response.data;
@@ -292,7 +292,7 @@ var m_userChangeModal = new Vue({
     methods:{
         changeUser:function () {
             var self = this;
-            var url = 'http://localhost:8080/update/'+self.tempUserInfo.user_name;
+            var url = '/update/'+self.tempUserInfo.user_name;
             axios.put(url,self.tempUserInfo).then(function(response){
                 var result = response.data;
                 self.message.info = result.info;
@@ -325,7 +325,7 @@ var m_userAddModal = new Vue({
     },
     methods:{
         addNewUser:function () {
-            var url = "http://localhost:8080/adduser";
+            var url = "/adduser";
             var self = this;
             axios.post(url,self.addUser).then(function(response){
                 var result = response.data;

@@ -75,9 +75,9 @@ public class UserData {
     @RequestMapping(value = "/delete/{user_name}" ,method = RequestMethod.DELETE)
     public Message deleteUser(@PathVariable String user_name){
         Message msg = new Message();
-        System.out.println(user_name);
+        //System.out.println(user_name);
         int result = userMapper.deleteUser(user_name);
-        System.out.println(result);
+        //System.out.println(result);
         if( result>0 ){
             msg.setResult(true);
             msg.setInfo("已删除"+result+"个用户");

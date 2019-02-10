@@ -1,9 +1,6 @@
 package com.office.manage.domain;
 
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -40,5 +37,9 @@ public interface ProductMapper {
     //添加新物品
     @Insert("INSERT INTO product_info (product_name,product_num,product_price,product_type) VALUES (#{product_name},#{product_num},#{product_price},#{product_type})")
     public int addNewProduct(String product_name,int product_num ,float product_price,String product_type);
+
+    //删除物品
+    @Delete("DELETE FROM product_info WHERE product_id=#{product_id}")
+    public int deleteProductByid(String product_id);
 
 }
