@@ -64,9 +64,9 @@
     <div class="list-group" id="fun_show_left">
         <a href="manage_officelist" th:class="${isOfficeList}?'list-group-item list-item-active':'list-group-item'">物品申请</a>
         <a href="manage_officeInfo" th:class="${isOfficeInfo}?'list-group-item list-item-active':'list-group-item'" v-show="userdata.user_authority >= 3">物品管理</a>
-        <a href="#" class="list-group-item" v-show="userdata.user_authority >= 3">物品类型</a>
+        <a href="manage_officeType" th:class="${isOfficeType}?'list-group-item list-item-active':'list-group-item'" v-show="userdata.user_authority >= 3">物品类型</a>
         <a href="manage_userInfo" th:class="${isUserInfo}?'list-group-item list-item-active':'list-group-item'" v-show="userdata.user_authority >= 7">用户管理</a>
-        <a href="#" class="list-group-item" v-show="userdata.user_authority >= 3">申请审核</a>
+        <a href="manage_applyCheck" th:class="${isApplyCheck}?'list-group-item list-item-active':'list-group-item'" v-show="userdata.user_authority >= 3">申请审核</a>
         <a href="#" class="list-group-item">申请记录</a>
         <a href="#" class="list-group-item">借入记录</a>
         <a href="#" class="list-group-item">归还记录</a>
@@ -83,231 +83,151 @@
         <div th:include="manage_officelist :: m_officelist" th:if="${isOfficeList}"></div>
         <!--物品管理模块（物品增删改查） -->
         <div th:include="manage_officeInfo :: m_officeInfo" th:if="${isOfficeInfo}"></div>
+        <!--物品类型管理（类型增删改查）-->
+        <div th:include="manage_officeType :: m_officeType" th:if="${isOfficeType}"></div>
+        <!--申请审核模块（申请的审批）-->
+        <!--<div th:include="manage_applyCheck :: m_applyCheck" th:if="${isApplyCheck}"></div>-->
+        <!--申请记录模块（申请记录查看，权限大于3可以搜索用户申请记录）-->
+        <!--<div th:include="manage_applyList :: m_applyList" th:if="${isApplyList}"></div>-->
+        <!--借入记录模块（借入记录查看）-->
+        <!--<div th:include="manage_borrowList :: m_borrowList" th:if="${isBorrowList}"></div>-->
+        <!--归还记录模块-->
+        <!--<div th:include="manage_returnList :: m_returnList" th:if="${isReturnList}"></div>-->
     </div>
 </div>
 
 <!-- 个人信息Modal框   用户个人信息查看和修改-->
 <div th:include="modal :: userModal"></div>
-
 <!-- 添加用户用modal框 -->
 <div th:include="modal :: addUserModal"></div>
-
 <!-- 用户信息修改用modal框 -->
 <div th:include="modal :: userChangeModal"></div>
-
 <!--申请物品modal框-->
 <div th:include="modal :: applyModal"></div>
-
 <!--修改物品modal框-->
 <div th:include="modal :: changeProductModal"></div>
-
 <!--增加物品modal框-->
 <div th:include="modal :: addProductModal"></div>
-
 <!--删除物品modal框-->
 <div th:include="modal :: deleteProductModal"></div>
-
+<!--增加物品类型modal框-->
+<div th:include="modal :: addTypeModal"></div>
+<!--删除物品类型modal框-->
+<div th:include="modal :: deleteTypeModal"></div>
 
 </body>
+<!--通用数据流-->
 <script src="my/public_data.js"></script>
+<!--用户管理数据处理-->
 <script src="my/manage_userInfo.js"></script>
+<!--物品申请模块处理-->
 <script src="my/manage_officelist.js"></script>
+<!--物品管理模块处理-->
+<script src="my/manage_officeInfo.js"></script>
+
 <script>
 /*    $('.list-group-item').click(function () {
         $(this).siblings('.list-group-item').removeClass('list-item-active');
         $(this).addClass('list-item-active');
     });*/
 
-/*m_officeInfo物品管理模块数据处理*/
-    var m_officeInfo = new Vue({
-        el:'#allProduct',
+/*物品类型管理数据流处理*/
+    var m_officeType = new Vue({
+        el:'#allTypeInfo',
         data:{
             message,
-            userdata,
-            tempProductInfo,
-            searchProduct:'',
-            products:[],
+            tempTypeInfo,
+            TypeInfos:[],
             pagination:{},
         },
-        mounted:function(){
-            this.productList(1);
+        mounted:function () {
+            this.getType(1);
         },
         methods:{
-            productList:function (start) {
-                var url = "/allProduct";
+            getType:function (start) {
                 var self = this;
+                var url = '/TypeInfo';
                 axios.get(url,{params:{start:start}}).then(function(response){
                     var result = response.data;
-                    self.products = result.AllProducts;
+                    self.TypeInfos = result.TypeInfos;
                     self.pagination = result.page;
                 })
             },
             jumpByNumber:function (start) {
                 var self = this;
                 if( start != self.pagination.pageNum ){
-                    self.productList(start);
+                    self.getType(start);
                 };
             },
             jumpPage:function (page) {
                 var self = this;
                 if( page == 'pre' && self.pagination.hasPreviousPage ){
-                    self.productList( self.pagination.prePage );
+                    self.getType( self.pagination.prePage );
                 }else if( page == 'next' && self.pagination.hasNextPage ){
-                    self.productList( self.pagination.nextPage );
+                    self.getType( self.pagination.nextPage );
                 };
             },
-            searchProductList:function () {
+            allStationeryList:function () {
                 var self = this;
-                var url = "/SearchProduct";
-                axios.get(url,{params:{product:self.searchProduct}}).then(function(response){
+                var url = '/typeCategory';
+                axios.get(url,{params:{category:'文具事务用品'}}).then(function(response){
                     var result = response.data;
-                    self.products = result.SearchProduct;
+                    self.TypeInfos = result.typeCategory;
+                    self.pagination = result.page;
+                })
+
+            },
+            allConsumableList:function () {
+                var self = this;
+                var url = '/typeCategory';
+                axios.get(url,{params:{category:'办公耗材'}}).then(function(response){
+                    var result = response.data;
+                    self.TypeInfos = result.typeCategory;
                     self.pagination = result.page;
                 })
             },
-            /*添加数据到申请物品暂存*/
-            addTempProduct: function (product) {
+            allEquipmentList:function () {
                 var self = this;
-                self.tempProductInfo.product_name = product.product_name;
-                self.tempProductInfo.product_num = product.product_num;
-                self.tempProductInfo.product_price = product.product_price;
-                self.tempProductInfo.product_type = product.product_type;
-                self.tempProductInfo.product_id = product.id;
-            },
-            /*删除物品modal框*/
-            deleteProductModal:function (product) {
-                var self = this;
-                self.tempProductInfo.product_name = product.product_name;
-                self.tempProductInfo.product_num = product.product_num;
-                self.tempProductInfo.product_price = product.product_price;
-                self.tempProductInfo.product_type = product.product_type;
-                self.tempProductInfo.product_id = product.id;
-            },
-        }
-    });
-
-    /*修改物品modal框数据处理*/
-    var m_changeProduct = new Vue({
-        el:'#changeProduct',
-        data:{
-            message,
-            userdata,
-            tempProductInfo,
-            Types:[],
-        },
-        mounted:function(){
-            this.getType();
-        },
-        methods: {
-            getType:function () {
-                var self = this;
-                var url = '/allType';
-                axios.get(url).then(function (response) {
+                var url = '/typeCategory';
+                axios.get(url,{params:{category:'办公设备'}}).then(function(response){
                     var result = response.data;
-                    self.Types = result.AllType;
+                    self.TypeInfos = result.typeCategory;
+                    self.pagination = result.page;
                 })
             },
-            clearTemp:function () {
-                self.tempProductInfo.product_name = '';
-                self.tempProductInfo.product_num = 0;
-                self.tempProductInfo.product_price = 0;
-                self.tempProductInfo.product_type = '';
-                self.tempProductInfo.product_id = '';
+            deleteTypeToTemp:function (type) {
+                var self = this;
+                self.tempTypeInfo.type_id = type.type_id;
+                self.tempTypeInfo.type_category = type.type_category;
+                self.tempTypeInfo.product_type = type.product_type;
             }
         }
-    });
 
-    /*添加物品modal框数据处理*/
-    var m_addProduct = new Vue({
-       el:'#addProduct',
-       data:{
-           message,
-           tempProductInfo,
-           Types:[],
-       },
-        mounted:function(){
-          this.getType();
-        },
-        methods:{
-            clearTemp:function () {
-                self.tempProductInfo.product_name = '';
-                self.tempProductInfo.product_num = 0;
-                self.tempProductInfo.product_price = 0;
-                self.tempProductInfo.product_type = '';
-                self.tempProductInfo.product_id = '';
-            },
-            getType:function () {
-                var self = this;
-                var url = '/allType';
-                axios.get(url).then(function (response) {
-                    var result = response.data;
-                    self.Types = result.AllType;
-                })
-            },
-            addNewProduct:function () {
-                var self = this;
-                var url = '/addProduct';
-                var param = {
-                    product_name:self.tempProductInfo.product_name,
-                    product_num:self.tempProductInfo.product_num,
-                    product_price:self.tempProductInfo.product_price,
-                    product_type:self.tempProductInfo.product_type,
-                };
-                if( tempProductInfo.product_name!='' && tempProductInfo.product_type!=''){
-                    console.log("非空测试");
-                    axios.post(url,param).then(function (response) {
-                        var result = response.data;
-                        self.message.info = result.info;
-                        if( result.result ){
-                            console.log(result);
-                            $('#addProductS').removeClass('hide').addClass('in')
-                            setTimeout(function(){$('#addProductS').removeClass('in').addClass('hide');$('#addProduct').modal('toggle');},1500);
-                        }else{
-                            $('#addProductF').removeClass('hide').addClass('in')
-                            setTimeout(function(){$('#addProductF').removeClass('in').addClass('hide')},3000);
-                        }
-                    });
-                }else {
-                    self.message.info = "名称或类型不能为空";
-                    $('#addProductF').removeClass('hide').addClass('in')
-                    setTimeout(function(){$('#addProductF').removeClass('in').addClass('hide')},3000);
-                }
-            },
-        }
-    });
 
-    /*删除物品确认modal框*/
-    var m_deleteProduct = new Vue({
-        el:'#deleteProductModal',
+    })
+
+    /*添加类型modal框*/
+    var m_addTypeModal = new Vue({
+        el:'',
         data:{
             message,
-            tempProductInfo,
+            tempTypeInfo,
         },
         methods:{
-            clearTemp:function () {
-                self.tempProductInfo.product_name = '';
-                self.tempProductInfo.product_num = 0;
-                self.tempProductInfo.product_price = 0;
-                self.tempProductInfo.product_type = '';
-                self.tempProductInfo.product_id = '';
-            },
-            /*提交删除*/
-            deleteProductS:function () {
-                var self = this;
-                var url = "/deleteProduct/"+tempProductInfo.product_id;
-                axios.delete(url).then(function(response) {
-                    var result = response.data;
-                    self.message.info = result.info;
-                    if(result.result){
-                        console.log(result);
-                        $('#deleteProductS').removeClass('hide').addClass('in');
-                        setTimeout(function(){$('#deleteProductS').removeClass('in').addClass('hide');$('#deleteProductModal').modal('toggle');},1500);
-                    }else {
-                        $('#deleteProductF').removeClass('hide').addClass('in');
-                        setTimeout(function(){$('#deleteProductF').removeClass('in').addClass('hide')},3000);
-                    }
-                })
-            }
+
+        }
+
+    })
+
+    /*删除类型modal框*/
+    var m_deleteTypeModal = new Vue({
+        el:'#deleteTypeModal',
+        data:{
+            message,
+            tempTypeInfo,
+        },
+        methods:{
+
         },
     })
 </script>

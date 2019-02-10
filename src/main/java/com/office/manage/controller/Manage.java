@@ -30,10 +30,22 @@ public class Manage {
         boolean isUserInfo = false;
         boolean isOfficeList = true;
         boolean isOfficeInfo = false;
+        boolean isOfficeType = false;
+        boolean isApplyCheck = false;
+        boolean isApplyList = false;
+        boolean isBorrowList = false;
+        boolean isReturnList = false;
+        boolean isUseData = false;
 
         m.addAttribute("isUserInfo",isUserInfo);
         m.addAttribute("isOfficeList",isOfficeList);
         m.addAttribute("isOfficeInfo",isOfficeInfo);
+        m.addAttribute("isOfficeType",isOfficeType);
+        m.addAttribute("isApplyCheck",isApplyCheck);
+        m.addAttribute("isApplyList",isApplyList);
+        m.addAttribute("isBorrowList",isBorrowList);
+        m.addAttribute("isReturnList",isReturnList);
+        m.addAttribute("isUseData",isUseData);
         return "manage";
     }
 
@@ -43,11 +55,23 @@ public class Manage {
         boolean isUserInfo = true;
         boolean isOfficeList = false;
         boolean isOfficeInfo = false;
+        boolean isOfficeType = false;
+        boolean isApplyCheck = false;
+        boolean isApplyList = false;
+        boolean isBorrowList = false;
+        boolean isReturnList = false;
+        boolean isUseData = false;
 
         HttpSession session = request.getSession();
         m.addAttribute("isUserInfo",isUserInfo);
         m.addAttribute("isOfficeList",isOfficeList);
         m.addAttribute("isOfficeInfo",isOfficeInfo);
+        m.addAttribute("isOfficeType",isOfficeType);
+        m.addAttribute("isApplyCheck",isApplyCheck);
+        m.addAttribute("isApplyList",isApplyList);
+        m.addAttribute("isBorrowList",isBorrowList);
+        m.addAttribute("isReturnList",isReturnList);
+        m.addAttribute("isUseData",isUseData);
 
         return "manage";
     }
@@ -58,10 +82,22 @@ public class Manage {
         boolean isUserInfo = false;
         boolean isOfficeList = true;
         boolean isOfficeInfo = false;
+        boolean isOfficeType = false;
+        boolean isApplyCheck = false;
+        boolean isApplyList = false;
+        boolean isBorrowList = false;
+        boolean isReturnList = false;
+        boolean isUseData = false;
 
         m.addAttribute("isUserInfo",isUserInfo);
         m.addAttribute("isOfficeList",isOfficeList);
         m.addAttribute("isOfficeInfo",isOfficeInfo);
+        m.addAttribute("isOfficeType",isOfficeType);
+        m.addAttribute("isApplyCheck",isApplyCheck);
+        m.addAttribute("isApplyList",isApplyList);
+        m.addAttribute("isBorrowList",isBorrowList);
+        m.addAttribute("isReturnList",isReturnList);
+        m.addAttribute("isUseData",isUseData);
         return "manage";
     }
 
@@ -71,10 +107,47 @@ public class Manage {
         boolean isUserInfo = false;
         boolean isOfficeList = false;
         boolean isOfficeInfo = true;
+        boolean isOfficeType = false;
+        boolean isApplyCheck = false;
+        boolean isApplyList = false;
+        boolean isBorrowList = false;
+        boolean isReturnList = false;
+        boolean isUseData = false;
 
         m.addAttribute("isUserInfo",isUserInfo);
         m.addAttribute("isOfficeList",isOfficeList);
         m.addAttribute("isOfficeInfo",isOfficeInfo);
+        m.addAttribute("isOfficeType",isOfficeType);
+        m.addAttribute("isApplyCheck",isApplyCheck);
+        m.addAttribute("isApplyList",isApplyList);
+        m.addAttribute("isBorrowList",isBorrowList);
+        m.addAttribute("isReturnList",isReturnList);
+        m.addAttribute("isUseData",isUseData);
+        return "manage";
+    }
+
+    //页面跳转到物品类型管理页面
+    @RequestMapping("/manage_officeType")
+    public String manage_officeType(Model m,HttpServletRequest request){
+        boolean isUserInfo = false;
+        boolean isOfficeList = false;
+        boolean isOfficeInfo = false;
+        boolean isOfficeType = true;
+        boolean isApplyCheck = false;
+        boolean isApplyList = false;
+        boolean isBorrowList = false;
+        boolean isReturnList = false;
+        boolean isUseData = false;
+
+        m.addAttribute("isUserInfo",isUserInfo);
+        m.addAttribute("isOfficeList",isOfficeList);
+        m.addAttribute("isOfficeInfo",isOfficeInfo);
+        m.addAttribute("isOfficeType",isOfficeType);
+        m.addAttribute("isApplyCheck",isApplyCheck);
+        m.addAttribute("isApplyList",isApplyList);
+        m.addAttribute("isBorrowList",isBorrowList);
+        m.addAttribute("isReturnList",isReturnList);
+        m.addAttribute("isUseData",isUseData);
 
         return "manage";
     }

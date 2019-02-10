@@ -133,7 +133,6 @@
     </div>
 </div>
 </div>
-
 <!-- 用户信息修改用modal框 -->
 <div th:fragment="userChangeModal">
     <div class="modal fade" tabindex="-1" role="dialog" id="userChangeModal">
@@ -195,7 +194,6 @@
         </div>
     </div>
 </div>
-
 <!-- 添加用户用modal框 -->
 <div th:fragment="addUserModal">
     <div class="modal fade" tabindex="-1" role="dialog" id="addUserModal">
@@ -274,7 +272,6 @@
         </div>
     </div>
 </div>
-
 <!--申请物品modal框-->
 <div th:fragment="applyModal">
     <div class="modal fade bs-example-modal-sm" id="applyModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
@@ -330,7 +327,6 @@
         </div>
     </div>
 </div>
-
 <!--修改物品modal框-->
 <div th:fragment="changeProductModal">
     <div class="modal fade" tabindex="-1" role="dialog" id="changeProduct">
@@ -388,7 +384,6 @@
     </div><!-- /.modal -->
 
 </div>
-
 <!--增加物品modal框-->
 <div th:fragment="addProductModal">
     <div class="modal fade" tabindex="-1" role="dialog" id="addProduct">
@@ -456,7 +451,6 @@
     </div><!-- /.modal -->
 
 </div>
-
 <!--删除物品确认modal框-->
 <div th:fragment="deleteProductModal">
 
@@ -490,12 +484,68 @@
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal" @click="clearTemp">取消</button>
-                    <button type="button" class="btn btn-danger" data-dismiss="modal" @click="deleteProductS">确认删除</button>
+                    <button type="button" class="btn btn-danger" @click="deleteProductS">确认删除</button>
                 </div>
             </div>
         </div>
     </div>
 
 </div>
+
+<!--增加物品类型modal框-->
+<div th:fragment="addTypeModal">
+
+    <div class="modal fade" tabindex="-1" role="dialog" id="addTypeModal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">增加类型</h4>
+                </div>
+                <div class="modal-body">
+                    <p>One fine body&hellip;</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary">确定</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+</div>
+<!--删除物品类型modal框-->
+<div th:fragment="deleteTypeModal">
+
+    <div class="modal fade bs-example-modal-sm" id="deleteTypeModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" ><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">确认删除该类型？</h4>
+                </div>
+
+                <!-- 操作信息提示框 -->
+                <div class="alert alert-danger alert-dismissable fade hide" role="alert" id="deleteTypeF">
+                    <strong>操作失败！</strong>{{ message.info }}
+                </div>
+                <div class="alert alert-success alert-dismissable fade hide" role="alert" id="deleteTypeS">
+                    <strong>操作成功！</strong>{{ message.info }}！
+                </div>
+
+                <div class="modal-body">
+                    {{ tempTypeInfo.product_type }}
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" >取消</button>
+                    <button type="button" class="btn btn-danger" >确认删除</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
 
 </html>

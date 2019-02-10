@@ -18,4 +18,11 @@ public interface TypeMapper {
     @Select("SELECT product_type FROM type_info")
     public List<String> getAllType();
 
+    //获取整个类型表
+    @Select("SELECT * FROM type_info")
+    public List<Typelist> getTypeInfo();
+
+    //获取类型根据分类
+    @Select("SELECT * FROM type_info WHERE type_category=#{type_category}")
+    public List<Typelist> getTypeInfoByCategory(String type_category);
 }

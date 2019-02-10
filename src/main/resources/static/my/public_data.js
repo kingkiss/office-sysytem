@@ -47,3 +47,10 @@ var tempProductInfo = {
     apply_num:1,
 };
 
+/*物品类型信息暂存数据*/
+var tempTypeInfo = {
+    type_id:'',
+    type_category:'',
+    product_type:'',
+};
+

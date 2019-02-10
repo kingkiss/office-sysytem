@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<!--物品类型管理（类型增删改查）-->
+<div th:fragment="m_officeType" >
+    <div class="panel panel-default" id="allTypeInfo">
+        <div class="panel-heading">物品类型管理</div>
+        <div class="panel-body">
+            <!--顶部框-->
+            <div class="row" style="margin-top: 15px">
+                <div class="col-sm-1">
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addTypeModal">添加类型</button>
+                </div>
+                <div class="col-sm-6">
+                    <div class="btn-group btn-group-justified" role="group">
+                        <div class="btn-group" role="group">
+                            <button type="button" class="btn btn-default" @click="allStationeryList">文具事务用品</button>
+                        </div>
+                        <div class="btn-group" role="group">
+                            <button type="button" class="btn btn-default" @click="allConsumableList">办公耗材</button>
+                        </div>
+                        <div class="btn-group" role="group">
+                            <button type="button" class="btn btn-default" @click="allEquipmentList">办公设备</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- 修改物品信息提示框 -->
+                <div class="col-sm-12" >
+                    <div class="alert alert-success fade hide" style="text-align: center;margin-bottom: -10px;margin-top: 10px" role="alert" id="allProductS"><strong>申请成功,{{ message.info }}</strong></div>
+                    <div class="alert alert-danger fade hide" style="text-align: center;margin-bottom: -10px;margin-top: 10px" role="alert" id="allProductF"><strong>申请失败,{{ message.info }}</strong></div>
+                </div>
+            </div>
+        </div>
+
+        <!--物品类型列表-->
+        <table class="table table-hover table-condensed " >
+            <thead>
+            <tr>
+                <th>分类</th>
+                <th>类型</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr v-for="type in TypeInfos">
+                <td>{{ type.type_category }}</td>
+                <td>{{ type.product_type }}</td>
+                <td>
+                    <button type="button" class="btn btn-danger btn-sm"  data-toggle="modal" data-target="#deleteTypeModal" @click="deleteTypeToTemp(type)">删除</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <!--分页导航栏-->
+        <nav aria-label="Page navigation" style="text-align: center">
+            <ul class="pagination">
+                <li :class="{ 'disabled': pagination.pageNum==1 }">
+                    <a href="#" aria-label="Previous" @click="jumpPage('pre')" >
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                <li v-for="i in pagination.navigatepageNums" :class="{ 'active': pagination.pageNum==i }"><a href="#" @click="jumpByNumber(i)">{{ i }}</a></li>
+                <li :class="{ 'disabled': pagination.pageNum==pagination.pages }">
+                    <a href="#" aria-label="Next" @click="jumpPage('next')">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>
+
+</html>
