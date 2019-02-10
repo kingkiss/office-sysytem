@@ -200,7 +200,8 @@
                 self.tempTypeInfo.type_id = type.type_id;
                 self.tempTypeInfo.type_category = type.type_category;
                 self.tempTypeInfo.product_type = type.product_type;
-            }
+            },
+
         }
 
 
@@ -208,13 +209,38 @@
 
     /*添加类型modal框*/
     var m_addTypeModal = new Vue({
-        el:'',
+        el:'#addTypeModal',
         data:{
             message,
             tempTypeInfo,
         },
         methods:{
-
+            addNewType:function(){
+                var self = this;
+                var url = '/addType';
+                if(self.tempTypeInfo.type_category!='' && self.tempTypeInfo.product_type!=''){
+                    axios.post(url,self.tempTypeInfo).then(function (response) {
+                        var result = response.data;
+                        self.message.info = result.info;
+                        if( result.result ){
+                            console.log(result);
+                            $('#addTypeS').removeClass('hide').addClass('in')
+                            setTimeout(function(){$('#addTypeS').removeClass('in').addClass('hide');$('#addTypeModal').modal('toggle');location.reload();},1500);
+                        }else{
+                            $('#addTypeF').removeClass('hide').addClass('in')
+                            setTimeout(function(){$('#addTypeF').removeClass('in').addClass('hide')},3000);
+                        }
+                    });
+                }else{
+                    $('#addTypeF').removeClass('hide').addClass('in')
+                    setTimeout(function(){$('#addTypeF').removeClass('in').addClass('hide')},3000);
+                }
+            },
+            clearTemp:function () {
+                self.tempTypeInfo.type_id = '';
+                self.tempTypeInfo.type_category= '文具事务用品';
+                self.tempTypeInfo.product_type = '';
+            },
         }
 
     })
@@ -227,7 +253,27 @@
             tempTypeInfo,
         },
         methods:{
-
+            deleteType:function(){
+                var self = this;
+                var url = "/deleteType/"+tempTypeInfo.type_id;
+                axios.delete(url).then(function(response) {
+                    var result = response.data;
+                    self.message.info = result.info;
+                    if(result.result){
+                        console.log(result);
+                        $('#deleteTypeS').removeClass('hide').addClass('in');
+                        setTimeout(function(){$('#deleteTypeS').removeClass('in').addClass('hide');$('#deleteTypeModal').modal('toggle');location.reload();},1500);
+                    }else {
+                        $('#deleteTypeF').removeClass('hide').addClass('in');
+                        setTimeout(function(){$('#deleteTypeF').removeClass('in').addClass('hide')},3000);
+                    }
+                });
+            },
+            clearTemp:function () {
+                self.tempTypeInfo.type_id = '';
+                self.tempTypeInfo.type_category= '文具事务用品';
+                self.tempTypeInfo.product_type = '';
+            },
         },
     })
 </script>

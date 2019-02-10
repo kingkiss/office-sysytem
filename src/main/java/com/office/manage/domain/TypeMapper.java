@@ -1,5 +1,7 @@
 package com.office.manage.domain;
 
+import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
@@ -25,4 +27,16 @@ public interface TypeMapper {
     //获取类型根据分类
     @Select("SELECT * FROM type_info WHERE type_category=#{type_category}")
     public List<Typelist> getTypeInfoByCategory(String type_category);
+
+    //添加新类型
+    @Insert("INSERT INTO type_info (type_category,product_type) VALUES (#{type_category},#{product_type})")
+    public int addNewType(String type_category,String product_type);
+
+    //删除类型根据ID
+    @Delete("DELETE FROM type_info WHERE type_id=#{type_id}")
+    public int deleteType(String type_id);
+
+
+
+
 }

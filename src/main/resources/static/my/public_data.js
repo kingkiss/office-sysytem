@@ -50,7 +50,7 @@ var tempProductInfo = {
 /*物品类型信息暂存数据*/
 var tempTypeInfo = {
     type_id:'',
-    type_category:'',
+    type_category:'文具事务用品',
     product_type:'',
 };
 

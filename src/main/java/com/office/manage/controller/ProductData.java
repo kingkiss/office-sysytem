@@ -41,7 +41,7 @@ public class ProductData {
         m.put("AllType",Types);
         return m;
     }
-
+/*
     //获取类型信息
     @RequestMapping(value = "/TypeInfo",method = RequestMethod.GET)
     public Map<String,Object> getType(@RequestParam(value = "start",defaultValue = "1") int start , @RequestParam(value = "size" ,defaultValue = "15") int size,
@@ -67,7 +67,7 @@ public class ProductData {
         su.put("typeCategory",types);
         su.put("page",Searchpage);
         return su;
-    }
+    }*/
 
 
     //搜索物品（用名称和类型，type是大的分类）

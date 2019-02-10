@@ -186,7 +186,7 @@ var m_deleteProduct = new Vue({
                     $('#deleteProductF').removeClass('hide').addClass('in');
                     setTimeout(function(){$('#deleteProductF').removeClass('in').addClass('hide')},3000);
                 }
-            })
+            });
         }
     },
 })

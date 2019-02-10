@@ -499,15 +499,37 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="clearTemp"><span aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title">增加类型</h4>
                 </div>
+
+                <!-- 操作信息提示框 -->
+                <div class="alert alert-danger alert-dismissable fade hide" role="alert" id="addTypeF">
+                    <strong>操作失败！</strong>{{ message.info }}
+                </div>
+                <div class="alert alert-success alert-dismissable fade hide" role="alert" id="addTypeS">
+                    <strong>操作成功！</strong>{{ message.info }}！
+                </div>
+
                 <div class="modal-body">
-                    <p>One fine body&hellip;</p>
+                    <div class="form-group">
+                        <label>分类:{{ tempTypeInfo.type_category }}</label>
+                        <select class="form-control" v-model="tempTypeInfo.type_category">
+                            <option>文具事务用品</option>
+                            <option>办公耗材</option>
+                            <option>办公设备</option>
+                        </select>
+                    </div>
+                    <hr>
+                    <div class="form-group">
+                        <label>类型:{{ tempTypeInfo.product_type }}</label>
+                        <input type="text" class="form-control" placeholder="type" v-model="tempTypeInfo.product_type">
+                    </div>
+
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                    <button type="button" class="btn btn-primary">确定</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal" @click="clearTemp">关闭</button>
+                    <button type="button" class="btn btn-primary" @click="addNewType">确定</button>
                 </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
@@ -521,7 +543,7 @@
         <div class="modal-dialog modal-sm" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" ><span aria-hidden="true">&times;</span></button>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="clearTemp"><span aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title">确认删除该类型？</h4>
                 </div>
 
@@ -534,12 +556,12 @@
                 </div>
 
                 <div class="modal-body">
-                    {{ tempTypeInfo.product_type }}
+                    类型：{{ tempTypeInfo.product_type }}
                 </div>
 
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal" >取消</button>
-                    <button type="button" class="btn btn-danger" >确认删除</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal" @click="clearTemp">取消</button>
+                    <button type="button" class="btn btn-danger"  @click="deleteType">确认删除</button>
                 </div>
             </div>
         </div>
