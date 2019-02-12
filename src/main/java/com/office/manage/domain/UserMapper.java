@@ -21,6 +21,10 @@ public interface UserMapper {
 	@Select("select user_password from user_info where user_name=#{u_name}")
 	public String finUserPwdByName(String u_name);
 
+	//根据用户ID查询用户名
+	@Select("SELECT user_truename FROM user_info WHERE user_id=#{u_id}")
+	public String findUserNameById(int u_id);
+
 	//根据用户邮箱和用户名模糊查询用户
 	@Select("SELECT * FROM user_info where user_truename LIKE #{search} OR user_name LIKE #{search} OR user_authority=#{search}")
 	public List<User> getUserByNameAndEmail(String search);

@@ -62,15 +62,15 @@
 
 <div class="left-nav">
     <div class="list-group" id="fun_show_left">
-        <a href="manage_officelist" th:class="${isOfficeList}?'list-group-item list-item-active':'list-group-item'">物品申请</a>
+        <a href="manage_officelist" th:class="${isOfficeList}?'list-group-item list-item-active':'list-group-item'" >物品申请</a>
         <a href="manage_officeInfo" th:class="${isOfficeInfo}?'list-group-item list-item-active':'list-group-item'" v-show="userdata.user_authority >= 3">物品管理</a>
-        <a href="manage_officeType" th:class="${isOfficeType}?'list-group-item list-item-active':'list-group-item'" v-show="userdata.user_authority >= 3">物品类型</a>
+        <a href="manage_officeType" th:class="${isOfficeType}?'list-group-item list-item-active':'list-group-item'" v-show="userdata.user_authority >= 3" >物品类型</a>
         <a href="manage_userInfo" th:class="${isUserInfo}?'list-group-item list-item-active':'list-group-item'" v-show="userdata.user_authority >= 7">用户管理</a>
         <a href="manage_applyCheck" th:class="${isApplyCheck}?'list-group-item list-item-active':'list-group-item'" v-show="userdata.user_authority >= 3">申请审核</a>
-        <a href="#" class="list-group-item">申请记录</a>
-        <a href="#" class="list-group-item">借入记录</a>
-        <a href="#" class="list-group-item">归还记录</a>
-        <a href="#" class="list-group-item" v-show="userdata.user_authority >= 3">使用统计</a>
+        <a href="manage_applyList" th:class="${isApplyList}?'list-group-item list-item-active':'list-group-item'">申请记录</a>
+        <a href="manage_borrowList" th:class="${isBorrowList}?'list-group-item list-item-active':'list-group-item'">借入记录</a>
+        <a href="manage_returnList" th:class="${isReturnList}?'list-group-item list-item-active':'list-group-item'">归还记录</a>
+        <a href="manage_useData" th:class="${isUseData}?'list-group-item list-item-active':'list-group-item'" v-show="userdata.user_authority >= 3">使用统计</a>
         <a href="#" class="list-group-item" v-show="userdata.user_authority >= 7">系统管理</a>
     </div>
 </div>
@@ -86,13 +86,16 @@
         <!--物品类型管理（类型增删改查）-->
         <div th:include="manage_officeType :: m_officeType" th:if="${isOfficeType}"></div>
         <!--申请审核模块（申请的审批）-->
-        <!--<div th:include="manage_applyCheck :: m_applyCheck" th:if="${isApplyCheck}"></div>-->
+        <div th:include="manage_applyCheck :: m_applyCheck" th:if="${isApplyCheck}"></div>
         <!--申请记录模块（申请记录查看，权限大于3可以搜索用户申请记录）-->
-        <!--<div th:include="manage_applyList :: m_applyList" th:if="${isApplyList}"></div>-->
+        <div th:include="manage_applyList :: m_applyList" th:if="${isApplyList}"></div>
         <!--借入记录模块（借入记录查看）-->
-        <!--<div th:include="manage_borrowList :: m_borrowList" th:if="${isBorrowList}"></div>-->
+        <div th:include="manage_borrowList :: m_borrowList" th:if="${isBorrowList}"></div>
         <!--归还记录模块-->
-        <!--<div th:include="manage_returnList :: m_returnList" th:if="${isReturnList}"></div>-->
+        <div th:include="manage_returnList :: m_returnList" th:if="${isReturnList}"></div>
+        <!--使用统计模块-->
+        <div th:include="manage_useData :: m_useData" th:if="${isUseData}"></div>
+
     </div>
 </div>
 
@@ -124,158 +127,29 @@
 <script src="my/manage_officelist.js"></script>
 <!--物品管理模块处理-->
 <script src="my/manage_officeInfo.js"></script>
-
+<!--物品类型模块处理-->
+<script src="my/manage_officeType.js"></script>
 <script>
 /*    $('.list-group-item').click(function () {
         $(this).siblings('.list-group-item').removeClass('list-item-active');
         $(this).addClass('list-item-active');
     });*/
 
-/*物品类型管理数据流处理*/
-    var m_officeType = new Vue({
-        el:'#allTypeInfo',
+/*申请审核模块数据流处理*/
+    var m_applyCheck = new Vue({
+        el:'',
         data:{
             message,
-            tempTypeInfo,
-            TypeInfos:[],
-            pagination:{},
-        },
-        mounted:function () {
-            this.getType(1);
+            tempApplyCheckInfo,
+            applyCheck:[],
         },
         methods:{
-            getType:function (start) {
-                var self = this;
-                var url = '/TypeInfo';
-                axios.get(url,{params:{start:start}}).then(function(response){
-                    var result = response.data;
-                    self.TypeInfos = result.TypeInfos;
-                    self.pagination = result.page;
-                })
-            },
-            jumpByNumber:function (start) {
-                var self = this;
-                if( start != self.pagination.pageNum ){
-                    self.getType(start);
-                };
-            },
-            jumpPage:function (page) {
-                var self = this;
-                if( page == 'pre' && self.pagination.hasPreviousPage ){
-                    self.getType( self.pagination.prePage );
-                }else if( page == 'next' && self.pagination.hasNextPage ){
-                    self.getType( self.pagination.nextPage );
-                };
-            },
-            allStationeryList:function () {
-                var self = this;
-                var url = '/typeCategory';
-                axios.get(url,{params:{category:'文具事务用品'}}).then(function(response){
-                    var result = response.data;
-                    self.TypeInfos = result.typeCategory;
-                    self.pagination = result.page;
-                })
 
-            },
-            allConsumableList:function () {
-                var self = this;
-                var url = '/typeCategory';
-                axios.get(url,{params:{category:'办公耗材'}}).then(function(response){
-                    var result = response.data;
-                    self.TypeInfos = result.typeCategory;
-                    self.pagination = result.page;
-                })
-            },
-            allEquipmentList:function () {
-                var self = this;
-                var url = '/typeCategory';
-                axios.get(url,{params:{category:'办公设备'}}).then(function(response){
-                    var result = response.data;
-                    self.TypeInfos = result.typeCategory;
-                    self.pagination = result.page;
-                })
-            },
-            deleteTypeToTemp:function (type) {
-                var self = this;
-                self.tempTypeInfo.type_id = type.type_id;
-                self.tempTypeInfo.type_category = type.type_category;
-                self.tempTypeInfo.product_type = type.product_type;
-            },
-
-        }
-
+        },
 
     })
 
-    /*添加类型modal框*/
-    var m_addTypeModal = new Vue({
-        el:'#addTypeModal',
-        data:{
-            message,
-            tempTypeInfo,
-        },
-        methods:{
-            addNewType:function(){
-                var self = this;
-                var url = '/addType';
-                if(self.tempTypeInfo.type_category!='' && self.tempTypeInfo.product_type!=''){
-                    axios.post(url,self.tempTypeInfo).then(function (response) {
-                        var result = response.data;
-                        self.message.info = result.info;
-                        if( result.result ){
-                            console.log(result);
-                            $('#addTypeS').removeClass('hide').addClass('in')
-                            setTimeout(function(){$('#addTypeS').removeClass('in').addClass('hide');$('#addTypeModal').modal('toggle');location.reload();},1500);
-                        }else{
-                            $('#addTypeF').removeClass('hide').addClass('in')
-                            setTimeout(function(){$('#addTypeF').removeClass('in').addClass('hide')},3000);
-                        }
-                    });
-                }else{
-                    $('#addTypeF').removeClass('hide').addClass('in')
-                    setTimeout(function(){$('#addTypeF').removeClass('in').addClass('hide')},3000);
-                }
-            },
-            clearTemp:function () {
-                self.tempTypeInfo.type_id = '';
-                self.tempTypeInfo.type_category= '文具事务用品';
-                self.tempTypeInfo.product_type = '';
-            },
-        }
 
-    })
-
-    /*删除类型modal框*/
-    var m_deleteTypeModal = new Vue({
-        el:'#deleteTypeModal',
-        data:{
-            message,
-            tempTypeInfo,
-        },
-        methods:{
-            deleteType:function(){
-                var self = this;
-                var url = "/deleteType/"+tempTypeInfo.type_id;
-                axios.delete(url).then(function(response) {
-                    var result = response.data;
-                    self.message.info = result.info;
-                    if(result.result){
-                        console.log(result);
-                        $('#deleteTypeS').removeClass('hide').addClass('in');
-                        setTimeout(function(){$('#deleteTypeS').removeClass('in').addClass('hide');$('#deleteTypeModal').modal('toggle');location.reload();},1500);
-                    }else {
-                        $('#deleteTypeF').removeClass('hide').addClass('in');
-                        setTimeout(function(){$('#deleteTypeF').removeClass('in').addClass('hide')},3000);
-                    }
-                });
-            },
-            clearTemp:function () {
-                self.tempTypeInfo.type_id = '';
-                self.tempTypeInfo.type_category= '文具事务用品';
-                self.tempTypeInfo.product_type = '';
-            },
-        },
-    })
 </script>
 
 </html>

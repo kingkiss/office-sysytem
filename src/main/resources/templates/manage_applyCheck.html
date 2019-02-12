@@ -3,19 +3,68 @@
 
 <!--申请审核模块（申请的审批）-->
 <div th:fragment="m_applyCheck" >
-    <div class="panel panel-default" id="allProduct">
-        <div class="panel-heading">物品类型管理</div>
+    <div class="panel panel-default" id="allApplyCheck">
+        <div class="panel-heading">申请审核处理</div>
         <div class="panel-body">
             <!--顶部搜索框-->
             <div class="row" style="margin-top: 15px">
-
+                <div class="col-sm-4">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="输入申请人姓名" >
+                        <span class="input-group-btn">
+                                <button class="btn btn-default" type="button" >搜索</button>
+                            </span>
+                    </div>
+                </div>
                 <!-- 修改物品信息提示框 -->
                 <div class="col-sm-12" >
                     <div class="alert alert-success fade hide" style="text-align: center;margin-bottom: -10px;margin-top: 10px" role="alert" id="productTypeS"><strong>操作成功,{{ message.info }}</strong></div>
                     <div class="alert alert-danger fade hide" style="text-align: center;margin-bottom: -10px;margin-top: 10px" role="alert" id="productTypeF"><strong>操作失败,{{ message.info }}</strong></div>
                 </div>
+
             </div>
         </div>
+
+        <!--申请列表-->
+        <table class="table table-hover table-condensed">
+            <thead>
+            <tr>
+                <th>申请人</th>
+                <th>申请物品</th>
+                <th>申请数量</th>
+                <th>申请时间</th>
+                <th>审核</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>{{ product.product_name }}</td>
+                <td>{{ product.product_type }}</td>
+                <td>￥{{ product.product_price }}</td>
+                <td>{{ product.product_num }}</td>
+                <td>
+                    <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#" >驳回</button>
+                    <button type="button" class="btn btn-danger btn-sm"  v-if="userdata.user_authority>=7" data-toggle="modal" data-target="#">通过</button>
+                </td>
+            </tbody>
+        </table>
+        <!--分页导航栏-->
+        <nav aria-label="Page navigation" style="text-align: center">
+            <ul class="pagination">
+                <li :class="{ 'disabled': pagination.pageNum==1 }">
+                    <a href="#" aria-label="Previous" @click="jumpPage('pre')" >
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                <li v-for="i in pagination.navigatepageNums" :class="{ 'active': pagination.pageNum==i }"><a href="#" @click="jumpByNumber(i)">{{ i }}</a></li>
+                <li :class="{ 'disabled': pagination.pageNum==pagination.pages }">
+                    <a href="#" aria-label="Next" @click="jumpPage('next')">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
     </div>
 </div>
 

@@ -54,3 +54,12 @@ var tempTypeInfo = {
     product_type:'',
 };
 
+/*申请审核信息暂存数据*/
+var tempApplyCheckInfo = {
+    apply_id:'',
+    apply_user_id:'',
+    apply_num:'',
+    apply_time:'',
+    apply_passman_id:'',
+    apply_pass:''
+};

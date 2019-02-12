@@ -26,9 +26,13 @@ public interface ProductMapper {
             "WHERE type_category=#{type} )product_info WHERE product_name LIKE #{searchP} OR product_type LIKE #{searchP}")
     public List<Product> getProductByNameAndType(String type,String searchP);
 
-    //根据物品ID搜索物品库存
+    //根据物品ID查询物品库存
     @Select("SELECT product_num FROM product_info WHERE product_id=#{product_id}")
     public int getProductNumById(int product_id);
+
+    //根据物品ID查询物品名称
+    @Select("SELECT product_name FROM product_info WHERE product_id=#{product_id}")
+    public String getProductNameById(int product_id);
 
     //申请物品成功后，减少对应的库存
     @Update("UPDATE product_info SET product_num=product_num-#{apply_num} WHERE product_id=#{product_id}")

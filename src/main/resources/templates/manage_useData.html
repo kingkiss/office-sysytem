@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<!--借入记录模块（借入记录列表）-->
+<div th:fragment="m_useData" >
+    <div class="panel panel-default" id="allUseData">
+        <div class="panel-heading">使用统计</div>
+        <div class="panel-body">
+            <!--顶部搜索框-->
+            <div class="row" style="margin-top: 15px">
+
+                <!-- 修改物品信息提示框 -->
+                <div class="col-sm-12" >
+                    <div class="alert alert-success fade hide" style="text-align: center;margin-bottom: -10px;margin-top: 10px" role="alert" id="productTypeS"><strong>操作成功,{{ message.info }}</strong></div>
+                    <div class="alert alert-danger fade hide" style="text-align: center;margin-bottom: -10px;margin-top: 10px" role="alert" id="productTypeF"><strong>操作失败,{{ message.info }}</strong></div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+</html>
