@@ -137,14 +137,41 @@
 
 /*申请审核模块数据流处理*/
     var m_applyCheck = new Vue({
-        el:'',
+        el:'#allApplyCheck',
         data:{
             message,
             tempApplyCheckInfo,
-            applyCheck:[],
+            applyChecks:[],
+            pagination:{},
+        },
+        mounted:function(){
+            this.getAllApplyList(1);
         },
         methods:{
+            getAllApplyList:function (start) {
+                var self = this;
+                var url = '/allApplyCheck';
+                axios.get(url,{params:{start:start}}).then(function(response){
+                    var result = response.data;
+                    self.applyChecks = result.AllApplyChecks;
+                    self.pagination = result.page;
 
+                })
+            },
+            jumpByNumber:function (start) {
+                var self = this;
+                if( start != self.pagination.pageNum ){
+                    self.getAllApplyList(start);
+                };
+            },
+            jumpPage:function (page) {
+                var self = this;
+                if( page == 'pre' && self.pagination.hasPreviousPage ){
+                    self.getAllApplyList( self.pagination.prePage );
+                }else if( page == 'next' && self.pagination.hasNextPage ){
+                    self.getAllApplyList( self.pagination.nextPage );
+                };
+            },
         },
 
     })

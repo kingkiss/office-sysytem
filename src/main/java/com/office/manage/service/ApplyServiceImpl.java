@@ -23,10 +23,10 @@ public class ApplyServiceImpl implements ApplyService {
     @Transactional
     public boolean submitProductApply(ApplyList applyList) throws Exception {
         Date time = new Date();
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String datetime = format.format(time);
         //添加申请到申请表
-        int result1 = applyListMapper.addProductApply(applyList.getApply_user_id(),applyList.getApply_product_id(),applyList.getApply_num(),datetime);
+        int result1 = applyListMapper.addProductApply(applyList.getApply_user_id(),applyList.getApply_user_truename(),applyList.getApply_product_id(),applyList.getApply_product_name(),applyList.getApply_num(),datetime);
         //添加完申请表在物品表减去对应物品的库存
         int result2 = productMapper.updataProductNum(applyList.getApply_num(),applyList.getApply_product_id());
         if(result1 == 1 && result2 ==1){

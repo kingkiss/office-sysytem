@@ -5,10 +5,13 @@ import java.util.Date;
 public class ApplyList {
 	private int apply_id;
 	private int apply_user_id;
+	private String apply_user_truename;
 	private int apply_product_id;
+	private String  apply_product_name;
 	private int apply_num;
-	private Date apply_time;
+	private String apply_time;
 	private int apply_passman_id;
+	private String apply_passman_name;
 	private boolean apply_pass;
 	public int getApply_id() {
 		return apply_id;
@@ -34,10 +37,10 @@ public class ApplyList {
 	public void setApply_num(int apply_num) {
 		this.apply_num = apply_num;
 	}
-	public Date getApply_time() {
+	public String getApply_time() {
 		return apply_time;
 	}
-	public void setApply_time(Date apply_time) {
+	public void setApply_time(String apply_time) {
 		this.apply_time = apply_time;
 	}
 	public int getApply_passman_id() {
@@ -52,6 +55,28 @@ public class ApplyList {
 	public void setApply_pass(boolean apply_pass) {
 		this.apply_pass = apply_pass;
 	}
-	
-	
+
+	public String getApply_user_truename() {
+		return apply_user_truename;
+	}
+
+	public void setApply_user_truename(String apply_user_truename) {
+		this.apply_user_truename = apply_user_truename;
+	}
+
+	public String getApply_product_name() {
+		return apply_product_name;
+	}
+
+	public void setApply_product_name(String apply_product_name) {
+		this.apply_product_name = apply_product_name;
+	}
+
+	public String getApply_passman_name() {
+		return apply_passman_name;
+	}
+
+	public void setApply_passman_name(String apply_passman_name) {
+		this.apply_passman_name = apply_passman_name;
+	}
 }

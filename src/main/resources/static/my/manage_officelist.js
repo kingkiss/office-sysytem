@@ -189,11 +189,14 @@ var m_officeApplyModal = new Vue({
             var nowDate = new Date();
             var param = {
                 apply_user_id:userdata.user_id,
+                apply_user_truename:userdata.user_truename,
                 apply_product_id:tempProductInfo.product_id,
+                apply_product_name:tempProductInfo.product_name,
                 apply_num:tempProductInfo.apply_num,
             };
             axios.post(url,param).then(function (response) {
                 var result = response.data;
+                self.message.info = result.info;
                 if(result.result){
                     $('#addApplyS').removeClass('hide').addClass('in');
                     setTimeout(function(){$('#addApplyS').removeClass('in').addClass('hide');$('#applyModal').modal('toggle');location.reload();},1500);

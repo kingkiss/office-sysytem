@@ -107,7 +107,8 @@
                                 <td>￥{{ consumable.product_price }}</td>
                                 <td>{{ consumable.product_num }}</td>
                                 <td>
-                                    <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#applyModal" @click="applyConsumableProduct(consumable)">申请</button>
+                                    <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#applyModal" @click="applyConsumableProduct(consumable)" v-if="consumable.product_num>0">申请借入</button>
+                                    <button type="button" class="btn btn-danger btn-sm" disabled="disabled" v-else>库存不足</button>
                                 </td>
                             </tbody>
                         </table>
@@ -166,7 +167,8 @@
                                 <td>￥{{ equipment.product_price }}</td>
                                 <td>{{ equipment.product_num }}</td>
                                 <td>
-                                    <button type="button" class="btn btn-success btn-sm" data-toggle="modal" data-target="#applyModal" @click="applyEquipmentProduct(equipment)">申请</button>
+                                    <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#applyModal" @click="applyEquipmentProduct(equipment)" v-if="equipment.product_num>0">申请借入</button>
+                                    <button type="button" class="btn btn-danger btn-sm" disabled="disabled" v-else>库存不足</button>
                                 </td>
                             </tbody>
                         </table>

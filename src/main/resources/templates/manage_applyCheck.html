@@ -37,14 +37,14 @@
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <td>{{ product.product_name }}</td>
-                <td>{{ product.product_type }}</td>
-                <td>￥{{ product.product_price }}</td>
-                <td>{{ product.product_num }}</td>
+            <tr v-for="applyCheck in applyChecks">
+                <td>{{ applyCheck.apply_user_truename }}</td>
+                <td>{{ applyCheck.apply_product_name }}</td>
+                <td>{{ applyCheck.apply_num }}</td>
+                <td>{{ applyCheck.apply_time }}</td>
                 <td>
                     <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#" >驳回</button>
-                    <button type="button" class="btn btn-danger btn-sm"  v-if="userdata.user_authority>=7" data-toggle="modal" data-target="#">通过</button>
+                    <button type="button" class="btn btn-danger btn-sm"  data-toggle="modal" data-target="#">通过</button>
                 </td>
             </tbody>
         </table>

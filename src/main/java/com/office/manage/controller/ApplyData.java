@@ -1,16 +1,16 @@
 package com.office.manage.controller;
 
 
-import com.office.manage.domain.ApplyList;
-import com.office.manage.domain.ApplyListMapper;
-import com.office.manage.domain.Message;
-import com.office.manage.domain.ProductMapper;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.office.manage.domain.*;
 import com.office.manage.service.ApplyService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 public class ApplyData {
@@ -52,6 +52,17 @@ public class ApplyData {
 
     }
 
-    //
+    //获取所有申请审核记录
+    @RequestMapping(value = "/allApplyCheck",method = RequestMethod.GET)
+    public Map<String,Object> getAllProductList(@RequestParam(value = "start",defaultValue = "1") int start , @RequestParam(value = "size" ,defaultValue = "15") int size,
+                                                @RequestParam(value = "orderBy" ,defaultValue = "apply_id asc") String orderBy) {
+        PageHelper.startPage(start, size, orderBy);
+        List<ApplyList> applyLists = applyListMapper.getApplyList();
+        PageInfo<ApplyList> page = new PageInfo<>(applyLists);
+        Map<String, Object> m = new HashMap<>();
+        m.put("AllApplyChecks", applyLists);
+        m.put("page", page);
+        return m;
+    }
 
 }
