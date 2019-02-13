@@ -642,5 +642,42 @@
     </div>
 </div>
 
+<!--删除申请记录确认modal框-->
+<div th:fragment="daleteApplyModal">
+    <div class="modal fade bs-example-modal-sm" id="deleteApplyModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="clearTemp"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">确认删除该申请记录？</h4>
+                </div>
+
+                <!-- 操作信息提示框 -->
+                <div class="alert alert-danger alert-dismissable fade hide" role="alert" id="deleteApplyF">
+                    <strong>操作失败！</strong>{{ message.info }}
+                </div>
+                <div class="alert alert-success alert-dismissable fade hide" role="alert" id="deleteApplyS">
+                    <strong>操作成功！</strong>{{ message.info }}！
+                </div>
+
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>申 请 人 ：{{ tempApplyCheckInfo.apply_user_truename }}</label><br>
+                        <label>申请物品：{{ tempApplyCheckInfo.apply_product_name }}</label><br>
+                        <label>申请数量：{{ tempApplyCheckInfo.apply_num }}</label><br>
+                        <label>申请金额：￥{{ tempApplyCheckInfo.apply_product_price }}</label><br>
+                        <label>审 核 人 ：{{ tempApplyCheckInfo.apply_passman_name }}</label><br>
+                        <label>审核时间：{{ tempApplyCheckInfo.apply_time }}</label><br>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" @click="clearTemp">取消</button>
+                    <button type="button" class="btn btn-danger" @click="deleteApply" >确认删除</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 </html>

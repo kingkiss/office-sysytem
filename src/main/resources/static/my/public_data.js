@@ -66,4 +66,5 @@ var tempApplyCheckInfo = {
     apply_passman_id:'',
     apply_passman_name:'',
     apply_pass:0,
+    apply_time:'',
 };

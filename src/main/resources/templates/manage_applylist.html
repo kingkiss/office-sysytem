@@ -7,24 +7,22 @@
         <div class="panel-heading">申请记录</div>
         <div class="panel-body">
             <!--顶部搜索框-->
-            <div class="row" style="margin-top: 15px">
-                <div class="row" style="margin-top: 15px">
+            <div class="row">
                     <div class="col-sm-4">
                         <div class="input-group">
-                            <input type="text" class="form-control" placeholder="输入申请人姓名" >
+                            <input type="text" class="form-control" placeholder="输入申请人姓名、申请物品名" v-model="searchApply">
                             <span class="input-group-btn">
-                                <button class="btn btn-default" type="button" >搜索</button>
+                                <button class="btn btn-default" type="button" @click="searchApplyList">搜索</button>
                             </span>
                         </div>
                     </div>
                     <!-- 修改物品信息提示框 -->
-                    <div class="col-sm-12" >
+<!--                    <div class="col-sm-12" >
                         <div class="alert alert-success fade hide" style="text-align: center;margin-bottom: -10px;margin-top: 10px" role="alert" id="productTypeS"><strong>操作成功,{{ message.info }}</strong></div>
                         <div class="alert alert-danger fade hide" style="text-align: center;margin-bottom: -10px;margin-top: 10px" role="alert" id="productTypeF"><strong>操作失败,{{ message.info }}</strong></div>
-                    </div>
+                    </div>-->
 
                 </div>
-            </div>
         </div>
 
         <!--申请列表-->
@@ -32,22 +30,35 @@
             <thead>
             <tr>
                 <th>申请人</th>
+                <th>申请人邮箱</th>
                 <th>申请物品</th>
                 <th>申请数量</th>
-                <th>申请时间</th>
-                <th>审查人</th>
+                <th>物品单价</th>
+                <th>总共金额</th>
+                <th>审核时间</th>
+                <th>审核人</th>
                 <th>审核情况</th>
+                <th v-if="userdata.user_authority>=7">操作</th>
             </tr>
             </thead>
             <tbody>
-            <tr>
-                <td>{{ product.product_name }}</td>
-                <td>{{ product.product_type }}</td>
-                <td>￥{{ product.product_price }}</td>
-                <td>{{ product.product_num }}</td>
+            <tr v-for="apply in applyLists">
+                <td>{{ apply.apply_user_truename }}</td>
+                <td>{{ apply.apply_user_name }}</td>
+                <td>{{ apply.apply_product_name }}</td>
+                <td>{{ apply.apply_num }}</td>
+                <td>￥{{ apply.apply_product_price }}</td>
+                <td>￥{{ apply.apply_product_price*apply.apply_num }}</td>
+                <td>{{ apply.apply_time }}</td>
+                <td>{{ apply.apply_passman_name }}</td>
                 <td>
-                    <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#" >驳回</button>
-                    <button type="button" class="btn btn-danger btn-sm"  v-if="userdata.user_authority>=7" data-toggle="modal" data-target="#">通过</button>
+                    <span class="label label-warning" v-if="apply.apply_pass==0">待审核</span>
+                    <span class="label label-success" v-if="apply.apply_pass==1">通过</span>
+                    <span class="label label-default" v-if="apply.apply_pass==2">驳回</span>
+                </td>
+                <td>
+                    <button type="button" class="btn btn-danger btn-sm"  v-if="userdata.user_authority>=7 && apply.apply_pass!=0" data-toggle="modal" data-target="#deleteApplyModal" @click="addApplyTemp(apply)">删除</button>
+                    <button type="button" class="btn btn-default btn-sm"  v-else-if="userdata.user_authority>=7" data-toggle="modal" data-target="#" disabled="disabled">删除</button>
                 </td>
             </tbody>
         </table>

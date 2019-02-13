@@ -57,8 +57,14 @@ public class ApplyServiceImpl implements ApplyService {
             }else {
                 throw new Exception("数据库异常");
             }
-        }else if( applyResult == 1 ){
-            return true;
+        }else if( applyList.getApply_pass() ==2 && applyResult == 1  ){
+            //pass=2为申请审核状态为驳回，物品存回数据库
+            int productResult = productMapper.updataProductNumA(applyList.getApply_num(),applyList.getApply_product_id());
+            if (productResult==1){
+                return true;
+            }else {
+                throw new Exception("数据库异常");
+            }
         }else {
             throw new Exception("数据库异常");
         }

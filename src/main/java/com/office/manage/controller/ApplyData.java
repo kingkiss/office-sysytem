@@ -54,7 +54,7 @@ public class ApplyData {
 
     //获取所有申请审核记录
     @RequestMapping(value = "/allApplyCheck",method = RequestMethod.GET)
-    public Map<String,Object> getAllProductList(@RequestParam(value = "start",defaultValue = "1") int start , @RequestParam(value = "size" ,defaultValue = "15") int size,
+    public Map<String,Object> getAllApplyCheckList(@RequestParam(value = "start",defaultValue = "1") int start , @RequestParam(value = "size" ,defaultValue = "15") int size,
                                                 @RequestParam(value = "orderBy" ,defaultValue = "apply_id asc") String orderBy) {
         PageHelper.startPage(start, size, orderBy);
         List<ApplyList> applyLists = applyListMapper.getApplyCheckList();
@@ -65,9 +65,24 @@ public class ApplyData {
         return m;
     }
 
+
+    //获取所有申请审核记录
+    @RequestMapping(value = "/allApplyList",method = RequestMethod.GET)
+    public Map<String,Object> getAllApplyList(@RequestParam(value = "start",defaultValue = "1") int start , @RequestParam(value = "size" ,defaultValue = "15") int size,
+                                                @RequestParam(value = "orderBy" ,defaultValue = "apply_id asc") String orderBy) {
+        PageHelper.startPage(start, size, orderBy);
+        List<ApplyList> applyLists = applyListMapper.getApplyList();
+        PageInfo<ApplyList> page = new PageInfo<>(applyLists);
+        Map<String, Object> m = new HashMap<>();
+        m.put("AllApplyLists", applyLists);
+        m.put("page", page);
+        return m;
+    }
+
+
     //根据申请人姓名和物品名称模糊搜索申请记录（待审核的记录：pass=0）
     @RequestMapping(value = "/SearchApplyCheck",method = RequestMethod.GET)
-    public Map<String,Object> getSearchProduct(@RequestParam(value = "start",defaultValue = "1") int start , @RequestParam(value = "size" ,defaultValue = "15") int size ,
+    public Map<String,Object> getSearchApplyCheck(@RequestParam(value = "start",defaultValue = "1") int start , @RequestParam(value = "size" ,defaultValue = "15") int size ,
                                                @RequestParam(value = "applyCheck",defaultValue = "") String apply){
         String search = "%"+apply+"%";
         PageHelper.startPage(start,size);
@@ -75,6 +90,21 @@ public class ApplyData {
         PageInfo<ApplyList> Searchpage = new PageInfo<>(applyChecks);
         Map<String,Object> su = new HashMap<>();
         su.put("SearchApplyChecks",applyChecks);
+        su.put("page",Searchpage);
+        return su;
+    }
+
+
+    //根据申请人姓名和物品名称模糊搜索申请记录（所有记录）
+    @RequestMapping(value = "/SearchApplyList",method = RequestMethod.GET)
+    public Map<String,Object> getSearchApplyList(@RequestParam(value = "start",defaultValue = "1") int start , @RequestParam(value = "size" ,defaultValue = "15") int size ,
+                                               @RequestParam(value = "applyCheck",defaultValue = "") String apply){
+        String search = "%"+apply+"%";
+        PageHelper.startPage(start,size);
+        List<ApplyList> applyChecks = applyListMapper.getApplyListByUserNameAndProductName(search);
+        PageInfo<ApplyList> Searchpage = new PageInfo<>(applyChecks);
+        Map<String,Object> su = new HashMap<>();
+        su.put("SearchApplyLists",applyChecks);
         su.put("page",Searchpage);
         return su;
     }
@@ -87,7 +117,7 @@ public class ApplyData {
             boolean r = applyService.updataApplyCheck(applyList);
             if(r){
                 msg.setResult(true);
-                msg.setInfo("已通过该申请！");
+                msg.setInfo("该申请已审核！");
                 return msg;
             }else{
                 msg.setResult(false);
@@ -102,5 +132,23 @@ public class ApplyData {
 
 
     }
+
+    //删除申请记录
+    @RequestMapping(value = "/deleteApply/{apply_id}",method = RequestMethod.DELETE)
+    public Message deleteApply(@PathVariable int apply_id){
+        Message msg = new Message();
+        int result = applyListMapper.deleteApplyById(apply_id);
+        //System.out.println(result);
+        if( result>0 ){
+            msg.setResult(true);
+            msg.setInfo("已删除"+result+"条记录");
+            return msg;
+        }else {
+            msg.setResult(false);
+            msg.setInfo("未知错误请重试");
+            return msg;
+        }
+    }
+
 
 }

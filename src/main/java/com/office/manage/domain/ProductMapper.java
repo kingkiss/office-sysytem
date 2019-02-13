@@ -38,6 +38,10 @@ public interface ProductMapper {
     @Update("UPDATE product_info SET product_num=product_num-#{apply_num} WHERE product_id=#{product_id}")
     public int updataProductNum(int apply_num,int product_id);
 
+    //申请物品驳回后，增加对应的库存
+    @Update("UPDATE product_info SET product_num=product_num+#{apply_num} WHERE product_id=#{product_id}")
+    public int updataProductNumA(int apply_num,int product_id);
+
     //添加新物品
     @Insert("INSERT INTO product_info (product_name,product_num,product_price,product_type) VALUES (#{product_name},#{product_num},#{product_price},#{product_type})")
     public int addNewProduct(String product_name,int product_num ,float product_price,String product_type);
@@ -45,5 +49,6 @@ public interface ProductMapper {
     //删除物品
     @Delete("DELETE FROM product_info WHERE product_id=#{product_id}")
     public int deleteProductByid(String product_id);
+
 
 }
