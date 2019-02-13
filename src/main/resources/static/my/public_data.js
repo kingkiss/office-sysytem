@@ -58,8 +58,12 @@ var tempTypeInfo = {
 var tempApplyCheckInfo = {
     apply_id:'',
     apply_user_id:'',
+    apply_user_truename:'',
     apply_num:'',
-    apply_time:'',
+    apply_product_id:'',
+    apply_product_name:'',
+    apply_product_price:'',
     apply_passman_id:'',
-    apply_pass:''
+    apply_passman_name:'',
+    apply_pass:0,
 };

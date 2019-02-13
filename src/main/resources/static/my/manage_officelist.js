@@ -190,9 +190,11 @@ var m_officeApplyModal = new Vue({
             var param = {
                 apply_user_id:userdata.user_id,
                 apply_user_truename:userdata.user_truename,
+                apply_user_name:userdata.user_name,
                 apply_product_id:tempProductInfo.product_id,
                 apply_product_name:tempProductInfo.product_name,
                 apply_num:tempProductInfo.apply_num,
+                apply_product_price:tempProductInfo.product_price,
             };
             axios.post(url,param).then(function (response) {
                 var result = response.data;

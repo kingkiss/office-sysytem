@@ -7,12 +7,12 @@
         <div class="panel-heading">申请审核处理</div>
         <div class="panel-body">
             <!--顶部搜索框-->
-            <div class="row" style="margin-top: 15px">
+            <div class="row">
                 <div class="col-sm-4">
                     <div class="input-group">
-                        <input type="text" class="form-control" placeholder="输入申请人姓名" >
+                        <input type="text" class="form-control" placeholder="输入申请人姓名或物品名称" v-model="searchApply">
                         <span class="input-group-btn">
-                                <button class="btn btn-default" type="button" >搜索</button>
+                                <button class="btn btn-default" type="button" @click="searchApplyCheck">搜索</button>
                             </span>
                     </div>
                 </div>
@@ -30,8 +30,11 @@
             <thead>
             <tr>
                 <th>申请人</th>
+                <th>申请人邮箱</th>
                 <th>申请物品</th>
                 <th>申请数量</th>
+                <th>物品单价</th>
+                <th>总共金额</th>
                 <th>申请时间</th>
                 <th>审核</th>
             </tr>
@@ -39,12 +42,15 @@
             <tbody>
             <tr v-for="applyCheck in applyChecks">
                 <td>{{ applyCheck.apply_user_truename }}</td>
+                <td>{{ applyCheck.apply_user_name }}</td>
                 <td>{{ applyCheck.apply_product_name }}</td>
                 <td>{{ applyCheck.apply_num }}</td>
+                <td>￥{{ applyCheck.apply_product_price }}</td>
+                <td>￥{{ applyCheck.apply_product_price*applyCheck.apply_num }}</td>
                 <td>{{ applyCheck.apply_time }}</td>
                 <td>
-                    <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#" >驳回</button>
-                    <button type="button" class="btn btn-danger btn-sm"  data-toggle="modal" data-target="#">通过</button>
+                    <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#rejectApplyModal" @click="addApplyTemp(applyCheck)">驳回</button>
+                    <button type="button" class="btn btn-success btn-sm"  data-toggle="modal" data-target="#passApplyModal" @click="addApplyTemp(applyCheck)">通过</button>
                 </td>
             </tbody>
         </table>

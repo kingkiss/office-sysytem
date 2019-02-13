@@ -5,11 +5,13 @@ import java.util.Date;
 public class BorrowList {
 	private int borrowinfo_id;
 	private int borrowinfo_user_id;
+	private String borrowinfo_user_truename;
 	private int borrowinfo_product_id;
+	private String borrowinfo_product_name;
 	private int borrowinfo_num;
-	private float borrwoinfo_price;
-	private Date borrowinfo_time;
-	private boolean borrowinfo_return;
+	private float borrwoinfo_product_price;
+	private String borrowinfo_time;
+	private int borrowinfo_return;
 	private int borrowinfo_return_num;
 	private float borrowinfo_missprice;
 	public int getBorrowinfo_id() {
@@ -36,22 +38,22 @@ public class BorrowList {
 	public void setBorrowinfo_num(int borrowinfo_num) {
 		this.borrowinfo_num = borrowinfo_num;
 	}
-	public float getBorrwoinfo_price() {
-		return borrwoinfo_price;
+	public float getBorrwoinfo_product_price() {
+		return borrwoinfo_product_price;
 	}
-	public void setBorrwoinfo_price(float borrwoinfo_price) {
-		this.borrwoinfo_price = borrwoinfo_price;
+	public void setBorrwoinfo_product_price(float borrwoinfo_product_price) {
+		this.borrwoinfo_product_price = borrwoinfo_product_price;
 	}
-	public Date getBorrowinfo_time() {
+	public String getBorrowinfo_time() {
 		return borrowinfo_time;
 	}
-	public void setBorrowinfo_time(Date borrowinfo_time) {
+	public void setBorrowinfo_time(String borrowinfo_time) {
 		this.borrowinfo_time = borrowinfo_time;
 	}
-	public boolean isBorrowinfo_return() {
+	public int getBorrowinfo_return() {
 		return borrowinfo_return;
 	}
-	public void setBorrowinfo_return(boolean borrowinfo_return) {
+	public void setBorrowinfo_return(int borrowinfo_return) {
 		this.borrowinfo_return = borrowinfo_return;
 	}
 	public int getBorrowinfo_return_num() {
@@ -66,6 +68,20 @@ public class BorrowList {
 	public void setBorrowinfo_missprice(float borrowinfo_missprice) {
 		this.borrowinfo_missprice = borrowinfo_missprice;
 	}
-	
-	
+
+	public String getBorrowinfo_user_truename() {
+		return borrowinfo_user_truename;
+	}
+
+	public void setBorrowinfo_user_truename(String borrowinfo_user_truename) {
+		this.borrowinfo_user_truename = borrowinfo_user_truename;
+	}
+
+	public String getBorrowinfo_product_name() {
+		return borrowinfo_product_name;
+	}
+
+	public void setBorrowinfo_product_name(String borrowinfo_product_name) {
+		this.borrowinfo_product_name = borrowinfo_product_name;
+	}
 }

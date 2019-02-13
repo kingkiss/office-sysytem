@@ -569,5 +569,78 @@
 
 </div>
 
+<!--申请审核确认modal框-->
+<div th:fragment="applyCheckModal">
+    <!--审核通过modal框-->
+    <div class="modal fade bs-example-modal-sm" id="passApplyModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="clearTemp"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">确认通过该申请？</h4>
+                </div>
+
+                <!-- 操作信息提示框 -->
+                <div class="alert alert-danger alert-dismissable fade hide" role="alert" id="passApplyF">
+                    <strong>操作失败！</strong>{{ message.info }}
+                </div>
+                <div class="alert alert-success alert-dismissable fade hide" role="alert" id="passApplyS">
+                    <strong>操作成功！</strong>{{ message.info }}！
+                </div>
+
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>申请人：{{ tempApplyCheckInfo.apply_user_truename }}</label><br>
+                        <label>申请物品：{{ tempApplyCheckInfo.apply_product_name }}</label><br>
+                        <label>申请数量：{{ tempApplyCheckInfo.apply_num }}</label><br>
+                        <label>申请金额：￥{{ tempApplyCheckInfo.apply_product_price }}</label><br>
+                        <label>审核人：{{ tempApplyCheckInfo.apply_passman_name }}</label><br>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" @click="clearTemp">取消</button>
+                    <button type="button" class="btn btn-danger" @click="passA" >确认通过</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--审核驳回modal框-->
+    <div class="modal fade bs-example-modal-sm" id="rejectApplyModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="clearTemp"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">确认驳回该申请？</h4>
+                </div>
+
+                <!-- 操作信息提示框 -->
+                <div class="alert alert-danger alert-dismissable fade hide" role="alert" id="rejectApplyF">
+                    <strong>操作失败！</strong>{{ message.info }}
+                </div>
+                <div class="alert alert-success alert-dismissable fade hide" role="alert" id="rejectApplyS">
+                    <strong>操作成功！</strong>{{ message.info }}！
+                </div>
+
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>申请人：{{ tempApplyCheckInfo.apply_user_truename }}</label><br>
+                        <label>申请物品：{{ tempApplyCheckInfo.apply_product_name }}</label><br>
+                        <label>申请数量：{{ tempApplyCheckInfo.apply_num }}</label><br>
+                        <label>申请金额：￥{{ tempApplyCheckInfo.apply_product_price }}</label><br>
+                        <label>审核人：{{ tempApplyCheckInfo.apply_passman_name }}</label><br>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" @click="clearTemp">取消</button>
+                    <button type="button" class="btn btn-danger" @click="rejectA" >确认驳回</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 </html>

@@ -57,12 +57,50 @@ public class ApplyData {
     public Map<String,Object> getAllProductList(@RequestParam(value = "start",defaultValue = "1") int start , @RequestParam(value = "size" ,defaultValue = "15") int size,
                                                 @RequestParam(value = "orderBy" ,defaultValue = "apply_id asc") String orderBy) {
         PageHelper.startPage(start, size, orderBy);
-        List<ApplyList> applyLists = applyListMapper.getApplyList();
+        List<ApplyList> applyLists = applyListMapper.getApplyCheckList();
         PageInfo<ApplyList> page = new PageInfo<>(applyLists);
         Map<String, Object> m = new HashMap<>();
         m.put("AllApplyChecks", applyLists);
         m.put("page", page);
         return m;
+    }
+
+    //根据申请人姓名和物品名称模糊搜索申请记录（待审核的记录：pass=0）
+    @RequestMapping(value = "/SearchApplyCheck",method = RequestMethod.GET)
+    public Map<String,Object> getSearchProduct(@RequestParam(value = "start",defaultValue = "1") int start , @RequestParam(value = "size" ,defaultValue = "15") int size ,
+                                               @RequestParam(value = "applyCheck",defaultValue = "") String apply){
+        String search = "%"+apply+"%";
+        PageHelper.startPage(start,size);
+        List<ApplyList> applyChecks = applyListMapper.getApplyCheckByUserNameAndProductName(search);
+        PageInfo<ApplyList> Searchpage = new PageInfo<>(applyChecks);
+        Map<String,Object> su = new HashMap<>();
+        su.put("SearchApplyChecks",applyChecks);
+        su.put("page",Searchpage);
+        return su;
+    }
+
+    //申请审核提交（1=通过，2=驳回）
+    @RequestMapping(value = "/sumbitApplyCheck",method = RequestMethod.POST)
+    public Message updataApplyCheckStatus(@RequestBody ApplyList applyList){
+        Message msg = new Message();
+        try {
+            boolean r = applyService.updataApplyCheck(applyList);
+            if(r){
+                msg.setResult(true);
+                msg.setInfo("已通过该申请！");
+                return msg;
+            }else{
+                msg.setResult(false);
+                msg.setInfo("网络错误请重试！");
+                return msg;
+            }
+        }catch (Exception e){
+            msg.setInfo(e.getMessage());
+            msg.setResult(false);
+            return msg;
+        }
+
+
     }
 
 }
