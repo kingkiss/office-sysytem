@@ -68,3 +68,18 @@ var tempApplyCheckInfo = {
     apply_pass:0,
     apply_time:'',
 };
+
+/*归还记录信息暂存数据*/
+var tempBorrowListInfo = {
+    borrowinfo_id:'',
+    borrowinfo_user_id:'',
+    borrowinfo_user_truename:'',
+    borrowinfo_product_id:'',
+    borrowinfo_product_name:'',
+    borrowinfo_product_price:'',
+    borrowinfo_num:'',
+    borrowinfo_time:'',
+    borrowinfo_return:0,
+    borrowinfo_return_num:0,
+    borrowinfo_missprice:0,
+};

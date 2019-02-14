@@ -68,10 +68,10 @@
         <a href="manage_userInfo" th:class="${isUserInfo}?'list-group-item list-item-active':'list-group-item'" v-show="userdata.user_authority >= 7">用户管理</a>
         <a href="manage_applyCheck" th:class="${isApplyCheck}?'list-group-item list-item-active':'list-group-item'" v-show="userdata.user_authority >= 3">申请审核</a>
         <a href="manage_applyList" th:class="${isApplyList}?'list-group-item list-item-active':'list-group-item'">申请记录</a>
-        <a href="manage_borrowList" th:class="${isBorrowList}?'list-group-item list-item-active':'list-group-item'">借入记录</a>
-        <a href="manage_returnList" th:class="${isReturnList}?'list-group-item list-item-active':'list-group-item'">归还记录</a>
+        <a href="manage_borrowList" th:class="${isBorrowList}?'list-group-item list-item-active':'list-group-item'">借入/归还记录</a>
+        <!--<a href="manage_returnList" th:class="${isReturnList}?'list-group-item list-item-active':'list-group-item'">归还记录</a>-->
+        <a href="#" class="list-group-item" v-show="userdata.user_authority >= 3">购入记录</a>
         <a href="manage_useData" th:class="${isUseData}?'list-group-item list-item-active':'list-group-item'" v-show="userdata.user_authority >= 3">使用统计</a>
-        <a href="#" class="list-group-item" v-show="userdata.user_authority >= 7">系统管理</a>
     </div>
 </div>
 
@@ -121,6 +121,10 @@
 <div th:include="modal :: applyCheckModal"></div>
 <!--删除申请记录确认modal框-->
 <div th:include="modal :: daleteApplyModal"></div>
+
+<!--借入记录归还、挂失、删除modal框-->
+<div th:include="modal :: borrowModal"></div>
+
 </body>
 
 <!--通用数据流-->
@@ -143,107 +147,157 @@
         $(this).addClass('list-item-active');
     });*/
 
-/*申请记录模块数据处理（申请记录列表）*/
-  var m_applyList = new Vue({
-      el:'#allApplyList',
-      data:{
-          message,
-          userdata,
-          tempApplyCheckInfo,
-          searchApply:'',
-          applyLists:[],
-          pagination:{},
-      },
-      mounted:function(){
-          this.getAllApplyList(1);
-      },
-      methods:{
-          getAllApplyList:function (start) {
-              var self = this;
-              var url = '/allApplyList';
-              axios.get(url,{params:{start:start}}).then(function(response){
-                  var result = response.data;
-                  self.applyLists = result.AllApplyLists;
-                  self.pagination = result.page;
-              })
-          },
-          jumpByNumber:function (start) {
-              var self = this;
-              if( start != self.pagination.pageNum ){
-                  self.getAllApplyList(start);
-              };
-          },
-          jumpPage:function (page) {
-              var self = this;
-              if( page == 'pre' && self.pagination.hasPreviousPage ){
-                  self.getAllApplyList( self.pagination.prePage );
-              }else if( page == 'next' && self.pagination.hasNextPage ){
-                  self.getAllApplyList( self.pagination.nextPage );
-              };
-          },
-          searchApplyList:function () {
-              var self = this;
-              var url = "/SearchApplyList";
-              axios.get(url,{params:{applyCheck:self.searchApply}}).then(function(response){
-                  var result = response.data;
-                  self.applyLists = result.SearchApplyLists;
-                  self.pagination = result.page;
-              })
-          },
-          addApplyTemp:function (apply) {
-              var self = this;
-              self.tempApplyCheckInfo.apply_id = apply.apply_id;
-              self.tempApplyCheckInfo.apply_num = apply.apply_num;
-              self.tempApplyCheckInfo.apply_passman_name = apply.apply_passman_name;
-              self.tempApplyCheckInfo.apply_user_id = apply.apply_user_id;
-              self.tempApplyCheckInfo.apply_user_truename = apply.apply_user_truename;
-              self.tempApplyCheckInfo.apply_product_id = apply.apply_product_id;
-              self.tempApplyCheckInfo.apply_product_name = apply.apply_product_name;
-              self.tempApplyCheckInfo.apply_product_price = apply.apply_product_price;
-              self.tempApplyCheckInfo.apply_time = apply.apply_time;
-
-          }
-      }
-  })
-
-    /*删除申请记录modal框数据处理*/
-    var deleteApplyModal = new Vue({
-        el:'#deleteApplyModal',
+/*借入/归还记录模块数据处理（m_returnList）*/
+    var m_borrowList = new Vue({
+        el:'#allBorrowList',
         data:{
             message,
             userdata,
-            tempApplyCheckInfo,
+            tempBorrowListInfo,
+            searchBorrow:'',
+            borrowLists:[],
+            pagination:{},
+        },
+        mounted:function () {
+            this.getAllBorrowList(1)
         },
         methods:{
-            clearTemp:function () {
-                self.tempApplyCheckInfo.apply_id = '';
-                self.tempApplyCheckInfo.apply_num = '';
-                self.tempApplyCheckInfo.apply_passman_id = '';
-                self.tempApplyCheckInfo.apply_passman_name = '';
-                self.tempApplyCheckInfo.apply_user_truename = '';
-                self.tempApplyCheckInfo.apply_product_name = '';
-                self.tempApplyCheckInfo.apply_product_price = '';
-                self.tempApplyCheckInfo.apply_pass = 0;
-                self.tempApplyCheckInfo.apply_time = '';
-            },
-            deleteApply:function () {
+            getAllBorrowList:function (start) {
                 var self = this;
-                var url = "/deleteApply/"+tempApplyCheckInfo.apply_id;
-                axios.delete(url).then(function(response) {
+                var url = '/allBorrowList';
+                axios.get(url,{params:{start:start,userId:self.userdata.user_id,userAuthority:self.userdata.user_authority}}).then(function(response){
                     var result = response.data;
-                    self.message.info = result.info;
-                    if(result.result){
-                        console.log(result);
-                        $('#deleteApplyS').removeClass('hide').addClass('in');
-                        setTimeout(function(){$('#deleteApplyS').removeClass('in').addClass('hide');$('#deleteApplyModal').modal('toggle');location.reload();},1500);
-                    }else {
-                        $('#deleteApplyF').removeClass('hide').addClass('in');
-                        setTimeout(function(){$('#deleteApplyF').removeClass('in').addClass('hide')},3000);
-                    }
-                });
+                    self.borrowLists = result.AllBorrowLists;
+                    self.pagination = result.page;
+
+                })
+            },
+            jumpByNumber:function (start) {
+                var self = this;
+                if( start != self.pagination.pageNum ){
+                    self.getAllBorrowList(start);
+                };
+            },
+            jumpPage:function (page) {
+                var self = this;
+                if( page == 'pre' && self.pagination.hasPreviousPage ){
+                    self.getAllBorrowList( self.pagination.prePage );
+                }else if( page == 'next' && self.pagination.hasNextPage ){
+                    self.getAllBorrowList( self.pagination.nextPage );
+                };
+            },
+            searchBorrowList:function () {
+                var self = this;
+                var url = "/SearchBorrowList";
+                axios.get(url,{params:{borrowList:self.searchBorrow}}).then(function(response){
+                    var result = response.data;
+                    self.borrowLists = result.SearchBorrowLists;
+                    self.pagination = result.page;
+                })
+            },
+            addBorrowinfoToTemp:function (borrow) {
+                var self = this;
+                self.tempBorrowListInfo.borrowinfo_id = borrow.borrowinfo_id;
+                self.tempBorrowListInfo.borrowinfo_user_id = borrow.borrowinfo_user_id;
+                self.tempBorrowListInfo.borrowinfo_user_truename = borrow.borrowinfo_user_truename;
+                self.tempBorrowListInfo.borrowinfo_product_id = borrow.borrowinfo_product_id;
+                self.tempBorrowListInfo.borrowinfo_num = borrow.borrowinfo_num;
+                self.tempBorrowListInfo.borrowinfo_product_name = borrow.borrowinfo_product_name;
+                self.tempBorrowListInfo.borrowinfo_product_price = borrow.borrowinfo_product_price;
+                self.tempBorrowListInfo.borrowinfo_time = borrow.borrowinfo_time;
             }
         }
-    })
+    });
+/*归还确认modal框数据处理*/
+var returnModal = new Vue({
+    el:'#borrowReturnModal',
+    data:{
+        message,
+        userdata,
+        tempBorrowListInfo,
+    },
+    methods:{
+        clearTemp:function () {
+            var self = this;
+            self.tempBorrowListInfo.borrowinfo_id = '';
+            self.tempBorrowListInfo.borrowinfo_user_id = '';
+            self.tempBorrowListInfo.borrowinfo_user_truename = '';
+            self.tempBorrowListInfo.borrowinfo_product_id = '';
+            self.tempBorrowListInfo.borrowinfo_product_name = '';
+            self.tempBorrowListInfo.borrowinfo_product_price = '';
+            self.tempBorrowListInfo.borrowinfo_num = '';
+            self.tempBorrowListInfo.borrowinfo_time = '';
+            self.tempBorrowListInfo.borrowinfo_return = 0;
+            self.tempBorrowListInfo.borrowinfo_return_num = 0;
+            self.tempBorrowListInfo.borrowinfo_missprice = 0;
+        }
+    },
+    computed:{
+        missPrice:function () {
+            var self = this;
+            self.tempBorrowListInfo.borrowinfo_missprice = (self.tempBorrowListInfo.borrowinfo_num*self.tempBorrowListInfo.borrowinfo_product_price)
+                -(self.tempBorrowListInfo.borrowinfo_return_num*self.tempBorrowListInfo.borrowinfo_product_price);
+            /*if(self.tempBorrowListInfo.borrowinfo_missprice<0){
+                self.tempBorrowListInfo.borrowinfo_missprice = self.tempBorrowListInfo.borrowinfo_num*self.tempBorrowListInfo.borrowinfo_product_price;
+                return self.tempBorrowListInfo.borrowinfo_missprice
+            }*/
+            return self.tempBorrowListInfo.borrowinfo_missprice
+        },
+    }
+});
+
+/*挂失确认modal框数据处理*/
+var missModal = new Vue({
+    el:'',
+    data:{
+        message,
+        userdata,
+        tempBorrowListInfo,
+    },
+    methods:{
+        clearTemp:function () {
+            var self = this;
+            self.tempBorrowListInfo.borrowinfo_id = '';
+            self.tempBorrowListInfo.borrowinfo_user_id = '';
+            self.tempBorrowListInfo.borrowinfo_user_truename = '';
+            self.tempBorrowListInfo.borrowinfo_product_id = '';
+            self.tempBorrowListInfo.borrowinfo_product_name = '';
+            self.tempBorrowListInfo.borrowinfo_product_price = '';
+            self.tempBorrowListInfo.borrowinfo_num = '';
+            self.tempBorrowListInfo.borrowinfo_time = '';
+            self.tempBorrowListInfo.borrowinfo_return = 0;
+            self.tempBorrowListInfo.borrowinfo_return_num = 0;
+            self.tempBorrowListInfo.borrowinfo_missprice = 0;
+        }
+    },
+});
+
+/*删除确认modal框数据处理*/
+var deleteBorrowModal = new Vue({
+    el:'',
+    data:{
+        message,
+        userdata,
+        tempBorrowListInfo,
+    },
+    methods:{
+        clearTemp:function () {
+            var self = this;
+            self.tempBorrowListInfo.borrowinfo_id = '';
+            self.tempBorrowListInfo.borrowinfo_user_id = '';
+            self.tempBorrowListInfo.borrowinfo_user_truename = '';
+            self.tempBorrowListInfo.borrowinfo_product_id = '';
+            self.tempBorrowListInfo.borrowinfo_product_name = '';
+            self.tempBorrowListInfo.borrowinfo_product_price = '';
+            self.tempBorrowListInfo.borrowinfo_num = '';
+            self.tempBorrowListInfo.borrowinfo_time = '';
+            self.tempBorrowListInfo.borrowinfo_return = 0;
+            self.tempBorrowListInfo.borrowinfo_return_num = 0;
+            self.tempBorrowListInfo.borrowinfo_missprice = 0;
+        }
+    },
+});
+
 </script>
 
 </html>

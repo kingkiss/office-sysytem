@@ -140,3 +140,105 @@ var rejectApplyModal = new Vue({
     }
 });
 
+/*申请记录模块数据处理（申请记录列表）*/
+var m_applyList = new Vue({
+    el:'#allApplyList',
+    data:{
+        message,
+        userdata,
+        tempApplyCheckInfo,
+        searchApply:'',
+        applyLists:[],
+        pagination:{},
+    },
+    mounted:function(){
+        this.getAllApplyList(1);
+    },
+    methods:{
+        getAllApplyList:function (start) {
+            var self = this;
+            var url = '/allApplyList';
+            axios.get(url,{params:{start:start}}).then(function(response){
+                var result = response.data;
+                self.applyLists = result.AllApplyLists;
+                self.pagination = result.page;
+            })
+        },
+        jumpByNumber:function (start) {
+            var self = this;
+            if( start != self.pagination.pageNum ){
+                self.getAllApplyList(start);
+            };
+        },
+        jumpPage:function (page) {
+            var self = this;
+            if( page == 'pre' && self.pagination.hasPreviousPage ){
+                self.getAllApplyList( self.pagination.prePage );
+            }else if( page == 'next' && self.pagination.hasNextPage ){
+                self.getAllApplyList( self.pagination.nextPage );
+            };
+        },
+        searchApplyList:function () {
+            var self = this;
+            var url = "/SearchApplyList";
+            axios.get(url,{params:{applyCheck:self.searchApply}}).then(function(response){
+                var result = response.data;
+                self.applyLists = result.SearchApplyLists;
+                self.pagination = result.page;
+            })
+        },
+        addApplyTemp:function (apply) {
+            var self = this;
+            self.tempApplyCheckInfo.apply_id = apply.apply_id;
+            self.tempApplyCheckInfo.apply_num = apply.apply_num;
+            self.tempApplyCheckInfo.apply_passman_name = apply.apply_passman_name;
+            self.tempApplyCheckInfo.apply_user_id = apply.apply_user_id;
+            self.tempApplyCheckInfo.apply_user_truename = apply.apply_user_truename;
+            self.tempApplyCheckInfo.apply_product_id = apply.apply_product_id;
+            self.tempApplyCheckInfo.apply_product_name = apply.apply_product_name;
+            self.tempApplyCheckInfo.apply_product_price = apply.apply_product_price;
+            self.tempApplyCheckInfo.apply_time = apply.apply_time;
+
+        }
+    }
+})
+
+/*删除申请记录modal框数据处理*/
+var deleteApplyModal = new Vue({
+    el:'#deleteApplyModal',
+    data:{
+        message,
+        userdata,
+        tempApplyCheckInfo,
+    },
+    methods:{
+        clearTemp:function () {
+            self.tempApplyCheckInfo.apply_id = '';
+            self.tempApplyCheckInfo.apply_num = '';
+            self.tempApplyCheckInfo.apply_passman_id = '';
+            self.tempApplyCheckInfo.apply_passman_name = '';
+            self.tempApplyCheckInfo.apply_user_truename = '';
+            self.tempApplyCheckInfo.apply_product_name = '';
+            self.tempApplyCheckInfo.apply_product_price = '';
+            self.tempApplyCheckInfo.apply_pass = 0;
+            self.tempApplyCheckInfo.apply_time = '';
+        },
+        deleteApply:function () {
+            var self = this;
+            var url = "/deleteApply/"+tempApplyCheckInfo.apply_id;
+            axios.delete(url).then(function(response) {
+                var result = response.data;
+                self.message.info = result.info;
+                if(result.result){
+                    console.log(result);
+                    $('#deleteApplyS').removeClass('hide').addClass('in');
+                    setTimeout(function(){$('#deleteApplyS').removeClass('in').addClass('hide');$('#deleteApplyModal').modal('toggle');location.reload();},1500);
+                }else {
+                    $('#deleteApplyF').removeClass('hide').addClass('in');
+                    setTimeout(function(){$('#deleteApplyF').removeClass('in').addClass('hide')},3000);
+                }
+            });
+        }
+    }
+})
+

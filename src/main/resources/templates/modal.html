@@ -680,4 +680,134 @@
     </div>
 </div>
 
+<!--借入记录归还、挂失、删除modal框-->
+<div th:fragment="borrowModal">
+    <!--归还确认modal框-->
+    <div class="modal fade bs-example-modal-sm" id="borrowReturnModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="clearTemp"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">确认已归还物品？</h4>
+                </div>
+
+                <!-- 操作信息提示框 -->
+                <div class="alert alert-danger alert-dismissable fade hide" role="alert" id="borrowReturnF">
+                    <strong>操作失败！</strong>{{ message.info }}
+                </div>
+                <div class="alert alert-success alert-dismissable fade hide" role="alert" id="borrowReturnS">
+                    <strong>操作成功！</strong>{{ message.info }}！
+                </div>
+
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>姓名：{{ tempBorrowListInfo.borrowinfo_user_truename }}</label><br>
+                        <label>借入物品：{{ tempBorrowListInfo.borrowinfo_product_name }}</label><br>
+                        <label>数量：{{ tempBorrowListInfo.borrowinfo_num }}</label><br>
+                        <label>单价：￥{{ tempBorrowListInfo.borrowinfo_product_price }}</label><br>
+                        <label>总金额：￥{{ tempBorrowListInfo.borrowinfo_product_price*tempBorrowListInfo.borrowinfo_num }}</label><br>
+                        <label>损失金额：￥{{ missPrice }}</label>
+                        <label>借入时间：{{ tempBorrowListInfo.borrowinfo_time }}</label><br>
+                        <label>归还数量：{{ tempBorrowListInfo.borrowinfo_return_num }}</label>
+                        <div class="row">
+                            <div class="col-lg-6 center-block">
+                                <div class="input-group">
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-default" type="button" @click="tempBorrowListInfo.borrowinfo_return_num--" v-if="tempBorrowListInfo.borrowinfo_return_num>1">-</button>
+                                            <button class="btn btn-default" type="button" disabled="disabled" v-else>-</button>
+                                        </span>
+                                    <input type="text" class="form-control" placeholder="" v-model="tempBorrowListInfo.borrowinfo_return_num">
+                                    <span class="input-group-btn">
+                                            <button class="btn btn-default"  type="button" @click=" tempBorrowListInfo.borrowinfo_return_num++" v-if="tempBorrowListInfo.borrowinfo_return_num<tempBorrowListInfo.borrowinfo_num">+</button>
+                                            <button class="btn btn-default"  type="button" disabled="disabled" v-else>+</button>
+                                        </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" @click="clearTemp">取消</button>
+                    <button type="button" class="btn btn-danger" v-if="tempBorrowListInfo.borrowinfo_missprice<(tempBorrowListInfo.borrowinfo_num*tempBorrowListInfo.borrowinfo_product_price)
+&& tempBorrowListInfo.borrowinfo_missprice>=0" >确认归还</button>
+                    <button type="button" class="btn btn-danger" disabled="disabled" v-else>确认归还</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--挂失确认modal框-->
+    <div class="modal fade bs-example-modal-sm" id="borrowMissModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="clearTemp"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">确认挂失物品？</h4>
+                </div>
+
+                <!-- 操作信息提示框 -->
+                <div class="alert alert-danger alert-dismissable fade hide" role="alert" id="borrowMissF">
+                    <strong>操作失败！</strong>{{ message.info }}
+                </div>
+                <div class="alert alert-success alert-dismissable fade hide" role="alert" id="borrowMissS">
+                    <strong>操作成功！</strong>{{ message.info }}！
+                </div>
+
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>姓名：{{ tempBorrowListInfo.borrowinfo_user_truename }}</label><br>
+                        <label>借入物品：{{ tempBorrowListInfo.borrowinfo_product_name }}</label><br>
+                        <label>数量：{{ tempBorrowListInfo.borrowinfo_num }}</label><br>
+                        <label>单价：￥{{ tempBorrowListInfo.borrowinfo_product_price }}</label><br>
+                        <label>损失金额：￥{{ tempBorrowListInfo.borrowinfo_missprice }}</label>
+                        <label>借入时间：{{ tempBorrowListInfo.borrowinfo_time }}</label><br>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" @click="clearTemp">取消</button>
+                    <button type="button" class="btn btn-danger"  >确认挂失</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--删除确认modal框-->
+    <div class="modal fade bs-example-modal-sm" id="borrowDeleteModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="clearTemp"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">确认删除该借入记录？</h4>
+                </div>
+
+                <!-- 操作信息提示框 -->
+                <div class="alert alert-danger alert-dismissable fade hide" role="alert" id="borrowDeleteF">
+                    <strong>操作失败！</strong>{{ message.info }}
+                </div>
+                <div class="alert alert-success alert-dismissable fade hide" role="alert" id="borrowDeleteS">
+                    <strong>操作成功！</strong>{{ message.info }}！
+                </div>
+
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label>姓名：{{  }}</label><br>
+                        <label>借入物品：{{  }}</label><br>
+                        <label>数量：{{  }}</label><br>
+                        <label>单价：￥{{  }}</label><br>
+                        <label>借入时间：{{  }}</label><br>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" @click="clearTemp">取消</button>
+                    <button type="button" class="btn btn-danger"  >确认删除</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
 </html>

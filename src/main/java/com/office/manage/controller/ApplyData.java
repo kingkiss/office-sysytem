@@ -66,7 +66,7 @@ public class ApplyData {
     }
 
 
-    //获取所有申请审核记录
+    //获取所有申请记录
     @RequestMapping(value = "/allApplyList",method = RequestMethod.GET)
     public Map<String,Object> getAllApplyList(@RequestParam(value = "start",defaultValue = "1") int start , @RequestParam(value = "size" ,defaultValue = "15") int size,
                                                 @RequestParam(value = "orderBy" ,defaultValue = "apply_id asc") String orderBy) {

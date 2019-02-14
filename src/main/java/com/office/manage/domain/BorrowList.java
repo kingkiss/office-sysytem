@@ -9,7 +9,7 @@ public class BorrowList {
 	private int borrowinfo_product_id;
 	private String borrowinfo_product_name;
 	private int borrowinfo_num;
-	private float borrwoinfo_product_price;
+	private float borrowinfo_product_price;
 	private String borrowinfo_time;
 	private int borrowinfo_return;
 	private int borrowinfo_return_num;
@@ -38,11 +38,11 @@ public class BorrowList {
 	public void setBorrowinfo_num(int borrowinfo_num) {
 		this.borrowinfo_num = borrowinfo_num;
 	}
-	public float getBorrwoinfo_product_price() {
-		return borrwoinfo_product_price;
+	public float getBorrowinfo_product_price() {
+		return borrowinfo_product_price;
 	}
-	public void setBorrwoinfo_product_price(float borrwoinfo_product_price) {
-		this.borrwoinfo_product_price = borrwoinfo_product_price;
+	public void setBorrwoinfo_product_price(float borrowinfo_product_price) {
+		this.borrowinfo_product_price = borrowinfo_product_price;
 	}
 	public String getBorrowinfo_time() {
 		return borrowinfo_time;
