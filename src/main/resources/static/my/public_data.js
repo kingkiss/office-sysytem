@@ -82,4 +82,5 @@ var tempBorrowListInfo = {
     borrowinfo_return:0,
     borrowinfo_return_num:0,
     borrowinfo_missprice:0,
+    authority:'',
 };

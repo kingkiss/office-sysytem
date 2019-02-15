@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,14 +28,19 @@ public class BorrowData {
     //获取对应用户的借入记录（管理员可查看所有借入记录）
     @RequestMapping(value = "/allBorrowList",method = RequestMethod.GET)
     public Map<String,Object> getAllBorrowList(@RequestParam(value = "start",defaultValue = "1") int start , @RequestParam(value = "size" ,defaultValue = "15") int size,
-                                              @RequestParam(value = "userId" ,defaultValue = "") int userId, @RequestParam(value = "userAuthority" ,defaultValue = "1") int userAuthority) {
+                                               HttpServletRequest request) throws Exception {
         PageHelper.startPage(start, size);
         List<BorrowList> borrowLists;
+        HttpSession session = request.getSession();
+        int user_id = (int)session.getAttribute("user_id");
+        int authority = (int)session.getAttribute("user_authority");
+//        System.out.println("id:"+i);
+//        System.out.println("auth:"+a);
         //判断是不是管理员（7）
-        if( userAuthority != 7){
-            borrowLists = borrowListMapper.getBorrowListById(userId);
-        }else {
+        if( authority >= 3){
             borrowLists = borrowListMapper.getAllBorrowList();
+        }else {
+            borrowLists = borrowListMapper.getBorrowListById(user_id);
         }
         PageInfo<BorrowList> page = new PageInfo<>(borrowLists);
         Map<String, Object> m = new HashMap<>();
