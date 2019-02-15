@@ -11,6 +11,8 @@
     <script src="my/vue.js"></script>
     <script src="my/bootstrap.min.js"></script>
     <script src="my/axios.min.js"></script>
+    <script src="my/echarts.common.min.js"></script>
+    <script src="my/macarons.js"></script>
     <!---<link rel="shortcut icon" href="pic/officeicon.ico">  -->
 </head>
 <nav class="navbar navbar-inverse navbar-fixed-top">
@@ -139,167 +141,78 @@
 <script src="my/manage_officeType.js"></script>
 <!--申请审核模块处理-->
 <script src="my/manage_applyCheck.js"></script>
-
-
+<!--借入归还模块处理-->
+<script src="my/manage_borrowList.js"></script>
 <script>
 /*    $('.list-group-item').click(function () {
         $(this).siblings('.list-group-item').removeClass('list-item-active');
         $(this).addClass('list-item-active');
     });*/
 
-/*借入/归还记录模块数据处理（m_returnList）*/
-    var m_borrowList = new Vue({
-        el:'#allBorrowList',
-        data:{
-            message,
-            userdata,
-            tempBorrowListInfo,
-            searchBorrow:'',
-            borrowLists:[],
-            pagination:{},
-        },
-        mounted:function () {
-            this.getAllBorrowList(1)
-
-        },
-        methods:{
-            getAllBorrowList:function (start) {
-                var self = this;
-                var url = '/allBorrowList?start='+start;
-                console.log(userdata);
-                axios.get(url).then(function(response){
-                    var result = response.data;
-                    self.borrowLists = result.AllBorrowLists;
-                    self.pagination = result.page;
-
-                })
-            },
-            jumpByNumber:function (start) {
-                var self = this;
-                if( start != self.pagination.pageNum ){
-                    self.getAllBorrowList(start);
-                };
-            },
-            jumpPage:function (page) {
-                var self = this;
-                if( page == 'pre' && self.pagination.hasPreviousPage ){
-                    self.getAllBorrowList( self.pagination.prePage );
-                }else if( page == 'next' && self.pagination.hasNextPage ){
-                    self.getAllBorrowList( self.pagination.nextPage );
-                };
-            },
-            searchBorrowList:function () {
-                var self = this;
-                var url = "/SearchBorrowList";
-                axios.get(url,{params:{borrowList:self.searchBorrow}}).then(function(response){
-                    var result = response.data;
-                    self.borrowLists = result.SearchBorrowLists;
-                    self.pagination = result.page;
-                })
-            },
-            addBorrowinfoToTemp:function (borrow) {
-                var self = this;
-                self.tempBorrowListInfo.borrowinfo_id = borrow.borrowinfo_id;
-                self.tempBorrowListInfo.borrowinfo_user_id = borrow.borrowinfo_user_id;
-                self.tempBorrowListInfo.borrowinfo_user_truename = borrow.borrowinfo_user_truename;
-                self.tempBorrowListInfo.borrowinfo_product_id = borrow.borrowinfo_product_id;
-                self.tempBorrowListInfo.borrowinfo_num = borrow.borrowinfo_num;
-                self.tempBorrowListInfo.borrowinfo_product_name = borrow.borrowinfo_product_name;
-                self.tempBorrowListInfo.borrowinfo_product_price = borrow.borrowinfo_product_price;
-                self.tempBorrowListInfo.borrowinfo_time = borrow.borrowinfo_time;
-            },
-        }
-    });
-/*归还确认modal框数据处理*/
-var returnModal = new Vue({
-    el:'#borrowReturnModal',
+var m_useData = new Vue({
+    el:'#allUseData',
     data:{
-        message,
-        userdata,
-        tempBorrowListInfo,
+
+    },
+    mounted:function () {
+        this.getPic();
     },
     methods:{
-        clearTemp:function () {
-            var self = this;
-            self.tempBorrowListInfo.borrowinfo_id = '';
-            self.tempBorrowListInfo.borrowinfo_user_id = '';
-            self.tempBorrowListInfo.borrowinfo_user_truename = '';
-            self.tempBorrowListInfo.borrowinfo_product_id = '';
-            self.tempBorrowListInfo.borrowinfo_product_name = '';
-            self.tempBorrowListInfo.borrowinfo_product_price = '';
-            self.tempBorrowListInfo.borrowinfo_num = '';
-            self.tempBorrowListInfo.borrowinfo_time = '';
-            self.tempBorrowListInfo.borrowinfo_return = 0;
-            self.tempBorrowListInfo.borrowinfo_return_num = 0;
-            self.tempBorrowListInfo.borrowinfo_missprice = 0;
-
+        getPic:function () {
+            var all_product_data = echarts.init($('#allProductData')[0]);
+            // 指定图表的配置项和数据
+            var option = {
+                title: {
+                    text: '办公用品去向统计',
+                    left: 'center',
+                    top: 20,
+                    textStyle: {
+                        color: '#333B47'
+                    }
+                },
+                tooltip : {
+                    trigger: 'item',
+                    formatter: "{a} <br/>{b} : {c} ({d}%)"
+                },
+                //选项显示
+                legend: {
+                    orient: 'vertical',
+                    left: 'left',
+                    data: ['直接访问','邮件营销','联盟广告','视频广告','搜索引擎']
+                },
+                series : [
+                    {
+                        name: '访问来源',
+                        type: 'pie',
+                        radius: '60%',
+                        roseType: 'angle',
+                        itemStyle: {
+                            emphasis: {
+                                shadowBlur: 1,
+                                shadowColor: 'rgba(0, 0, 0, 0.5)'
+                            }
+                        },
+                        data:[
+                            {value:235, name:'视频广告'},
+                            {value:274, name:'联盟广告'},
+                            {value:310, name:'邮件营销'},
+                            {value:335, name:'直接访问'},
+                            {value:400, name:'搜索引擎'}
+                        ]
+                    }
+                ]
+            };
+            // 使用刚指定的配置项和数据显示图表。
+            all_product_data.setOption(option);
         }
-    },
-    computed:{
-        missPrice:function () {
-            var self = this;
-            self.tempBorrowListInfo.borrowinfo_missprice = (self.tempBorrowListInfo.borrowinfo_num*self.tempBorrowListInfo.borrowinfo_product_price)
-                -(self.tempBorrowListInfo.borrowinfo_return_num*self.tempBorrowListInfo.borrowinfo_product_price);
-            /*if(self.tempBorrowListInfo.borrowinfo_missprice<0){
-                self.tempBorrowListInfo.borrowinfo_missprice = self.tempBorrowListInfo.borrowinfo_num*self.tempBorrowListInfo.borrowinfo_product_price;
-                return self.tempBorrowListInfo.borrowinfo_missprice
-            }*/
-            return self.tempBorrowListInfo.borrowinfo_missprice
-        },
     }
 });
 
-/*挂失确认modal框数据处理*/
-var missModal = new Vue({
-    el:'#borrowMissModal',
-    data:{
-        message,
-        userdata,
-        tempBorrowListInfo,
-    },
-    methods:{
-        clearTemp:function () {
-            var self = this;
-            self.tempBorrowListInfo.borrowinfo_id = '';
-            self.tempBorrowListInfo.borrowinfo_user_id = '';
-            self.tempBorrowListInfo.borrowinfo_user_truename = '';
-            self.tempBorrowListInfo.borrowinfo_product_id = '';
-            self.tempBorrowListInfo.borrowinfo_product_name = '';
-            self.tempBorrowListInfo.borrowinfo_product_price = '';
-            self.tempBorrowListInfo.borrowinfo_num = '';
-            self.tempBorrowListInfo.borrowinfo_time = '';
-            self.tempBorrowListInfo.borrowinfo_return = 0;
-            self.tempBorrowListInfo.borrowinfo_return_num = 0;
-            self.tempBorrowListInfo.borrowinfo_missprice = 0;
-        }
-    },
-});
 
-/*删除确认modal框数据处理*/
-var deleteBorrowModal = new Vue({
-    el:'#borrowDeleteModal',
-    data:{
-        message,
-        userdata,
-        tempBorrowListInfo,
-    },
-    methods:{
-        clearTemp:function () {
-            var self = this;
-            self.tempBorrowListInfo.borrowinfo_id = '';
-            self.tempBorrowListInfo.borrowinfo_user_id = '';
-            self.tempBorrowListInfo.borrowinfo_user_truename = '';
-            self.tempBorrowListInfo.borrowinfo_product_id = '';
-            self.tempBorrowListInfo.borrowinfo_product_name = '';
-            self.tempBorrowListInfo.borrowinfo_product_price = '';
-            self.tempBorrowListInfo.borrowinfo_num = '';
-            self.tempBorrowListInfo.borrowinfo_time = '';
-            self.tempBorrowListInfo.borrowinfo_return = 0;
-            self.tempBorrowListInfo.borrowinfo_return_num = 0;
-            self.tempBorrowListInfo.borrowinfo_missprice = 0;
-        }
-    },
-});
+
+
+
+
 
 </script>
 

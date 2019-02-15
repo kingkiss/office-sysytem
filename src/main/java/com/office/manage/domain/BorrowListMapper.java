@@ -1,8 +1,6 @@
 package com.office.manage.domain;
 
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -30,5 +28,18 @@ public interface BorrowListMapper {
 	//根据物品名模糊搜索借入记录
 	@Select("SELECT * FROM borrow_info WHERE borrowinfo_product_name LIKE #{search}")
 	public List<BorrowList> searchBorrowById(String search);
+
+	//根据记录ID删除借入归还记录
+	@Delete("DELETE FROM borrow_info WHERE borrowinfo_id=#{id}")
+	public int deleteBorrowById(int id);
+
+	//借出记录归还挂失处理
+	@Update("UPDATE borrow_info SET " +
+			"borrowinfo_return = #{b_return}," +
+			" borrowinfo_return_num = #{num}," +
+			" borrowinfo_missprice = #{missprice}," +
+			" borrowinfo_time = #{time}" +
+			"WHERE borrowinfo_id = #{id}")
+	public int updateBorrowById(int b_return, int num, float missprice, String time, int id);
 
 }

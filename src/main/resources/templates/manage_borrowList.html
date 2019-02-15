@@ -51,8 +51,8 @@
                 </td>
                 <td>
                     <button type="button" class="btn btn-default btn-xs"  v-if="userdata.user_authority>=3 && borrowList.borrowinfo_return==0" data-toggle="modal" data-target="#borrowReturnModal" @click="addBorrowinfoToTemp(borrowList)">归还</button>
-                    <button type="button" class="btn btn-danger btn-xs"  v-if="userdata.user_authority>=3 ? true : (userdata.user_id==borrowList.borrowinfo_user_id)"  data-toggle="modal" data-target="#borrowMissModal" @click="addBorrowinfoToTemp(borrowList)">挂失</button>
-                    <button type="button" class="btn btn-danger btn-xs"  v-if="userdata.user_authority==7 && borrowList.borrowinfo_return==0" data-toggle="modal" data-target="#borrowDeleteModal" @click="addBorrowinfoToTemp(borrowList)">删除</button>
+                    <button type="button" class="btn btn-danger btn-xs"  v-if="(borrowList.borrowinfo_return==0 && userdata.user_authority>=3 )? true : (userdata.user_id==borrowList.borrowinfo_user_id && borrowList.borrowinfo_return==0)"  data-toggle="modal" data-target="#borrowMissModal" @click="addBorrowinfoToTemp(borrowList)">挂失</button>
+                    <button type="button" class="btn btn-danger btn-xs"  v-if="userdata.user_authority==7 && borrowList.borrowinfo_return!=0" data-toggle="modal" data-target="#borrowDeleteModal" @click="addBorrowinfoToTemp(borrowList)">删除</button>
                 </td>
             </tbody>
         </table>

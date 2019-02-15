@@ -730,7 +730,7 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal" @click="clearTemp">取消</button>
                     <button type="button" class="btn btn-danger" v-if="tempBorrowListInfo.borrowinfo_missprice<(tempBorrowListInfo.borrowinfo_num*tempBorrowListInfo.borrowinfo_product_price)
-&& tempBorrowListInfo.borrowinfo_missprice>=0" >确认归还</button>
+&& tempBorrowListInfo.borrowinfo_missprice>=0" @click="returnBorrowList">确认归还</button>
                     <button type="button" class="btn btn-danger" disabled="disabled" v-else>确认归还</button>
                 </div>
             </div>
@@ -767,7 +767,7 @@
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal" @click="clearTemp">取消</button>
-                    <button type="button" class="btn btn-danger"  >确认挂失</button>
+                    <button type="button" class="btn btn-danger"  @click="missBorrowList">确认挂失</button>
                 </div>
             </div>
         </div>
@@ -801,7 +801,7 @@
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal" @click="clearTemp">取消</button>
-                    <button type="button" class="btn btn-danger"  >确认删除</button>
+                    <button type="button" class="btn btn-danger" @click="deleteBorrow">确认删除</button>
                 </div>
             </div>
         </div>

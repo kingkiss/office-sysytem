@@ -3,14 +3,10 @@ package com.office.manage.controller;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.office.manage.domain.ApplyList;
-import com.office.manage.domain.BorrowList;
-import com.office.manage.domain.BorrowListMapper;
+import com.office.manage.domain.*;
+import com.office.manage.service.BorrowService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -24,6 +20,8 @@ public class BorrowData {
     @Autowired
     BorrowListMapper borrowListMapper;
 
+    @Autowired
+    BorrowService borrowService;
 
     //获取对应用户的借入记录（管理员可查看所有借入记录）
     @RequestMapping(value = "/allBorrowList",method = RequestMethod.GET)
@@ -63,5 +61,65 @@ public class BorrowData {
         return su;
     }
 
+    //删除借入归还记录
+    @RequestMapping(value = "/deleteBorrow/{borrowinfo_id}",method = RequestMethod.DELETE)
+    public Message deleteBorrowList(@PathVariable int borrowinfo_id){
+        Message msg = new Message();
+        int result = borrowListMapper.deleteBorrowById(borrowinfo_id);
+        //System.out.println(result);
+        if( result>0 ){
+            msg.setResult(true);
+            msg.setInfo("已删除"+result+"条记录");
+            return msg;
+        }else {
+            msg.setResult(false);
+            msg.setInfo("未知错误请重试");
+            return msg;
+        }
+    }
 
+    //借出记录归还挂失处理
+    @RequestMapping(value = "/updateBorrow",method = RequestMethod.POST)
+    public Message updateBorrowList(@RequestBody BorrowList borrowList) {
+        Message msg = new Message();
+        int flag = borrowList.getBorrowinfo_return();
+        //归还
+        if( flag==1 ){
+            try{
+                boolean r = borrowService.returnBorrow(borrowList);
+                if(r){
+                    msg.setResult(true);
+                    msg.setInfo("该申请已审核！");
+                    return msg;
+                }else {
+                    msg.setResult(false);
+                    msg.setInfo("网络错误请重试！");
+                    return msg;
+                }
+            }catch (Exception e){
+                msg.setInfo(e.getMessage());
+                msg.setResult(false);
+                return msg;
+            }
+
+        }else {
+            //挂失
+            try{
+                boolean r = borrowService.missBorrow(borrowList);
+                if(r){
+                    msg.setResult(true);
+                    msg.setInfo("该申请已审核！");
+                    return msg;
+                }else {
+                    msg.setResult(false);
+                    msg.setInfo("网络错误请重试！");
+                    return msg;
+                }
+            }catch (Exception e){
+                msg.setInfo(e.getMessage());
+                msg.setResult(false);
+                return msg;
+            }
+        }
+    }
 }
