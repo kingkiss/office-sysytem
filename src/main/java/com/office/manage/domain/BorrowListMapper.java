@@ -9,6 +9,25 @@ import java.util.List;
 @Mapper
 public interface BorrowListMapper {
 
+	/*
+	 * 统计用户借入的所有物品数量
+	 * */
+	@Select("SELECT SUM(borrowinfo_num) FROM borrow_info WHERE borrowinfo_return=0")
+	public int getAllProductNumData();
+
+	/*
+	 * 统计用户丢失的所有物品数量
+	 * */
+	@Select("SELECT SUM(borrowinfo_num) FROM borrow_info WHERE borrowinfo_return=1")
+	public int getAllMissProductNumData();
+
+	/*
+	 * 统计借给用户物品的资金（0=借出，1=归还，2=消耗遗失）
+	 * */
+	@Select("SELECT SUM(borrowinfo_num*borrowinfo_product_price) FROM borrow_info WHERE borrowinfo_return=#{status} ")
+	public int getBorrowProductMoneyData(int status);
+
+
 	//获取所有借入记录
 	@Select("select * from borrow_info")
 	public List<BorrowList> getAllBorrowList();

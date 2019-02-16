@@ -10,6 +10,20 @@ import java.util.List;
 @Mapper
 public interface ApplyListMapper {
 
+	/*
+	 * 统计未审核所有物品数量
+	 * */
+	@Select("SELECT SUM(apply_num) FROM apply_info WHERE apply_pass=0")
+	public int getAllProductNumData();
+
+	/*
+	 * 统计待审核物品的资金
+	 * */
+	@Select("SELECT SUM(apply_num*apply_product_price) FROM apply_info WHERE apply_pass=0")
+	public int getApplyProductMoneyData();
+
+
+
 	//获取未审核的申请列表（待审核pass=0）
 	@Select("select * from apply_info where apply_pass=0")
 	public List<ApplyList> getApplyCheckList();

@@ -16,27 +16,6 @@
     <!---<link rel="shortcut icon" href="pic/officeicon.ico">  -->
 </head>
 <nav class="navbar navbar-inverse navbar-fixed-top">
-    <!--<div class="row">
-        <div class="col-md-10">
-            <p class="navbar-text" style="font-family: Microsoft YaHei;font-size: 18px">OFFICE 云管理</p>
-        </div>
-        <div id="user" class="col-md-2" style="padding-top: 4.5px">
-            <div class="btn-group">
-                <img src="pic/user_icon.png" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <button class="navbar-text" style="font-family: Microsoft YaHei;font-size: 15px;background-color: #EC3851">{{ user_truename }}</button>
-                <ul class="dropdown-menu">
-                    <li><img src="pic/user2_icon.png"></li>
-                    <li class="dropdown-header" style="color: #8a8a8a">{{ user_truename }}</li>
-                    <li class="dropdown-header" style="color: #8a8a8a">{{ user_name }}</li>
-                    <li role="separator" class="divider"></li>
-                    <li><a data-toggle="modal" data-target="#userInfo">个人详情</a></li>
-                    <li><a href="http://localhost:8080/loginout">注销</a></li>
-                </ul>
-            </div>
-
-        </div>
-    </div>-->
-
     <div class="container-fluid" id="user">
         <div class="navbar-header">
             <a class="navbar-brand" href="manage_officelist" style="font-family: Microsoft YaHei;font-size: 20px;color: #fff">OFFICE 云管理</a>
@@ -52,7 +31,7 @@
                         <li class="dropdown-header" style="color: #8a8a8a">{{ user_name }}</li>
                         <li role="separator" class="divider"></li>
                         <li><a data-toggle="modal" data-target="#userInfo">个人详情</a></li>
-                        <li><a href="http://localhost:8080/loginout">注销</a></li>
+                        <li><a href="loginout">注销</a></li>
                     </ul>
                 </li>
             </ul>
@@ -73,7 +52,7 @@
         <a href="manage_borrowList" th:class="${isBorrowList}?'list-group-item list-item-active':'list-group-item'">借入/归还记录</a>
         <!--<a href="manage_returnList" th:class="${isReturnList}?'list-group-item list-item-active':'list-group-item'">归还记录</a>-->
         <!--<a href="#" class="list-group-item" v-show="userdata.user_authority >= 3">购入记录</a>-->
-        <a href="manage_useData" th:class="${isUseData}?'list-group-item list-item-active':'list-group-item'" v-show="userdata.user_authority >= 3">使用统计</a>
+        <a href="manage_useData" th:class="${isUseData}?'list-group-item list-item-active':'list-group-item'" v-show="userdata.user_authority >= 3">数据统计</a>
     </div>
 </div>
 
@@ -152,58 +131,153 @@
 var m_useData = new Vue({
     el:'#allUseData',
     data:{
-
+        allProductData:{
+            storeData:'',
+            applyData:'',
+            borrowData:'',
+            missData:'',
+        }
     },
     mounted:function () {
-        this.getPic();
+        this.showAllProductData();
+        this.showProductMoneyData();
     },
     methods:{
-        getPic:function () {
+        //物品去向数据统计
+        showAllProductData:function () {
+            var self = this;
             var all_product_data = echarts.init($('#allProductData')[0]);
             // 指定图表的配置项和数据
-            var option = {
-                title: {
-                    text: '办公用品去向统计',
-                    left: 'center',
-                    top: 20,
-                    textStyle: {
-                        color: '#333B47'
-                    }
-                },
-                tooltip : {
-                    trigger: 'item',
-                    formatter: "{a} <br/>{b} : {c} ({d}%)"
-                },
-                //选项显示
-                legend: {
-                    orient: 'vertical',
-                    left: 'left',
-                    data: ['直接访问','邮件营销','联盟广告','视频广告','搜索引擎']
-                },
-                series : [
-                    {
-                        name: '访问来源',
-                        type: 'pie',
-                        radius: '60%',
-                        roseType: 'angle',
-                        itemStyle: {
-                            emphasis: {
-                                shadowBlur: 1,
-                                shadowColor: 'rgba(0, 0, 0, 0.5)'
-                            }
+            axios.get('/useProductData').then(function (value) {
+                var result = value.data;
+                var option = {
+                    title: {
+                        text: '办公用品去向统计',
+                        left: 'center',
+                        top: 0,
+                        textStyle: {
+                            color: '#333B47'
+                        }
+                    },
+                    tooltip : {
+                        trigger: 'item',
+                        formatter: "{a} <br/>{b} : {c} ({d}%)"
+                    },
+                    //选项显示
+                    legend: {
+                        orient: 'vertical',
+                        left: 'left',
+                        data: ['库内物品','待审物品','借出物品','遗失消耗物品']
+                    },
+                    series : [
+                        {
+                            name: '物品去向',
+                            type: 'pie',
+                            radius: '55%',
+                            itemStyle: {
+                                emphasis: {
+                                    shadowBlur: 1,
+                                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+                                }
+                            },
+                            data:[
+                                {value:result.storeData, name:'库内物品'},
+                                {value:result.applyData, name:'待审物品'},
+                                {value:result.borrowData, name:'借出物品'},
+                                {value:result.missData, name:'遗失消耗物品'}
+                            ]
+                        }
+                    ]
+                };
+                // 使用刚指定的配置项和数据显示图表。
+                all_product_data.setOption(option);
+            });
+
+        },
+        //办公用品费用统计
+        showProductMoneyData:function () {
+            var self = this;
+            var all_productMoney_data = echarts.init($('#ProductMoneyData')[0]);
+            // 指定图表的配置项和数据
+            axios.get('/productMoneyData').then(function (value) {
+                var resultM = value.data;
+                var option = {
+                    title: {
+                        text: '办公用品资金组成（单位:元）',
+                        subtext: 'From Office DB'
+                    },
+                    tooltip : {
+                        trigger: 'axis',
+                        axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+                            type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
                         },
-                        data:[
-                            {value:235, name:'视频广告'},
-                            {value:274, name:'联盟广告'},
-                            {value:310, name:'邮件营销'},
-                            {value:335, name:'直接访问'},
-                            {value:400, name:'搜索引擎'}
-                        ]
-                    }
-                ]
-            };
-            // 使用刚指定的配置项和数据显示图表。
-            all_product_data.setOption(option);
+                        formatter: function (params) {
+                            var tar = params[1];
+                            return tar.name + '<br/>' + tar.seriesName + ' : ' + tar.value;
+                        }
+                    },
+                    grid: {
+                        left: '3%',
+                        right: '4%',
+                        bottom: '3%',
+                        containLabel: true
+                    },
+                    xAxis: {
+                        type : 'category',
+                        splitLine: {show:false},
+                        data : ['物品总资金','库存物品资金','待审核物品资金','借出物品资金','消耗遗失资金']
+                    },
+                    yAxis: {
+                        type : 'value'
+                    },
+                    series: [
+                        /*{
+                            name: '辅助',
+                            type: 'bar',
+                            stack:  '总量',
+                            itemStyle: {
+                                normal: {
+                                    barBorderColor: 'rgba(0,0,0,0)',
+                                    color: 'rgba(0,0,0,0)'
+                                },
+                                emphasis: {
+                                    barBorderColor: 'rgba(0,0,0,0)',
+                                    color: 'rgba(0,0,0,0)'
+                                }
+                            },
+                            data: [0, resultM.totalMoney-resultM.storeM,
+                                resultM.totalMoney-resultM.storeM-resultM.applyM,
+                                resultM.totalMoney-resultM.storeM-resultM.applyM-resultM.borrowM,
+                                resultM.totalMoney-resultM.storeM-resultM.applyM-resultM.borrowM-resultM.missM]
+                        },*/
+                        {
+                            name: '生活费',
+                            type: 'bar',
+                            stack: '总量',
+                            label: {
+                                normal: {
+                                    show: true,
+                                    position: 'inside'
+                                }
+                            },
+                            itemStyle:{
+                                normal: {
+                                    // 随机显示
+                                    //color:function(d){return "#"+Math.floor(Math.random()*(256*256*256-1)).toString(16);}
+
+                                    // 定制显示（按顺序）
+                                    color: function(params) {
+                                        var colorList = ['#C33531','#64BD3D','#EE9201','#29AAE3', '#B74AE5' ];
+                                        return colorList[params.dataIndex]
+                                    }
+                                },
+                            },
+                            data:[resultM.totalMoney, resultM.storeM, resultM.applyM, resultM.borrowM, resultM.missM]
+                        }
+                    ]
+                };
+                all_productMoney_data.setOption(option);
+            });
         }
     }
 });

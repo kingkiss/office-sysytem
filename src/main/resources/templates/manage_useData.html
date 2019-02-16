@@ -4,7 +4,7 @@
 <!--借入记录模块（借入记录列表）-->
 <div th:fragment="m_useData" >
     <div class="panel panel-default" id="allUseData">
-        <div class="panel-heading">使用统计</div>
+        <div class="panel-heading">数据统计监控</div>
         <div class="panel-body">
             <!--顶部搜索框-->
             <!--<div class="row" style="margin-top: 15px">
@@ -15,8 +15,17 @@
                     <div class="alert alert-danger fade hide" style="text-align: center;margin-bottom: -10px;margin-top: 10px" role="alert" id="productTypeF"><strong>操作失败,{{ message.info }}</strong></div>
                 </div>
             </div>-->
-            <!--总物品去向统计-->
-            <div id="allProductData" style="width: 600px;height:400px;"></div>
+            <div class="row">
+                <div class="col-lg-6">
+                    <!--总物品去向统计-->
+                    <div id="allProductData" style="width: 600px;height:400px;"></div>
+                </div>
+                <div class="col-lg-6">
+                    <!--办公用品费用统计-->
+                    <div id="ProductMoneyData" style="width: 700px;height:400px;"></div>
+                </div>
+            </div>
+
 
 
         </div>

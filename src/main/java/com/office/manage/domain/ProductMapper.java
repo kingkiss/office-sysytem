@@ -8,6 +8,19 @@ import java.util.List;
 @Repository
 @Mapper
 public interface ProductMapper {
+    /*
+    * 统计仓库内所有物品数量
+    * */
+    @Select("SELECT SUM(product_num) FROM product_info")
+    public int getAllProductNumData();
+
+    /*
+     * 统计仓库内所有物品资金
+     * */
+    @Select("SELECT SUM(product_num*product_price) FROM product_info ")
+    public int getAllProductMoneyData();
+
+
 
     //查询所有物品
     @Select("SELECT * FROM product_info")

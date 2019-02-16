@@ -18,7 +18,6 @@ var m_borrowList = new Vue({
         getAllBorrowList:function (start) {
             var self = this;
             var url = '/allBorrowList?start='+start;
-            console.log(userdata);
             axios.get(url).then(function(response){
                 var result = response.data;
                 self.borrowLists = result.AllBorrowLists;
@@ -155,7 +154,6 @@ var missModal = new Vue({
                 var result = response.data;
                 self.message.info = result.info;
                 if(result.result){
-                    console.log(result);
                     $('#borrowMissS').removeClass('hide').addClass('in');
                     $('.btn-danger').attr("disabled","disabled");
                     setTimeout(function(){
