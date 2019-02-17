@@ -21,7 +21,6 @@ public interface ProductMapper {
     public int getAllProductMoneyData();
 
 
-
     //查询所有物品
     @Select("SELECT * FROM product_info")
     public List<Product> getAllProduct();

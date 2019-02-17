@@ -56,7 +56,7 @@
 		    userLogin:function () {
 		    /* s */
 				var url = "/userLogin";
-				var self = this
+				var self = this;
 				axios.post(url,this.user).then(function (response) {
 				    var result = response.data;
 				    if(result.info == "success"){

@@ -64,4 +64,92 @@ public class UseProductData {
         data.put("totalMoney",totalMoney);
         return data;
     }
+
+    //用户借用物品类型统计
+    @RequestMapping(value = "/ProductTypeData", method = RequestMethod.GET)
+    public Map<String,Object> getProductTypeData(){
+        Map<String,Object> data = new HashMap<>();
+        //文具事务用品（使用中=0）
+        Integer stationery0 = borrowListMapper.getBorrowProductTypeData(0,"文具事务用品");
+        //文具事务用品（已归还=1）
+        Integer stationery1 = borrowListMapper.getBorrowProductTypeData(1,"文具事务用品");
+        //文具事务用品（消耗遗失=2）
+        Integer stationery2 = borrowListMapper.getBorrowProductTypeData(2,"文具事务用品");
+
+        //办公耗材（使用中=0）
+        Integer consumable0 = borrowListMapper.getBorrowProductTypeData(0,"办公耗材");
+        //办公耗材（已归还=1）
+        Integer consumable1 = borrowListMapper.getBorrowProductTypeData(1,"办公耗材");
+        //办公耗材（消耗遗失=2）
+        Integer consumable2 = borrowListMapper.getBorrowProductTypeData(2,"办公耗材");
+
+        //办公设备（使用中=0）
+        Integer equipment0 = borrowListMapper.getBorrowProductTypeData(0,"办公设备");
+        //办公设备（已归还=1）
+        Integer equipment1 = borrowListMapper.getBorrowProductTypeData(1,"办公设备");
+        //办公设备（消耗遗失=2）
+        Integer equipment2 = borrowListMapper.getBorrowProductTypeData(2,"办公设备");
+
+        if(stationery0 != null){
+            data.put("stationery0",stationery0.intValue());
+        }else {
+            data.put("stationery0",0);
+        }
+        if(stationery1 != null){
+            data.put("stationery1",stationery1.intValue());
+        }else {
+            data.put("stationery1",0);
+        }
+        if(stationery2 != null){
+            data.put("stationery2",stationery2.intValue());
+        }else {
+            data.put("stationery2",0);
+        }
+
+        if(consumable0 != null){
+            data.put("consumable0",consumable0.intValue());
+        }else {
+            data.put("consumable0",0);
+        }
+        if(consumable1 != null){
+            data.put("consumable1",consumable1.intValue());
+        }else {
+            data.put("consumable1",0);
+        }
+        if(consumable2 != null){
+            data.put("consumable2",consumable2.intValue());
+        }else {
+            data.put("consumable2",0);
+        }
+
+        if(equipment0 != null){
+            data.put("equipment0",equipment0.intValue());
+        }else {
+            data.put("equipment0",0);
+        }
+        if(equipment1 != null){
+            data.put("equipment1",equipment1.intValue());
+        }else {
+            data.put("equipment1",0);
+        }
+        if(equipment2 != null){
+            data.put("equipment2",equipment2.intValue());
+        }else {
+            data.put("equipment2",0);
+        }
+
+        /*data.put("stationery0",stationery0);
+        data.put("stationery1",stationery1);
+        data.put("stationery2",stationery2);
+        data.put("consumable0",consumable0);
+        data.put("consumable1",consumable1);
+        data.put("consumable2",consumable2);
+        data.put("equipment0",equipment0);
+        data.put("equipment1",equipment1);
+        data.put("equipment2",equipment2);*/
+        return data;
+    }
+
+
+
 }

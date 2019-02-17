@@ -14,7 +14,7 @@ public class Manage {
 	//登录入口
     @RequestMapping("/login")
     public String login(){
-    	return "login";
+        return "login";
     }
 
     //退出登录
@@ -37,6 +37,8 @@ public class Manage {
         boolean isBorrowList = false;
         boolean isReturnList = false;
         boolean isUseData = false;
+
+
 
         m.addAttribute("isUserInfo",isUserInfo);
         m.addAttribute("isOfficeList",isOfficeList);

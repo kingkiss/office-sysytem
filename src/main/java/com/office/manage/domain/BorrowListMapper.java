@@ -27,6 +27,39 @@ public interface BorrowListMapper {
 	@Select("SELECT SUM(borrowinfo_num*borrowinfo_product_price) FROM borrow_info WHERE borrowinfo_return=#{status} ")
 	public int getBorrowProductMoneyData(int status);
 
+	/*
+	 * 统计用户借用物品类型的数据（0=借出，1=归还，2=消耗遗失）
+	 * */
+	@Select("SELECT" +
+			" SUM(b.borrowinfo_num) " +
+			"FROM " +
+			" ( " +
+			"  SELECT " +
+			"   b.borrowinfo_num, " +
+			"   t.type_category " +
+			"   FROM " +
+			"   ( " +
+			"     SELECT " +
+			"     borrow_info.borrowinfo_product_name, " +
+			"     borrow_info.borrowinfo_num, " +
+			"     borrow_info.borrowinfo_return, " +
+			"     product_info.product_type " +
+			"     FROM " +
+			"     borrow_info " +
+			"     LEFT JOIN product_info ON borrow_info.borrowinfo_product_name = product_info.product_name " +
+			"     WHERE " +
+			"     borrowinfo_return = #{status} " +
+			"     ) AS b " +
+			"   LEFT JOIN type_info AS t ON b.product_type = t.product_type " +
+			"   WHERE " +
+			"   b.borrowinfo_return = #{status} " +
+			"  ) AS b " +
+			"WHERE " +
+			"  b.type_category = #{category}")
+	public Integer getBorrowProductTypeData(int status, String category);
+
+
+
 
 	//获取所有借入记录
 	@Select("select * from borrow_info")

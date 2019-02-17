@@ -141,6 +141,8 @@ var m_useData = new Vue({
     mounted:function () {
         this.showAllProductData();
         this.showProductMoneyData();
+        this.showProductTypeData();
+        this.showProductApplyData();
     },
     methods:{
         //物品去向数据统计
@@ -213,7 +215,7 @@ var m_useData = new Vue({
                         },
                         formatter: function (params) {
                             var tar = params[1];
-                            return tar.name + '<br/>' + tar.seriesName + ' : ' + tar.value;
+                            return tar.name + '<br/>' + tar.seriesName + ' : ' + tar.value + '元';
                         }
                     },
                     grid: {
@@ -231,7 +233,7 @@ var m_useData = new Vue({
                         type : 'value'
                     },
                     series: [
-                        /*{
+                        {
                             name: '辅助',
                             type: 'bar',
                             stack:  '总量',
@@ -249,9 +251,9 @@ var m_useData = new Vue({
                                 resultM.totalMoney-resultM.storeM-resultM.applyM,
                                 resultM.totalMoney-resultM.storeM-resultM.applyM-resultM.borrowM,
                                 resultM.totalMoney-resultM.storeM-resultM.applyM-resultM.borrowM-resultM.missM]
-                        },*/
+                        },
                         {
-                            name: '生活费',
+                            name: '资金',
                             type: 'bar',
                             stack: '总量',
                             label: {
@@ -278,6 +280,126 @@ var m_useData = new Vue({
                 };
                 all_productMoney_data.setOption(option);
             });
+        },
+        //用品类型使用统计
+        showProductTypeData:function () {
+            var all_productType_data = echarts.init($('#ProductTypeData')[0]);
+
+            axios.get('/ProductTypeData').then(function (value) {
+                var result = value.data;
+                var option = {
+                    title: {
+                        text: '办公用品类型统计',
+                        subtext: 'From Office DB'
+                    },
+                    legend: {},
+                    tooltip: {},
+                    dataset: {
+                        source: [
+                            ['product', '使用中', '已归还', '消耗遗失'],
+                            ['文具事务用品', result.stationery0, result.stationery1, result.stationery2],
+                            ['办公耗材', result.consumable0, result.consumable1, result.consumable2],
+                            ['办公设备', result.equipment0, result.equipment1, result.equipment2]
+                        ]
+                    },
+                    xAxis: {type: 'category'},
+                    yAxis: {},
+                    // Declare several bar series, each will be mapped
+                    // to a column of dataset.source by default.
+                    series: [
+                        {type: 'bar'},
+                        {type: 'bar'},
+                        {type: 'bar'}
+                    ]
+                };
+                all_productType_data.setOption(option);
+
+            });
+        },
+
+
+        //用品类型申请统计
+        showProductApplyData:function () {
+            var all_productApply_data = echarts.init($('#ProductApplyData')[0]);
+            var option = {
+                title: {
+                    text: '用品类型申请数量统计'
+                },
+                tooltip : {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'cross',
+                        label: {
+                            right:0,
+                            backgroundColor: '#6a7985'
+                        }
+                    }
+                },
+                legend: {
+                    data:['文具事务用品','办公耗材','办公设备']
+                },
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '3%',
+                    containLabel: true
+                },
+                toolbox: {
+                    feature: {
+                        saveAsImage: {}
+                    }
+                },
+                xAxis: {
+                    type: 'category',
+                    boundaryGap: false,
+                    data: ['周一','周二','周三','周四','周五','周六','周日']
+                },
+                yAxis: {
+                    type: 'value'
+                },
+                series: [
+                    {
+                        name:'文具事务用品',
+                        type:'line',
+                        stack: '总量',
+                        label: {
+                            normal: {
+                                show: true,
+                                position: 'top'
+                            }
+                        },
+                        areaStyle: {},
+                        data:[120, 132, 101, 134, 90, 230, 210]
+                    },
+                    {
+                        name:'办公耗材',
+                        type:'line',
+                        stack: '总量',
+                        label: {
+                            normal: {
+                                show: true,
+                                position: 'top'
+                            }
+                        },
+                        areaStyle: {},
+                        data:[220, 182, 191, 234, 290, 330, 310]
+                    },
+                    {
+                        name:'办公设备',
+                        type:'line',
+                        stack: '总量',
+                        label: {
+                            normal: {
+                                show: true,
+                                position: 'top'
+                            }
+                        },
+                        areaStyle: {},
+                        data:[150, 232, 201, 154, 190, 330, 410]
+                    }
+                ]
+            };
+            all_productApply_data.setOption(option);
         }
     }
 });
