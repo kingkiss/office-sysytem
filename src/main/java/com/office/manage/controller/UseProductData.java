@@ -4,12 +4,14 @@ package com.office.manage.controller;
 import com.office.manage.domain.ApplyListMapper;
 import com.office.manage.domain.BorrowListMapper;
 import com.office.manage.domain.ProductMapper;
+import com.office.manage.domain.TypeMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -21,6 +23,8 @@ public class UseProductData {
     ApplyListMapper applyListMapper;
     @Autowired
     BorrowListMapper borrowListMapper;
+    @Autowired
+    TypeMapper typeMapper;
 
     //统计所以去向物品的数量
     @RequestMapping(value = "/useProductData", method = RequestMethod.GET)
@@ -148,6 +152,55 @@ public class UseProductData {
         data.put("equipment1",equipment1);
         data.put("equipment2",equipment2);*/
         return data;
+    }
+
+    //一周用品类型申请统计
+    @RequestMapping(value = "/ApplyTypeNumData", method = RequestMethod.GET)
+    public Map<String,Object> getApplyTypeNumData(){
+        //总数据
+        Map<String,Object> data = new HashMap<>();
+        //文具事务用品map类
+        Map<String,Object> stationeryData = new HashMap<>();
+        //办公耗材map类
+        Map<String,Object> consumableData = new HashMap<>();
+        //办公设备
+        Map<String ,Object> equipmentData = new HashMap<>();
+
+        //获取7天内订单是日期
+        List<String> dateTime = applyListMapper.getApplyTime();
+        //获取文具事务用品分类的申请数量
+        for (String t :dateTime){
+            Integer stationery = applyListMapper.getApplyTypeNumByTypeAndTime("文具事务用品",t);
+            if(stationery != null){
+                stationeryData.put(t,stationery.intValue());
+            }else {
+                stationeryData.put(t,0);
+            }
+        }
+        //获取办公耗材分类的申请数量
+        for (String t :dateTime){
+            Integer consumable = applyListMapper.getApplyTypeNumByTypeAndTime("办公耗材",t);
+            if(consumable != null){
+                consumableData.put(t,consumable.intValue());
+            }else {
+                consumableData.put(t,0);
+            }
+        }
+        //获取办公设备的申请数量
+        for (String t :dateTime){
+            Integer equipment = applyListMapper.getApplyTypeNumByTypeAndTime("办公设备",t);
+            if(equipment != null){
+                equipmentData.put(t,equipment.intValue());
+            }else {
+                equipmentData.put(t,0);
+            }
+        }
+
+        data.put("stationeryData",stationeryData);
+        data.put("consumableData",consumableData);
+        data.put("equipmentData",equipmentData);
+        data.put("week",dateTime);
+        return  data;
     }
 
 

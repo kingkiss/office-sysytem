@@ -5,6 +5,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 @Mapper
@@ -21,6 +22,55 @@ public interface ApplyListMapper {
 	 * */
 	@Select("SELECT SUM(apply_num*apply_product_price) FROM apply_info WHERE apply_pass=0")
 	public int getApplyProductMoneyData();
+
+	/*搜索7天内时间记录*/
+	@Select("SELECT " +
+			"  DISTINCT DATE_FORMAT(apply_time,'%m-%d') as time " +
+			"FROM " +
+			" apply_info " +
+			"WHERE " +
+			"DATE_SUB(CURDATE(), INTERVAL 7 DAY) <= DATE(apply_time) " +
+			"ORDER BY " +
+			"  time ASC")
+	public List<String> getApplyTime();
+
+	/*
+	 * 统计某天内某类型物品的申请数
+	 * */
+	@Select("SELECT\n" +
+			"t.num\n" +
+			"FROM\n" +
+			"(\n" +
+			"SELECT\n" +
+			"\tSUM(a.apply_num) AS num,\n" +
+			"\ta.time\n" +
+			"FROM\n" +
+			"\t(\n" +
+			"\t\tSELECT\n" +
+			"\t\t\tp.product_type,\n" +
+			"\t\t\ta.apply_num,\n" +
+			"\t\t\tDATE_FORMAT(a.apply_time, '%m-%d') AS time\n" +
+			"\t\tFROM\n" +
+			"\t\t\t(\n" +
+			"\t\t\t\tSELECT\n" +
+			"\t\t\t\t\tapply_product_name,\n" +
+			"\t\t\t\t\tapply_num,\n" +
+			"\t\t\t\t\tapply_time\n" +
+			"\t\t\t\tFROM\n" +
+			"\t\t\t\t\tapply_info\n" +
+			"\t\t\t\tWHERE\n" +
+			"\t\t\t\t\tDATE_SUB(CURDATE(), INTERVAL 7 DAY) <= DATE(apply_time)\n" +
+			"\t\t\t) AS a\n" +
+			"\t\tLEFT JOIN product_info AS p ON a.apply_product_name = p.product_name\n" +
+			"\t\tGROUP BY\n" +
+			"\t\t\ta.apply_time\n" +
+			"\t) AS a\n" +
+			"LEFT JOIN type_info AS t ON a.product_type = t.product_type\n" +
+			"WHERE\n" +
+			"\tt.type_category = #{type}\n" +
+			"AND a.time = #{time}\n" +
+			") AS t\n")
+	public Integer getApplyTypeNumByTypeAndTime(String type,String time);
 
 
 

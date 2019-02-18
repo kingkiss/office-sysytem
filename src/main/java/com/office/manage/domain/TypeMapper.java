@@ -16,6 +16,10 @@ public interface TypeMapper {
     @Select("SELECT product_type FROM type_info WHERE type_category=#{typeCategory}")
     public String getProductTypeByTypeCategory(String typeCategory);
 
+    //根据类型搜索分类
+    @Select("SELECT type_category FROM type_info WHERE product_type=#{product_type}")
+    public String getCategoryByType(String product_type);
+
     //搜索所有类型
     @Select("SELECT product_type FROM type_info")
     public List<String> getAllType();

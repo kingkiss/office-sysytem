@@ -316,90 +316,94 @@ var m_useData = new Vue({
 
             });
         },
-
-
         //用品类型申请统计
         showProductApplyData:function () {
             var all_productApply_data = echarts.init($('#ProductApplyData')[0]);
-            var option = {
-                title: {
-                    text: '用品类型申请数量统计'
-                },
-                tooltip : {
-                    trigger: 'axis',
-                    axisPointer: {
-                        type: 'cross',
-                        label: {
-                            right:0,
-                            backgroundColor: '#6a7985'
+            axios.get('/ApplyTypeNumData').then(function (value) {
+                var result = value.data;
+                console.log(result);
+                console.log(result.week[0]);
+                var option = {
+                    title: {
+                        text: '用品类型申请数量统计'
+                    },
+                    tooltip : {
+                        trigger: 'axis',
+                        axisPointer: {
+                            type: 'cross',
+                            label: {
+                                right:0,
+                                backgroundColor: '#6a7985'
+                            }
                         }
-                    }
-                },
-                legend: {
-                    data:['文具事务用品','办公耗材','办公设备']
-                },
-                grid: {
-                    left: '3%',
-                    right: '4%',
-                    bottom: '3%',
-                    containLabel: true
-                },
-                toolbox: {
-                    feature: {
-                        saveAsImage: {}
-                    }
-                },
-                xAxis: {
-                    type: 'category',
-                    boundaryGap: false,
-                    data: ['周一','周二','周三','周四','周五','周六','周日']
-                },
-                yAxis: {
-                    type: 'value'
-                },
-                series: [
-                    {
-                        name:'文具事务用品',
-                        type:'line',
-                        stack: '总量',
-                        label: {
-                            normal: {
-                                show: true,
-                                position: 'top'
-                            }
-                        },
-                        areaStyle: {},
-                        data:[120, 132, 101, 134, 90, 230, 210]
                     },
-                    {
-                        name:'办公耗材',
-                        type:'line',
-                        stack: '总量',
-                        label: {
-                            normal: {
-                                show: true,
-                                position: 'top'
-                            }
-                        },
-                        areaStyle: {},
-                        data:[220, 182, 191, 234, 290, 330, 310]
+                    legend: {
+                        data:['文具事务用品','办公耗材','办公设备']
                     },
-                    {
-                        name:'办公设备',
-                        type:'line',
-                        stack: '总量',
-                        label: {
-                            normal: {
-                                show: true,
-                                position: 'top'
-                            }
+                    grid: {
+                        left: '3%',
+                        right: '4%',
+                        bottom: '3%',
+                        containLabel: true
+                    },
+                    toolbox: {
+                        feature: {
+                            saveAsImage: {}
+                        }
+                    },
+                    xAxis: {
+                        type: 'category',
+                        boundaryGap: false,
+                        data: result.week
+                    },
+                    yAxis: {
+                        type: 'value'
+                    },
+                    series: [
+                        {
+                            name:'文具事务用品',
+                            type:'line',
+                            stack: '总量',
+                            label: {
+                                normal: {
+                                    show: true,
+                                    position: 'top'
+                                }
+                            },
+                            areaStyle: {},
+                            data:[120, 132, 101, 134, 90, 230, 210]
                         },
-                        areaStyle: {},
-                        data:[150, 232, 201, 154, 190, 330, 410]
-                    }
-                ]
-            };
-            all_productApply_data.setOption(option);
+                        {
+                            name:'办公耗材',
+                            type:'line',
+                            stack: '总量',
+                            label: {
+                                normal: {
+                                    show: true,
+                                    position: 'top'
+                                }
+                            },
+                            areaStyle: {},
+                            data:[220, 182, 191, 234, 290, 330, 310]
+                        },
+                        {
+                            name:'办公设备',
+                            type:'line',
+                            stack: '总量',
+                            label: {
+                                normal: {
+                                    show: true,
+                                    position: 'top'
+                                }
+                            },
+                            areaStyle: {},
+                            data:[150, 232, 201, 154, 190, 330, 410]
+                        }
+                    ]
+                };
+                all_productApply_data.setOption(option);
+            })
+
         }
     }
 });
