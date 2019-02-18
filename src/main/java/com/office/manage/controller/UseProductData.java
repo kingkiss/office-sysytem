@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -160,11 +161,11 @@ public class UseProductData {
         //总数据
         Map<String,Object> data = new HashMap<>();
         //文具事务用品map类
-        Map<String,Object> stationeryData = new HashMap<>();
+        List<Object> stationeryData = new ArrayList<>();
         //办公耗材map类
-        Map<String,Object> consumableData = new HashMap<>();
+        List<Object> consumableData = new ArrayList<>();
         //办公设备
-        Map<String ,Object> equipmentData = new HashMap<>();
+        List<Object> equipmentData = new ArrayList<>();
 
         //获取7天内订单是日期
         List<String> dateTime = applyListMapper.getApplyTime();
@@ -172,27 +173,27 @@ public class UseProductData {
         for (String t :dateTime){
             Integer stationery = applyListMapper.getApplyTypeNumByTypeAndTime("文具事务用品",t);
             if(stationery != null){
-                stationeryData.put(t,stationery.intValue());
+                stationeryData.add(stationery.intValue());
             }else {
-                stationeryData.put(t,0);
+                stationeryData.add(0);
             }
         }
         //获取办公耗材分类的申请数量
         for (String t :dateTime){
             Integer consumable = applyListMapper.getApplyTypeNumByTypeAndTime("办公耗材",t);
             if(consumable != null){
-                consumableData.put(t,consumable.intValue());
+                consumableData.add(consumable.intValue());
             }else {
-                consumableData.put(t,0);
+                consumableData.add(0);
             }
         }
         //获取办公设备的申请数量
         for (String t :dateTime){
             Integer equipment = applyListMapper.getApplyTypeNumByTypeAndTime("办公设备",t);
             if(equipment != null){
-                equipmentData.put(t,equipment.intValue());
+                equipmentData.add(equipment.intValue());
             }else {
-                equipmentData.put(t,0);
+                equipmentData.add(0);
             }
         }
 
