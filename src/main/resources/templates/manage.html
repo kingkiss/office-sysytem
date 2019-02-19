@@ -128,6 +128,7 @@
         $(this).addClass('list-item-active');
     });*/
 
+//数据统计模块处理
 var m_useData = new Vue({
     el:'#allUseData',
     data:{
@@ -149,260 +150,273 @@ var m_useData = new Vue({
         showAllProductData:function () {
             var self = this;
             var all_product_data = echarts.init($('#allProductData')[0]);
-            // 指定图表的配置项和数据
-            axios.get('/useProductData').then(function (value) {
-                var result = value.data;
-                var option = {
-                    title: {
-                        text: '办公用品去向统计',
-                        left: 'center',
-                        top: 0,
-                        textStyle: {
-                            color: '#333B47'
-                        }
-                    },
-                    tooltip : {
-                        trigger: 'item',
-                        formatter: "{a} <br/>{b} : {c} ({d}%)"
-                    },
-                    //选项显示
-                    legend: {
-                        orient: 'vertical',
-                        left: 'left',
-                        data: ['库内物品','待审物品','借出物品','遗失消耗物品']
-                    },
-                    series : [
-                        {
-                            name: '物品去向',
-                            type: 'pie',
-                            radius: '55%',
-                            itemStyle: {
-                                emphasis: {
-                                    shadowBlur: 1,
-                                    shadowColor: 'rgba(0, 0, 0, 0.5)'
-                                }
-                            },
-                            data:[
-                                {value:result.storeData, name:'库内物品'},
-                                {value:result.applyData, name:'待审物品'},
-                                {value:result.borrowData, name:'借出物品'},
-                                {value:result.missData, name:'遗失消耗物品'}
-                            ]
-                        }
-                    ]
-                };
-                // 使用刚指定的配置项和数据显示图表。
-                all_product_data.setOption(option);
-            });
-
+            all_product_data.showLoading();
+            setInterval(function(){
+                // 指定图表的配置项和数据
+                axios.get('/useProductData').then(function (value) {
+                    var result = value.data;
+                    var option = {
+                        title: {
+                            text: '办公用品去向统计',
+                            left: 'center',
+                            top: 0,
+                            textStyle: {
+                                color: '#333B47'
+                            }
+                        },
+                        tooltip : {
+                            trigger: 'item',
+                            formatter: "{a} <br/>{b} : {c} ({d}%)"
+                        },
+                        //选项显示
+                        legend: {
+                            orient: 'vertical',
+                            left: 'left',
+                            data: ['库内物品','待审物品','借出物品','遗失消耗物品']
+                        },
+                        series : [
+                            {
+                                name: '物品去向',
+                                type: 'pie',
+                                radius: '55%',
+                                itemStyle: {
+                                    emphasis: {
+                                        shadowBlur: 1,
+                                        shadowColor: 'rgba(0, 0, 0, 0.5)'
+                                    }
+                                },
+                                data:[
+                                    {value:result.storeData, name:'库内物品'},
+                                    {value:result.applyData, name:'待审物品'},
+                                    {value:result.borrowData, name:'借出物品'},
+                                    {value:result.missData, name:'遗失消耗物品'}
+                                ]
+                            }
+                        ]
+                    };
+                    // 使用刚指定的配置项和数据显示图表。
+                    all_product_data.setOption(option);
+                });
+                all_product_data.hideLoading();
+            }, 3000);
         },
         //办公用品费用统计
         showProductMoneyData:function () {
             var self = this;
             var all_productMoney_data = echarts.init($('#ProductMoneyData')[0]);
-            // 指定图表的配置项和数据
-            axios.get('/productMoneyData').then(function (value) {
-                var resultM = value.data;
-                var option = {
-                    title: {
-                        text: '办公用品资金组成（单位:元）',
-                        subtext: 'From Office DB'
-                    },
-                    tooltip : {
-                        trigger: 'axis',
-                        axisPointer : {            // 坐标轴指示器，坐标轴触发有效
-                            type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+            all_productMoney_data.showLoading();
+            setInterval(function(){
+                // 指定图表的配置项和数据
+                axios.get('/productMoneyData').then(function (value) {
+                    var resultM = value.data;
+                    var option = {
+                        title: {
+                            text: '办公用品资金组成（单位:元）',
+                            subtext: 'From Office DB'
                         },
-                        formatter: function (params) {
-                            var tar = params[1];
-                            return tar.name + '<br/>' + tar.seriesName + ' : ' + tar.value + '元';
-                        }
-                    },
-                    grid: {
-                        left: '3%',
-                        right: '4%',
-                        bottom: '3%',
-                        containLabel: true
-                    },
-                    xAxis: {
-                        type : 'category',
-                        splitLine: {show:false},
-                        data : ['物品总资金','库存物品资金','待审核物品资金','借出物品资金','消耗遗失资金']
-                    },
-                    yAxis: {
-                        type : 'value'
-                    },
-                    series: [
-                        {
-                            name: '辅助',
-                            type: 'bar',
-                            stack:  '总量',
-                            itemStyle: {
-                                normal: {
-                                    barBorderColor: 'rgba(0,0,0,0)',
-                                    color: 'rgba(0,0,0,0)'
-                                },
-                                emphasis: {
-                                    barBorderColor: 'rgba(0,0,0,0)',
-                                    color: 'rgba(0,0,0,0)'
-                                }
+                        tooltip : {
+                            trigger: 'axis',
+                            axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+                                type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
                             },
-                            data: [0, resultM.totalMoney-resultM.storeM,
-                                resultM.totalMoney-resultM.storeM-resultM.applyM,
-                                resultM.totalMoney-resultM.storeM-resultM.applyM-resultM.borrowM,
-                                resultM.totalMoney-resultM.storeM-resultM.applyM-resultM.borrowM-resultM.missM]
+                            formatter: function (params) {
+                                var tar = params[1];
+                                return tar.name + '<br/>' + tar.seriesName + ' : ' + tar.value + '元';
+                            }
                         },
-                        {
-                            name: '资金',
-                            type: 'bar',
-                            stack: '总量',
-                            label: {
-                                normal: {
-                                    show: true,
-                                    position: 'inside'
-                                }
-                            },
-                            itemStyle:{
-                                normal: {
-                                    // 随机显示
-                                    //color:function(d){return "#"+Math.floor(Math.random()*(256*256*256-1)).toString(16);}
-
-                                    // 定制显示（按顺序）
-                                    color: function(params) {
-                                        var colorList = ['#C33531','#64BD3D','#EE9201','#29AAE3', '#B74AE5' ];
-                                        return colorList[params.dataIndex]
+                        grid: {
+                            left: '3%',
+                            right: '4%',
+                            bottom: '3%',
+                            containLabel: true
+                        },
+                        xAxis: {
+                            type : 'category',
+                            splitLine: {show:false},
+                            data : ['物品总资金','库存物品资金','待审核物品资金','借出物品资金','消耗遗失资金']
+                        },
+                        yAxis: {
+                            type : 'value'
+                        },
+                        series: [
+                            {
+                                name: '辅助',
+                                type: 'bar',
+                                stack:  '总量',
+                                itemStyle: {
+                                    normal: {
+                                        barBorderColor: 'rgba(0,0,0,0)',
+                                        color: 'rgba(0,0,0,0)'
+                                    },
+                                    emphasis: {
+                                        barBorderColor: 'rgba(0,0,0,0)',
+                                        color: 'rgba(0,0,0,0)'
                                     }
                                 },
+                                data: [0, resultM.totalMoney-resultM.storeM,
+                                    resultM.totalMoney-resultM.storeM-resultM.applyM,
+                                    resultM.totalMoney-resultM.storeM-resultM.applyM-resultM.borrowM,
+                                    resultM.totalMoney-resultM.storeM-resultM.applyM-resultM.borrowM-resultM.missM]
                             },
-                            data:[resultM.totalMoney, resultM.storeM, resultM.applyM, resultM.borrowM, resultM.missM]
-                        }
-                    ]
-                };
-                all_productMoney_data.setOption(option);
-            });
+                            {
+                                name: '资金',
+                                type: 'bar',
+                                stack: '总量',
+                                label: {
+                                    normal: {
+                                        show: true,
+                                        position: 'inside'
+                                    }
+                                },
+                                itemStyle:{
+                                    normal: {
+                                        // 随机显示
+                                        //color:function(d){return "#"+Math.floor(Math.random()*(256*256*256-1)).toString(16);}
+
+                                        // 定制显示（按顺序）
+                                        color: function(params) {
+                                            var colorList = ['#C33531','#64BD3D','#EE9201','#29AAE3', '#B74AE5' ];
+                                            return colorList[params.dataIndex]
+                                        }
+                                    },
+                                },
+                                data:[resultM.totalMoney, resultM.storeM, resultM.applyM, resultM.borrowM, resultM.missM]
+                            }
+                        ]
+                    };
+                    all_productMoney_data.setOption(option);
+                });
+                all_productMoney_data.hideLoading();
+            }, 3000);
         },
         //用品类型使用统计
         showProductTypeData:function () {
             var all_productType_data = echarts.init($('#ProductTypeData')[0]);
-
-            axios.get('/ProductTypeData').then(function (value) {
-                var result = value.data;
-                var option = {
-                    title: {
-                        text: '办公用品类型统计',
-                        subtext: 'From Office DB'
-                    },
-                    legend: {},
-                    tooltip: {},
-                    dataset: {
-                        source: [
-                            ['product', '使用中', '已归还', '消耗遗失'],
-                            ['文具事务用品', result.stationery0, result.stationery1, result.stationery2],
-                            ['办公耗材', result.consumable0, result.consumable1, result.consumable2],
-                            ['办公设备', result.equipment0, result.equipment1, result.equipment2]
+            all_productType_data.showLoading();
+            setInterval(function(){
+                axios.get('/ProductTypeData').then(function (value) {
+                    var result = value.data;
+                    var option = {
+                        title: {
+                            text: '办公用品类型统计',
+                            subtext: 'From Office DB'
+                        },
+                        legend: {},
+                        tooltip: {},
+                        dataset: {
+                            source: [
+                                ['product', '使用中', '已归还', '消耗遗失'],
+                                ['文具事务用品', result.stationery0, result.stationery1, result.stationery2],
+                                ['办公耗材', result.consumable0, result.consumable1, result.consumable2],
+                                ['办公设备', result.equipment0, result.equipment1, result.equipment2]
+                            ]
+                        },
+                        xAxis: {type: 'category'},
+                        yAxis: {},
+                        // Declare several bar series, each will be mapped
+                        // to a column of dataset.source by default.
+                        series: [
+                            {type: 'bar'},
+                            {type: 'bar'},
+                            {type: 'bar'}
                         ]
-                    },
-                    xAxis: {type: 'category'},
-                    yAxis: {},
-                    // Declare several bar series, each will be mapped
-                    // to a column of dataset.source by default.
-                    series: [
-                        {type: 'bar'},
-                        {type: 'bar'},
-                        {type: 'bar'}
-                    ]
-                };
-                all_productType_data.setOption(option);
+                    };
+                    all_productType_data.setOption(option);
 
-            });
+                });
+                all_productType_data.hideLoading();
+            }, 3000);
         },
         //用品类型申请统计
         showProductApplyData:function () {
             var all_productApply_data = echarts.init($('#ProductApplyData')[0]);
-            axios.get('/ApplyTypeNumData').then(function (value) {
-                var result = value.data;
-                console.log(result);
-                console.log(result.week[0]);
-                var option = {
-                    title: {
-                        text: '用品类型申请数量统计'
-                    },
-                    tooltip : {
-                        trigger: 'axis',
-                        axisPointer: {
-                            type: 'cross',
-                            label: {
-                                right:0,
-                                backgroundColor: '#6a7985'
+            all_productApply_data.showLoading();
+            setInterval(function(){
+                axios.get('/ApplyTypeNumData').then(function (value) {
+                    var result = value.data;
+                    var option = {
+                        title: {
+                            text: '用品类型申请数量统计'
+                        },
+                        tooltip : {
+                            trigger: 'axis',
+                            axisPointer: {
+                                type: 'cross',
+                                label: {
+                                    right:0,
+                                    backgroundColor: '#6a7985'
+                                }
                             }
-                        }
-                    },
-                    legend: {
-                        data:['文具事务用品','办公耗材','办公设备']
-                    },
-                    grid: {
-                        left: '3%',
-                        right: '4%',
-                        bottom: '3%',
-                        containLabel: true
-                    },
-                    toolbox: {
-                        feature: {
-                            saveAsImage: {}
-                        }
-                    },
-                    xAxis: {
-                        type: 'category',
-                        boundaryGap: false,
-                        data: result.week
-                    },
-                    yAxis: {
-                        type: 'value'
-                    },
-                    series: [
-                        {
-                            name:'文具事务用品',
-                            type:'line',
-                            stack: '总量',
-                            label: {
-                                normal: {
-                                    show: true,
-                                    position: 'top'
-                                }
-                            },
-                            areaStyle: {},
-                            data:result.stationeryData
                         },
-                        {
-                            name:'办公耗材',
-                            type:'line',
-                            stack: '总量',
-                            label: {
-                                normal: {
-                                    show: true,
-                                    position: 'top'
-                                }
-                            },
-                            areaStyle: {},
-                            data:result.consumableData
+                        legend: {
+                            data:['文具事务用品','办公耗材','办公设备']
                         },
-                        {
-                            name:'办公设备',
-                            type:'line',
-                            stack: '总量',
-                            label: {
-                                normal: {
-                                    show: true,
-                                    position: 'top'
-                                }
+                        grid: {
+                            left: '3%',
+                            right: '4%',
+                            bottom: '3%',
+                            containLabel: true
+                        },
+                        toolbox: {
+                            feature: {
+                                saveAsImage: {}
+                            }
+                        },
+                        xAxis: {
+                            type: 'category',
+                            boundaryGap: false,
+                            data: result.week
+                        },
+                        yAxis: {
+                            type: 'value'
+                        },
+                        series: [
+                            {
+                                name:'文具事务用品',
+                                type:'line',
+                                stack: '总量',
+                                label: {
+                                    normal: {
+                                        show: true,
+                                        position: 'top'
+                                    }
+                                },
+                                areaStyle: {},
+                                data:result.stationeryData
                             },
-                            areaStyle: {},
-                            data:result.equipmentData
-                        }
-                    ]
-                };
-                all_productApply_data.setOption(option);
-            })
+                            {
+                                name:'办公耗材',
+                                type:'line',
+                                stack: '总量',
+                                label: {
+                                    normal: {
+                                        show: true,
+                                        position: 'top'
+                                    }
+                                },
+                                areaStyle: {},
+                                data:result.consumableData
+                            },
+                            {
+                                name:'办公设备',
+                                type:'line',
+                                stack: '总量',
+                                label: {
+                                    normal: {
+                                        show: true,
+                                        position: 'top'
+                                    }
+                                },
+                                areaStyle: {},
+                                data:result.equipmentData
+                            }
+                        ]
+                    };
+                    all_productApply_data.setOption(option);
+                });
+                all_productApply_data.hideLoading();
+            }, 3000);
+
 
         }
     }
