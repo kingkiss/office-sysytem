@@ -15,6 +15,8 @@ public class ApplyList {
 	private int apply_passman_id;
 	private String apply_passman_name;
 	private int apply_pass;
+
+
 	public int getApply_id() {
 		return apply_id;
 	}

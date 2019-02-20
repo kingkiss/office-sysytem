@@ -41,34 +41,6 @@ public class ProductData {
         m.put("AllType",Types);
         return m;
     }
-/*
-    //获取类型信息
-    @RequestMapping(value = "/TypeInfo",method = RequestMethod.GET)
-    public Map<String,Object> getType(@RequestParam(value = "start",defaultValue = "1") int start , @RequestParam(value = "size" ,defaultValue = "15") int size,
-                                      @RequestParam(value = "orderBy" ,defaultValue = "type_id asc") String orderBy){
-        PageHelper.startPage(start,size,orderBy);
-        List<Typelist> types = typeMapper.getTypeInfo();
-        PageInfo<Typelist> page = new PageInfo<>(types);
-        Map<String,Object> m = new HashMap<>();
-        m.put("TypeInfos",types);
-        m.put("page",page);
-        return m;
-
-    }
-
-    //获取物品类型
-    @RequestMapping(value = "/typeCategory",method = RequestMethod.GET)
-    public Map<String,Object> getTypeCategory(@RequestParam(value = "start",defaultValue = "1") int start , @RequestParam(value = "size" ,defaultValue = "15") int size ,
-                                               @RequestParam(value = "category",defaultValue = "") String category){
-        PageHelper.startPage(start,size);
-        List<Typelist> types = typeMapper.getTypeInfoByCategory(category);
-        PageInfo<Typelist> Searchpage = new PageInfo<>(types);
-        Map<String,Object> su = new HashMap<>();
-        su.put("typeCategory",types);
-        su.put("page",Searchpage);
-        return su;
-    }*/
-
 
     //搜索物品（用名称和类型，type是大的分类）
     @RequestMapping(value = "/SearchProduct",method = RequestMethod.GET)
