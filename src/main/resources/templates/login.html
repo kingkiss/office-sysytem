@@ -60,7 +60,8 @@
 				    var result = response.data;
 				    if(result.info == "success"){
 				      window.location.href="/manage"
-				    }					
+				    }
+
 					self.message = result.result; 
                 }).catch(function(reason) {
                     self.message = true;
