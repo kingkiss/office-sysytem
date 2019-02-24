@@ -9,4 +9,6 @@ public interface ApplyService {
 
     //修改申请审核事务
     public boolean updataApplyCheck(ApplyList applyList) throws Exception;
+
+
 }

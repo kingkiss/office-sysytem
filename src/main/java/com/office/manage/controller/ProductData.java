@@ -129,9 +129,29 @@ public class ProductData {
         }
     }
 
+    //修改物品信息
+    @RequestMapping(value = "/updateProduct/{product_id}",method = RequestMethod.PUT)
+    public Message updateProduct(@PathVariable int product_id,@RequestBody Product product){
+        Message msg = new Message();
+//        System.out.println(user_name);
+//        System.out.println(user.getUser_truename());
+        int result = productMapper.updataProduct(product.getProduct_name(),product.getProduct_num(),product.getProduct_price(),product.getProduct_type(),product_id);
+//        System.out.println(result);
+        if(result>0){
+            msg.setResult(true);
+            msg.setInfo("物品信息已修改！");
+            return msg;
+        }else {
+            msg.setResult(false);
+            msg.setInfo("未知错误，");
+            return msg;
+        }
+    }
+
+
     //删除物品
     @RequestMapping(value = "/deleteProduct/{product_id}",method = RequestMethod.DELETE)
-    public Message deleteProduct(@PathVariable String product_id){
+    public Message deleteProduct(@PathVariable int product_id){
         Message msg = new Message();
         int result = productMapper.deleteProductByid(product_id);
         //System.out.println(result);

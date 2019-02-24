@@ -119,6 +119,7 @@ public class ApplyListMapperTest {
         Assert.assertEquals(0,applyLists.get(0).getApply_pass());
         //修改刚刚插入的申请记录,修改pass值为1
         int result = applyListMapper.updateApplyCheckById(1,1,"admin","2019-2-10",applyLists.get(0).getApply_id());
+        applyLists = applyListMapper.getApplyListByUserNameAndProductName("%test%");
         //验证修改是否成功
         Assert.assertEquals(1,result);
         Assert.assertEquals(1,applyLists.get(0).getApply_pass());

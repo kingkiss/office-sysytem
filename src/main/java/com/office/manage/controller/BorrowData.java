@@ -30,8 +30,14 @@ public class BorrowData {
         PageHelper.startPage(start, size);
         List<BorrowList> borrowLists;
         HttpSession session = request.getSession();
-        int user_id = (int)session.getAttribute("user_id");
-        int authority = (int)session.getAttribute("user_authority");
+        Integer  uid = (Integer) session.getAttribute("user_id");
+        Integer  uah = (Integer) session.getAttribute("user_authority");
+        int user_id = 1;
+        int authority =  1;
+        if( uid != null && uah != null ){
+            user_id = Integer.valueOf(uid);
+            authority = Integer.valueOf(uah);
+        }
 //        System.out.println("id:"+i);
 //        System.out.println("auth:"+a);
         //判断是不是管理员（7）

@@ -6,10 +6,10 @@ public class Product {
 	private int product_num;
 	private float product_price;
 	private String product_type;
-	public int getId() {
+	public int getProduct_id() {
 		return product_id;
 	}
-	public void setId(int product_id) {
+	public void setProduct_id(int product_id) {
 		this.product_id = product_id;
 	}
 	public String getProduct_name() {

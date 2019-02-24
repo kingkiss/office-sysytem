@@ -46,6 +46,10 @@ public interface ProductMapper {
     @Select("SELECT product_name FROM product_info WHERE product_id=#{product_id}")
     public String getProductNameById(int product_id);
 
+    //修改物品信息
+    @Update("UPDATE product_info SET product_name=#{p_name}, product_num=#{p_num}, product_price=#{p_price}, product_type=#{p_type} WHERE product_id=#{p_id}")
+    public int updataProduct(String p_name, int p_num ,float p_price, String p_type, int p_id);
+
     //申请物品成功后，减少对应的库存
     @Update("UPDATE product_info SET product_num=product_num-#{apply_num} WHERE product_id=#{product_id}")
     public int updataProductNum(int apply_num,int product_id);
@@ -60,7 +64,7 @@ public interface ProductMapper {
 
     //删除物品
     @Delete("DELETE FROM product_info WHERE product_id=#{product_id}")
-    public int deleteProductByid(String product_id);
+    public int deleteProductByid(int product_id);
 
 
 }

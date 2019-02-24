@@ -93,6 +93,21 @@ var m_changeProduct = new Vue({
             self.tempProductInfo.product_price = 0;
             self.tempProductInfo.product_type = '';
             self.tempProductInfo.product_id = '';
+        },
+        changeP:function () {
+            var self = this;
+            var url = '/updateProduct/'+self.tempProductInfo.product_id;
+            axios.put(url,self.tempProductInfo).then(function(response) {
+                var result = response.data;
+                self.message.info = result.info;
+                if(result.result){
+                    $('#changeProductS').removeClass('hide').addClass('in');
+                    setTimeout(function(){$('#changeProductS').removeClass('in').addClass('hide');$('#changeProduct').modal('toggle');location.reload();},1500);
+                }else {
+                    $('#changeProductF').removeClass('hide').addClass('in')
+                    setTimeout(function(){$('#changeProductF').removeClass('in').addClass('hide')},3000);
+                }
+            });
         }
     }
 });
