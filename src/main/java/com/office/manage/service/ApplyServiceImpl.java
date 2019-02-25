@@ -37,13 +37,13 @@ public class ApplyServiceImpl implements ApplyService {
         if(result1 == 1 && result2 ==1){
             return true;
         }else {
-            throw new Exception("数据库异常");
+            return false;
         }
     }
 
     //修改申请审核事务
     @Transactional
-    public boolean updataApplyCheck(ApplyList applyList) throws Exception {
+    public boolean updataApplyCheck(ApplyList applyList)  {
         Date time = new Date();
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String datetime = format.format(time);
@@ -55,7 +55,7 @@ public class ApplyServiceImpl implements ApplyService {
             if( borrowResult == 1 ){
                 return true;
             }else {
-                throw new Exception("数据库异常");
+                return false;
             }
         }else if( applyList.getApply_pass() ==2 && applyResult == 1  ){
             //pass=2为申请审核状态为驳回，物品存回数据库
@@ -63,10 +63,10 @@ public class ApplyServiceImpl implements ApplyService {
             if (productResult==1){
                 return true;
             }else {
-                throw new Exception("数据库异常");
+                return false;
             }
         }else {
-            throw new Exception("数据库异常");
+            return false;
         }
     }
 }

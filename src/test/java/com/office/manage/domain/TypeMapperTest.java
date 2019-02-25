@@ -34,8 +34,10 @@ public class TypeMapperTest {
         int i = typeMapper.addNewType("testall","testman");
         //查询类型
         List<Typelist> types = typeMapper.getTypeInfoByCategory("testall");
+        List<String> types1 = typeMapper.getAllType();
         //验证
         Assert.assertEquals(1,i);
+        Assert.assertNotEquals(0,types1.size());
         Assert.assertEquals("testman",types.get(0).getProduct_type());
         //删除类型
         i = typeMapper.deleteType(String.valueOf(types.get(0).getType_id()));

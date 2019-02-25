@@ -60,8 +60,10 @@ public class ApplyListMapperTest {
         int r = applyListMapper.addProductApply(1,"admin","admintest",2,"test",2,2,"2019-2-10");
         //执行方法，获取所有申请列表
         List<ApplyList> applyLists = applyListMapper.getApplyList();
+        List<ApplyList> applyLists1 = applyListMapper.getApplyList();
         //获取的列表不为0
         Assert.assertNotEquals(0,applyLists.size());
+        Assert.assertNotEquals(0,applyLists1.size());
         //前面插入的数据也包含在内
         Assert.assertEquals("admintest",applyLists.get(applyLists.size()-1).getApply_user_name());
     }

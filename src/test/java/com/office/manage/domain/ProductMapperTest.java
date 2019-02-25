@@ -34,9 +34,11 @@ public class ProductMapperTest {
         int i = productMapper.addNewProduct("test",1,1,"fortest");
         //查询物品
         List<Product> products = productMapper.getProductFromAllProduct("test");
+        List<Product> products1 = productMapper.getAllProduct();
         //验证是否增加成功,查询是否成功
         Assert.assertEquals(1,i);
         Assert.assertEquals("fortest",products.get(0).getProduct_type());
+        Assert.assertNotEquals(0,products1.size());
         //修改物品
         int r = productMapper.updataProduct("test",2,2,"ttt",products.get(0).getProduct_id());
         products = productMapper.getProductFromAllProduct("test");

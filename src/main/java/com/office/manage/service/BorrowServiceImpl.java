@@ -29,7 +29,7 @@ public class BorrowServiceImpl implements BorrowService {
         if(result == 1){
             return true;
         }else {
-            throw new Exception("数据库异常");
+            return  false;
         }
     }
 
@@ -45,10 +45,10 @@ public class BorrowServiceImpl implements BorrowService {
             if( resultP == 1 ){
                 return true;
             }else {
-                throw new Exception("数据库异常");
+                return false;
             }
         }else {
-            throw new Exception("数据库异常");
+           return false;
         }
     }
 }

@@ -36,9 +36,11 @@ public class BorrowListMapperTest {
         int i = borrowListMapper.addBorrowList(888,"test",1,"test1",1,1,"2019-2-13");
         //搜索记录
         List<BorrowList> borrowLists = borrowListMapper.getBorrowListById(888);
+        List<BorrowList> borrowLists2 = borrowListMapper.getAllBorrowList();
         //验证插入查询
         Assert.assertEquals(1,i);
         Assert.assertEquals(1,borrowLists.size());
+        Assert.assertNotEquals(0,borrowLists2.size());
         Assert.assertEquals("test",borrowLists.get(0).getBorrowinfo_user_truename());
         Assert.assertEquals("test1",borrowLists.get(0).getBorrowinfo_product_name());
         //模糊查询

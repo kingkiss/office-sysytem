@@ -43,6 +43,7 @@ public class UserMapperTest {
         Assert.assertNotNull(users);
         //验证搜索用户
         Assert.assertEquals("testman",user.getUser_name());
+        Assert.assertNotEquals(0,users.size());
         //删除用户
         int i = userMapper.deleteUser("testman");
         //验证删除用户是否成功
