@@ -27,6 +27,7 @@ public class Login {
 		User user1 = userMapper.findUser(user.getUser_name());
 		Message msg = new Message();
 		if(user1 == null){
+			msg.setInfo("登录失败");
 			msg.setResult(true);
 			return msg;
 		}else if(user.getUser_password().equals(user1.getUser_password())){
@@ -42,6 +43,7 @@ public class Login {
 			msg.setInfo("success");;
 			return msg;
 		}else{
+			msg.setInfo("登录失败");
 			msg.setResult(true);
 			return msg;
 		}

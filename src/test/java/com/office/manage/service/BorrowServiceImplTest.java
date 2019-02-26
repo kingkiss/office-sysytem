@@ -24,13 +24,10 @@ import static org.junit.Assert.*;
 @SpringBootTest
 @Transactional
 public class BorrowServiceImplTest {
-
     @Autowired
     BorrowListMapper borrowListMapper;
-
     @Autowired
     BorrowService borrowService;
-
     @Autowired
     ProductMapper productMapper;
 

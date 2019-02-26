@@ -29,16 +29,23 @@ public class ProductData {
         Map<String,Object> m = new HashMap<>();
         m.put("AllProducts",products);
         m.put("page",page);
+        if(products.size() != 0){
+            m.put("testcase",true);
+        }else {
+            m.put("testcase",false);
+        }
         return m;
 
     }
-
     //获取所有物品类型
     @RequestMapping(value = "/allType",method = RequestMethod.GET)
     public Map<String,Object> getAllType(){
         List<String> Types = typeMapper.getAllType();
         Map<String,Object> m = new HashMap<>();
         m.put("AllType",Types);
+        if(Types.size() != 0){
+            m.put("testcase",true);
+        }
         return m;
     }
 
@@ -53,6 +60,11 @@ public class ProductData {
         Map<String,Object> su = new HashMap<>();
         su.put("SearchProduct",SearchProducts);
         su.put("page",Searchpage);
+        if(SearchProducts.size() != 0){
+            su.put("testcase",true);
+        }else {
+            su.put("testcase",false);
+        }
         return su;
     }
 
@@ -67,6 +79,11 @@ public class ProductData {
         Map<String,Object> m = new HashMap<>();
         m.put("products",products);
         m.put("page",page);
+        if(products.size() != 0){
+            m.put("testcase",true);
+        }else {
+            m.put("testcase",false);
+        }
         return m;
 
     }
@@ -81,6 +98,11 @@ public class ProductData {
         Map<String,Object> m = new HashMap<>();
         m.put("products",products);
         m.put("page",page);
+        if(products.size() != 0){
+            m.put("testcase",true);
+        }else {
+            m.put("testcase",false);
+        }
         return m;
 
     }
@@ -95,6 +117,11 @@ public class ProductData {
         Map<String,Object> m = new HashMap<>();
         m.put("products",products);
         m.put("page",page);
+        if(products.size() != 0){
+            m.put("testcase",true);
+        }else {
+            m.put("testcase",false);
+        }
         return m;
 
     }
@@ -110,6 +137,11 @@ public class ProductData {
         Map<String,Object> su = new HashMap<>();
         su.put("SearchProduct",SearchProducts);
         su.put("page",Searchpage);
+        if(SearchProducts.size() != 0){
+            su.put("testcase",true);
+        }else {
+            su.put("testcase",false);
+        }
         return su;
     }
 
@@ -133,17 +165,14 @@ public class ProductData {
     @RequestMapping(value = "/updateProduct/{product_id}",method = RequestMethod.PUT)
     public Message updateProduct(@PathVariable int product_id,@RequestBody Product product){
         Message msg = new Message();
-//        System.out.println(user_name);
-//        System.out.println(user.getUser_truename());
         int result = productMapper.updataProduct(product.getProduct_name(),product.getProduct_num(),product.getProduct_price(),product.getProduct_type(),product_id);
-//        System.out.println(result);
         if(result>0){
             msg.setResult(true);
             msg.setInfo("物品信息已修改！");
             return msg;
         }else {
             msg.setResult(false);
-            msg.setInfo("未知错误，");
+            msg.setInfo("未知错误");
             return msg;
         }
     }
