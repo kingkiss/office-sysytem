@@ -18,6 +18,8 @@ public class ProductData {
     ProductMapper productMapper;
     @Autowired
     TypeMapper typeMapper;
+    @Autowired
+    UserMapper userMapper;
 
     //获取所有物品
     @RequestMapping(value = "/allProduct",method = RequestMethod.GET)

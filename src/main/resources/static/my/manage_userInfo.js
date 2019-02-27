@@ -105,9 +105,9 @@ var modalData = new Vue({
         changeUserName:function(){
             var url = '/changeUserName';
             var self = this;
-            var params = new URLSearchParams();
-            params.append('userNewName',self.userInfo_change_name);
-            params.append('user_name',self.userdata.user_name);
+            var params = {
+                user_truename:self.userInfo_change_name,
+            };
             axios.post(url,params).then(function (response) {
                 var result = response.data;
                 if( result.result ){
@@ -132,9 +132,9 @@ var modalData = new Vue({
         changeUserPhone:function(){
             var url = '/changeUserPhone';
             var self = this;
-            var params = new URLSearchParams();
-            params.append('userNewPhone',self.userInfo_change_phone);
-            params.append('user_name',self.userdata.user_name);
+            var params = {
+                user_phone:self.userInfo_change_phone,
+            };
             axios.post(url,params).then(function (response) {
                 var result = response.data;
                 if( result.result ){

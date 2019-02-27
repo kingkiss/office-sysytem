@@ -9,8 +9,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 @Mapper
 public interface UserMapper {
-	
-	
+
 	@Select("select * from user_info")
 	public List<User> getAllUser();
 
