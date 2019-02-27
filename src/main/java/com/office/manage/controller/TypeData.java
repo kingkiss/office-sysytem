@@ -29,6 +29,11 @@ public class TypeData {
         Map<String,Object> m = new HashMap<>();
         m.put("TypeInfos",types);
         m.put("page",page);
+        if(types.size() != 0){
+            m.put("testcase",true);
+        }else {
+            m.put("testcase",false);
+        }
         return m;
 
     }
@@ -43,6 +48,11 @@ public class TypeData {
         Map<String,Object> su = new HashMap<>();
         su.put("typeCategory",types);
         su.put("page",Searchpage);
+        if(types.size() != 0){
+            su.put("testcase",true);
+        }else {
+            su.put("testcase",false);
+        }
         return su;
     }
 

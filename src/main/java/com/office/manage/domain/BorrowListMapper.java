@@ -69,6 +69,8 @@ public interface BorrowListMapper {
 	@Select("SELECT * FROM borrow_info WHERE borrowinfo_user_id=#{user_id}")
 	public List<BorrowList> getBorrowListById(int user_id);
 
+	@Select("SELECT * FROM borrow_info WHERE borrowinfo_id=#{id}")
+	public BorrowList getBorrowById(int id);
 
 	//申请通过后插入借入记录
 	@Insert("INSERT INTO borrow_info " +

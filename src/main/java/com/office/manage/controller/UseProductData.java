@@ -44,6 +44,7 @@ public class UseProductData {
         data.put("applyData",applyData);
         data.put("borrowData",borrowData);
         data.put("missData",missData);
+
         return data;
     }
 
