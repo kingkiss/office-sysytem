@@ -134,6 +134,27 @@ public class ManageDataTest {
 
     @Test
     public void changeUserPwd()throws Exception {
+        session.setAttribute("user_name","admin@office.com");
+        mvc.perform(MockMvcRequestBuilders.post("/changeUserPwd")
+                .accept(MediaType.APPLICATION_JSON_UTF8)
+                .param("userOldPwd","mff123")
+                .param("userNewPwd","123456")
+                .param("user_name","mafeifei@office.com")
+                .session(session)
+        )
+                .andExpect(MockMvcResultMatchers.jsonPath("$.result").value(true))
+                .andDo(MockMvcResultHandlers.print());
+
+        session.setAttribute("user_name","admin@office.com");
+        mvc.perform(MockMvcRequestBuilders.post("/changeUserPwd")
+                .accept(MediaType.APPLICATION_JSON_UTF8)
+                .param("userOldPwd","mff1")
+                .param("userNewPwd","123456")
+                .param("user_name","mafeifei@office.com")
+                .session(session)
+        )
+                .andExpect(MockMvcResultMatchers.jsonPath("$.result").value(false))
+                .andDo(MockMvcResultHandlers.print());
 
     }
 }

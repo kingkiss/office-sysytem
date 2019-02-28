@@ -62,6 +62,11 @@ public class ApplyData {
         Map<String, Object> m = new HashMap<>();
         m.put("AllApplyChecks", applyLists);
         m.put("page", page);
+        if(applyLists.size() != 0){
+            m.put("testcase",true);
+        }else {
+            m.put("testcase",false);
+        }
         return m;
     }
 
@@ -76,6 +81,11 @@ public class ApplyData {
         Map<String, Object> m = new HashMap<>();
         m.put("AllApplyLists", applyLists);
         m.put("page", page);
+        if(applyLists.size() != 0){
+            m.put("testcase",true);
+        }else {
+            m.put("testcase",false);
+        }
         return m;
     }
 
@@ -91,6 +101,11 @@ public class ApplyData {
         Map<String,Object> su = new HashMap<>();
         su.put("SearchApplyChecks",applyChecks);
         su.put("page",Searchpage);
+        if(applyChecks.size() != 0){
+            su.put("testcase",true);
+        }else {
+            su.put("testcase",false);
+        }
         return su;
     }
 
@@ -106,6 +121,11 @@ public class ApplyData {
         Map<String,Object> su = new HashMap<>();
         su.put("SearchApplyLists",applyChecks);
         su.put("page",Searchpage);
+        if(applyChecks.size() != 0){
+            su.put("testcase",true);
+        }else {
+            su.put("testcase",false);
+        }
         return su;
     }
 

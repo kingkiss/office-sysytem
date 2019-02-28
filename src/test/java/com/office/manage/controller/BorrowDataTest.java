@@ -112,7 +112,8 @@ public class BorrowDataTest {
 
     @Test
     public void updateBorrowList()throws Exception {
-
+        BorrowList b = new BorrowList();
+        b.setBorrwoinfo_product_price(3);
         String json2 = "{ \"borrowinfo_return\":\"2\", \"borrowinfo_return_num\":\"1\"," +
                 " \"borrowinfo_missprice\":\"1\", \"borrowinfo_product_id\":\"2\", \"borrowinfo_id\":\"1\"}";
         //添加新物品成功
