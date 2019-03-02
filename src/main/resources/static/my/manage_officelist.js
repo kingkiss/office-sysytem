@@ -53,7 +53,7 @@ var stationery = new Vue({
             self.tempProductInfo.product_num = product.product_num;
             self.tempProductInfo.product_price = product.product_price;
             self.tempProductInfo.product_type = product.product_type;
-            self.tempProductInfo.product_id = product.id;
+            self.tempProductInfo.product_id = product.product_id;
         }
     }
 
@@ -111,7 +111,7 @@ var consumable = new Vue({
             self.tempProductInfo.product_num = product.product_num;
             self.tempProductInfo.product_price = product.product_price;
             self.tempProductInfo.product_type = product.product_type;
-            self.tempProductInfo.product_id = product.id;
+            self.tempProductInfo.product_id = product.product_id;
         }
     }
 });
@@ -169,7 +169,7 @@ var equipment = new Vue({
             self.tempProductInfo.product_num = product.product_num;
             self.tempProductInfo.product_price = product.product_price;
             self.tempProductInfo.product_type = product.product_type;
-            self.tempProductInfo.product_id = product.id;
+            self.tempProductInfo.product_id = product.product_id;
         }
     }
 });
@@ -187,14 +187,15 @@ var m_officeApplyModal = new Vue({
             var self = this;
             var url = '/addApply';
             var nowDate = new Date();
+            console.log(tempProductInfo.product_id);
             var param = {
-                apply_user_id:userdata.user_id,
-                apply_user_truename:userdata.user_truename,
-                apply_user_name:userdata.user_name,
-                apply_product_id:tempProductInfo.product_id,
-                apply_product_name:tempProductInfo.product_name,
-                apply_num:tempProductInfo.apply_num,
-                apply_product_price:tempProductInfo.product_price,
+                apply_user_id:self.userdata.user_id,
+                apply_user_truename:self.userdata.user_truename,
+                apply_user_name:self.userdata.user_name,
+                apply_product_name:self.tempProductInfo.product_name,
+                apply_num:self.tempProductInfo.apply_num,
+                apply_product_price:self.tempProductInfo.product_price,
+                apply_product_id:self.tempProductInfo.product_id
             };
             axios.post(url,param).then(function (response) {
                 var result = response.data;

@@ -40,7 +40,7 @@ public class Login {
 			session.setAttribute("user_department", user1.getUser_department());
 			session.setAttribute("user_authority", user1.getUser_authority());
 			session.setAttribute("user_phone", user1.getUser_phone());
-			msg.setInfo("success");;
+			msg.setInfo("success");
 			return msg;
 		}else{
 			msg.setInfo("登录失败");

@@ -13,7 +13,30 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class Manage {
 	//登录入口
     @RequestMapping("/login")
-    public String login(){
+    public String login(HttpServletRequest request,Model m){
+        HttpSession session = request.getSession();
+        if( session.getAttribute("user_id") != null ){
+            boolean isUserInfo = false;
+            boolean isOfficeList = true;
+            boolean isOfficeInfo = false;
+            boolean isOfficeType = false;
+            boolean isApplyCheck = false;
+            boolean isApplyList = false;
+            boolean isBorrowList = false;
+            boolean isReturnList = false;
+            boolean isUseData = false;
+
+            m.addAttribute("isUserInfo",isUserInfo);
+            m.addAttribute("isOfficeList",isOfficeList);
+            m.addAttribute("isOfficeInfo",isOfficeInfo);
+            m.addAttribute("isOfficeType",isOfficeType);
+            m.addAttribute("isApplyCheck",isApplyCheck);
+            m.addAttribute("isApplyList",isApplyList);
+            m.addAttribute("isBorrowList",isBorrowList);
+            m.addAttribute("isReturnList",isReturnList);
+            m.addAttribute("isUseData",isUseData);
+            return "manage";
+        }
         return "login";
     }
 

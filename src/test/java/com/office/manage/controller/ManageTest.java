@@ -47,6 +47,12 @@ public class ManageTest {
         mvc.perform(MockMvcRequestBuilders.get("/login"))
                 .andExpect(MockMvcResultMatchers.view().name("login"))
                 .andDo(MockMvcResultHandlers.print());
+
+        mvc.perform(MockMvcRequestBuilders.get("/login")
+                .session(session)
+        )
+                .andExpect(MockMvcResultMatchers.view().name("manage"))
+                .andDo(MockMvcResultHandlers.print());
     }
 
     @Test

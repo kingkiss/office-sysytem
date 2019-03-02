@@ -103,7 +103,7 @@ var passApplyModal = new Vue({
     }
 });
 
-/*通过申请modal框数据处理*/
+/*驳回申请modal框数据处理*/
 var rejectApplyModal = new Vue({
     el:'#rejectApplyModal',
     data:{
