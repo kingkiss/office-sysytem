@@ -127,7 +127,7 @@ public class BorrowDataTest {
 
         String json4 = "{ \"borrowinfo_return\":\"2\", \"borrowinfo_return_num\":\"1\"," +
                 " \"borrowinfo_missprice\":\"1\", \"borrowinfo_product_id\":\"2\", \"borrowinfo_id\":\"0\"}";
-        //添加新物品成功
+        //添加新物品失败
         mvc.perform(MockMvcRequestBuilders.post("/updateBorrow")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .accept(MediaType.APPLICATION_JSON_UTF8)
@@ -140,7 +140,7 @@ public class BorrowDataTest {
 
         String json1 = "{ \"borrowinfo_return\":\"1\", \"borrowinfo_return_num\":\"1\"," +
                 " \"borrowinfo_missprice\":\"1\", \"borrowinfo_product_id\":\"2\", \"borrowinfo_id\":\"1\"}";
-        //添加新物品成功
+
         mvc.perform(MockMvcRequestBuilders.post("/updateBorrow")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .accept(MediaType.APPLICATION_JSON_UTF8)
@@ -151,7 +151,7 @@ public class BorrowDataTest {
 
         String json3 = "{ \"borrowinfo_return\":\"1\", \"borrowinfo_return_num\":\"1\"," +
                 " \"borrowinfo_missprice\":\"1\", \"borrowinfo_product_id\":\"2\", \"borrowinfo_id\":\"0\"}";
-        //添加新物品成功
+
         mvc.perform(MockMvcRequestBuilders.post("/updateBorrow")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .accept(MediaType.APPLICATION_JSON_UTF8)

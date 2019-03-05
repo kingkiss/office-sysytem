@@ -90,6 +90,7 @@ public class ManageData {
 		String user_password = userMapper.finUserPwdByName(UserPwd.get("user_name").toString());
 		String userPwd = UserPwd.get("userOldPwd").toString();
 		System.out.println("用户名查询的旧密码："+user_password);
+		System.out.println("前端数据："+userPwd);
 		//判断旧密码是否正确
 		try{
 			if(user_password.equals(userPwd)){

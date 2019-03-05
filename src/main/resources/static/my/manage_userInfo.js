@@ -118,7 +118,7 @@ var modalData = new Vue({
                     self.userN_display = true;
 
                 }else{
-                    self.message.info = "用户姓名超过10位";
+                    self.message.info = "用户姓名超过15位";
                     $('.alert-danger').removeClass('hide').addClass('in');
                     setTimeout(function(){$('.alert-danger').removeClass('in').addClass('hide')},3000);
                 }
@@ -138,11 +138,11 @@ var modalData = new Vue({
             axios.post(url,params).then(function (response) {
                 var result = response.data;
                 if( result.result ){
-                    self.message.info = "用户姓名修改成功！";
+                    self.message.info = "用户电话修改成功！";
                     $('.alert-success').removeClass('hide').addClass('in');
                     setTimeout(function(){$('.alert-success').removeClass('in').addClass('hide');},2000);
                     setTimeout(function(){location.reload();},3000);
-                    self.userN_display = true;
+                    self.userP_display = true;
 
                 }else{
                     self.message.info = "用户电话超过11位";
@@ -150,7 +150,7 @@ var modalData = new Vue({
                     setTimeout(function(){$('.alert-danger').removeClass('in').addClass('hide')},3000);
                 }
             }).catch(function(reason) {
-                self.message.info = "网络故障";
+                self.message.info = "用户电话超过11位";
                 $('.alert-danger').removeClass('hide').addClass('in')
                 setTimeout(function(){$('.alert-danger').removeClass('in').addClass('hide')},3000);
             })
@@ -336,7 +336,7 @@ var m_userAddModal = new Vue({
                     $('#addUserS').removeClass('hide').addClass('in');
                     setTimeout(function(){$('#addUserS').removeClass('in').addClass('hide');$('#addUserModal').modal('toggle');location.reload();},1000);
                 }else {
-                    $('#addUserS').removeClass('hide').addClass('in')
+                    $('#addUserF').removeClass('hide').addClass('in')
                     setTimeout(function(){$('#addUserF').removeClass('in').addClass('hide')},3000);
                 }
             })

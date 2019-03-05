@@ -48,7 +48,7 @@
         <a href="manage_officeType" th:class="${isOfficeType}?'list-group-item list-item-active':'list-group-item'" v-show="userdata.user_authority >= 3" >物品类型</a>
         <a href="manage_userInfo" th:class="${isUserInfo}?'list-group-item list-item-active':'list-group-item'" v-show="userdata.user_authority >= 7">用户管理</a>
         <a href="manage_applyCheck" th:class="${isApplyCheck}?'list-group-item list-item-active':'list-group-item'" v-show="userdata.user_authority >= 3">申请审核</a>
-        <a href="manage_applyList" th:class="${isApplyList}?'list-group-item list-item-active':'list-group-item'">申请信息</a>
+        <a href="manage_applyList" th:class="${isApplyList}?'list-group-item list-item-active':'list-group-item'">申请状态</a>
         <a href="manage_borrowList" th:class="${isBorrowList}?'list-group-item list-item-active':'list-group-item'">借入/归还登记</a>
         <!--<a href="manage_returnList" th:class="${isReturnList}?'list-group-item list-item-active':'list-group-item'">归还记录</a>-->
         <!--<a href="#" class="list-group-item" v-show="userdata.user_authority >= 3">购入记录</a>-->

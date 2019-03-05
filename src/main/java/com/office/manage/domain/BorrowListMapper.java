@@ -80,7 +80,7 @@ public interface BorrowListMapper {
 	public int addBorrowList(int user_id, String user_truename, int product_id, String product_name, int num, float price, String time);
 
 	//根据物品名模糊搜索借入记录
-	@Select("SELECT * FROM borrow_info WHERE borrowinfo_product_name LIKE #{search}")
+	@Select("SELECT * FROM borrow_info WHERE borrowinfo_product_name LIKE #{search} OR borrowinfo_user_truename LIKE #{search}")
 	public List<BorrowList> searchBorrowById(String search);
 
 	//根据记录ID删除借入归还记录

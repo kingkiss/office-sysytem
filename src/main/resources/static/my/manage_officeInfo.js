@@ -52,7 +52,7 @@ var m_officeInfo = new Vue({
             self.tempProductInfo.product_num = product.product_num;
             self.tempProductInfo.product_price = product.product_price;
             self.tempProductInfo.product_type = product.product_type;
-            self.tempProductInfo.product_id = product.id;
+            self.tempProductInfo.product_id = product.product_id;
         },
         /*删除物品modal框*/
         deleteProductModal:function (product) {
@@ -61,7 +61,7 @@ var m_officeInfo = new Vue({
             self.tempProductInfo.product_num = product.product_num;
             self.tempProductInfo.product_price = product.product_price;
             self.tempProductInfo.product_type = product.product_type;
-            self.tempProductInfo.product_id = product.id;
+            self.tempProductInfo.product_id = product.product_id;
         },
     }
 });
