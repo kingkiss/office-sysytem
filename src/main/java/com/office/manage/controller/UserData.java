@@ -107,7 +107,7 @@ public class UserData {
 //        System.out.println(user_name);
 //        System.out.println(user.getUser_truename());
         int result = userMapper.updateUserByName(user.getUser_truename(),user.getUser_phone(),user.getUser_department(),user.getUser_authority(),user_name);
-//        System.out.println(result);
+//       System.out.println(result);
         if(result>0){
             msg.setResult(true);
             msg.setInfo("用户信息已修改！");

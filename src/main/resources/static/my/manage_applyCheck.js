@@ -93,7 +93,8 @@ var passApplyModal = new Vue({
                 self.message.info = result.info;
                 if(result.result){
                     $('#passApplyS').removeClass('hide').addClass('in');
-                    setTimeout(function(){$('#passApplyS').removeClass('in').addClass('hide');$('#passApplyModal').modal('toggle');location.reload();},1000);
+                    setTimeout(function(){$('#passApplyS').removeClass('in').addClass('hide');
+                    $('#passApplyModal').modal('toggle');location.reload();},1000);
                 }else {
                     $('#passApplyF').removeClass('hide').addClass('in')
                     setTimeout(function(){$('#passApplyF').removeClass('in').addClass('hide')},3000);
