@@ -35,6 +35,7 @@ public class ApplyDataTest {
     @Before
     public void setUp() throws Exception {
         mvc = MockMvcBuilders.webAppContextSetup(wac).build(); //初始化MockMvc对象
+
     }
 
     @After

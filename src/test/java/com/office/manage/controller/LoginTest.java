@@ -47,7 +47,7 @@ public class LoginTest {
     @Test//测试登录
     public void getUser()throws Exception{
         //发送用户信息json
-        String json="{ \"user_name\":\"admin@office.com\", \"user_password\":\"root123\"}";
+        String json="{ \"user_name\":\"admin@office.com\", \"user_password\":\"123456\"}";
         //密码错误的json
         String pwjson = "{ \"user_name\":\"admin@office.com\", \"user_password\":\"ro123\"}";
         //账号错误的json
